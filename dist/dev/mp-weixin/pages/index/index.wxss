@@ -1,0 +1,183 @@
+
+/* 页面整体布局：全屏山水背景 + 居中白色卡片，不再出现手机轮廓、顶部图标和底部横线 */
+.page-wrap {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 40rpx 20rpx;
+  box-sizing: border-box;
+  /* 使用渐变做基础底色，真正的山水纹理由 page-bg 图片承担，避免 wxss 直接引用本地图片 */
+  background: linear-gradient(180deg, #dfe6d7 0%, #d0ddc7 60%, #c8d5be 100%);
+  min-height: 100vh;
+  position: relative;
+}
+
+/* 整页背景图，放在内容下层，兼容微信小程序 */
+.page-bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+/* 中心白色登录卡片，宽度和圆角与设计稿一致 */
+.login-card {
+  width: 86%;
+  max-width: 680rpx;
+  /* 略带一点米黄色的灰白，贴近示例图中的卡片底色 */
+  background-color: #ebeae1;
+  border-radius: 32rpx;
+  /* 加大上下内边距，使卡片整体更“长”一些 */
+  padding: 64rpx 56rpx 96rpx;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* 让卡片整体略微下移，贴近示例图位置比例，可按需微调 */
+  margin-top: 180rpx;
+  box-shadow: 0 16rpx 40rpx rgba(0, 0, 0, 0.16);
+  z-index: 1;
+}
+.card-header {
+  align-self: flex-start;
+  margin-bottom: 56rpx;
+}
+.login-title {
+  /* 模拟示例图中偏宋体 / 仿宋的标题感觉 */
+  font-size: 44rpx;
+  color: #111111;
+  font-weight: 600;
+  letter-spacing: 4rpx;
+  line-height: 1.4;
+}
+.phone-display {
+  margin-bottom: 80rpx;
+}
+.phone-text {
+  font-size: 34rpx;
+  /* 稍大的字间距，贴近示例中稀疏的数字排布 */
+  letter-spacing: 8rpx;
+  color: #111111;
+  font-weight: 500;
+}
+
+/* 主按钮：一键登录 */
+.primary-btn {
+  width: 100%;
+  height: 96rpx;
+  line-height: 96rpx;
+  border-radius: 48rpx;
+  background-color: #9ea97f;
+  color: #ffffff;
+  font-size: 30rpx;
+  text-align: center;
+  margin-bottom: 32rpx;
+  border: none;
+  letter-spacing: 4rpx;
+}
+.primary-btn.button-hover {
+  opacity: 0.9;
+}
+.primary-btn--disabled {
+  background-color: #cfd4c0;
+}
+
+/* 其他手机号 */
+.alt-phone {
+  margin-bottom: 56rpx;
+}
+.alt-phone-text {
+  font-size: 26rpx;
+  color: #b0b0b0;
+}
+
+/* 协议勾选区域 */
+.agreement-row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 72rpx;
+}
+.agree-checkbox {
+  width: 28rpx;
+  height: 28rpx;
+  border-radius: 50%;
+  border-width: 2rpx;
+  border-style: solid;
+  border-color: #c6c6c6;
+  margin-right: 16rpx;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+.agree-checkbox--checked {
+  border-color: #9ea97f;
+  background-color: #9ea97f;
+}
+.agree-inner-dot {
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 50%;
+  background-color: #ffffff;
+}
+.agreement-text {
+  flex: 1;
+  font-size: 22rpx;
+  color: #666666;
+  line-height: 1.6;
+}
+.link-text {
+  color: #9ea97f;
+}
+
+/* 第三方登录图标区域（参考示例图：底部两个等间距圆形按钮） */
+.third-wrap {
+  margin-top: 40rpx;
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.third-btn {
+  /* 略大一点的圆形，接近示例图比例 */
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+  margin: 0 60rpx;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  /* 与登录卡片背景色、主按钮同一色值，保证色块完全一致 */
+  background-color: #9ea97f;
+  /* 去掉明显阴影，让按钮更扁平简洁 */
+  box-shadow: none;
+}
+
+/* 微信圆形按钮：与登录卡片背景色保持一致 */
+.wechat-btn {
+  background-color: #9ea97f;
+}
+
+/* QQ 圆形按钮：与登录卡片背景色保持一致 */
+.qq-btn {
+  background-color: #9ea97f;
+}
+
+/* 图标图片尺寸：靠近示例图的白色图标占比 */
+.third-img {
+  /* 再放大一圈，让微信 / QQ 图标在圆形内部更饱满醒目 */
+  width: 95rpx;
+  height: 95rpx;
+}
+
+/* 小屏设备上同样保持居中，无额外布局变化 */
+@media screen and (max-width: 750px) {
+.page-wrap {
+    flex-direction: row;
+    align-items: center;
+}
+}

@@ -32,9 +32,8 @@ const _sfc_main = {
         });
         return;
       }
-      common_vendor.index.showToast({
-        title: "一键登录中...",
-        icon: "none"
+      common_vendor.index.reLaunch({
+        url: "/pages/main_index/main_index"
       });
     },
     // 其他手机号登录点击

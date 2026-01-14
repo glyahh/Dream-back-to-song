@@ -96,10 +96,9 @@ export default {
         })
         return
       }
-      // 这里仅做原型交互，实际项目中应调用后台一键登录接口
-      uni.showToast({
-        title: '一键登录中...',
-        icon: 'none',
+      // 同意后直接跳转主页面
+      uni.reLaunch({
+        url: '/pages/main_index/main_index',
       })
     },
 

@@ -1,6 +1,10 @@
 {
   "pages": [
-    "pages/index/index"
+    "pages/index/index",
+    "pages/main_index/main_index",
+    "pages/discover/discover",
+    "pages/market/market",
+    "pages/me/me"
   ],
   "window": {
     "navigationBarTextStyle": "black",

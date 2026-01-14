@@ -10,6 +10,7 @@ lerna-debug.log*
 node_modules/
 .DS_Store
 *.local
+Git 指南.pdf
 
 # Editor directories and files
 .idea
@@ -18,3 +19,4 @@ node_modules/
 *.njsproj
 *.sln
 *.sw?
+

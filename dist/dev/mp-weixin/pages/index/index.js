@@ -75,7 +75,7 @@ const _sfc_main = {
 };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return common_vendor.e({
-    a: common_assets._imports_0,
+    a: common_assets._imports_0$1,
     b: common_vendor.t($options.maskedPhone),
     c: !$data.isAgreed ? 1 : "",
     d: !$data.isAgreed,
@@ -87,9 +87,9 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     i: common_vendor.o((...args) => $options.handleOpenUser && $options.handleOpenUser(...args)),
     j: common_vendor.o((...args) => $options.handleOpenPrivacy && $options.handleOpenPrivacy(...args)),
     k: common_vendor.o((...args) => $options.toggleAgree && $options.toggleAgree(...args)),
-    l: common_assets._imports_1,
+    l: common_assets._imports_1$1,
     m: common_vendor.o((...args) => $options.handleWechatLogin && $options.handleWechatLogin(...args)),
-    n: common_assets._imports_2,
+    n: common_assets._imports_2$1,
     o: common_vendor.o((...args) => $options.handleQQLogin && $options.handleQQLogin(...args))
   });
 }

@@ -64,9 +64,9 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         b: index === $data.heroCurrentIndex ? 1 : ""
       };
     }),
-    f: common_assets._imports_0$4,
-    g: common_assets._imports_1$2,
-    h: common_assets._imports_2$2,
+    f: common_assets._imports_0$5,
+    g: common_assets._imports_1$3,
+    h: common_assets._imports_2$3,
     i: $data.pageReady ? 1 : "",
     j: $data.pageReady ? 1 : "",
     k: common_vendor.f($data.hotProducts, (item, k0, i0) => {
@@ -77,7 +77,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       };
     }),
     l: $data.pageReady ? 1 : "",
-    m: common_assets._imports_3,
+    m: common_assets._imports_3$1,
     n: common_vendor.f($data.tabs, (tab, k0, i0) => {
       return {
         a: common_vendor.n("icon-" + tab.key),

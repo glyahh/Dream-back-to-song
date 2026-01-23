@@ -1,0 +1,286 @@
+
+.design-page.data-v-ce4e730e {
+  padding-top:90rpx;
+  background-color: #f8f5f0;
+  min-height: 100vh;
+  padding-bottom: 100rpx;
+}
+
+/* 头部样式 */
+.header.data-v-ce4e730e {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx 40rpx;
+  background-color: #9ea97f;
+  border-bottom: 1rpx solid #e8e1d7;
+}
+.back-btn.data-v-ce4e730e {
+  display: flex;
+  align-items: center;
+  font-size: 28rpx;
+  color: #333;
+}
+.back-icon.data-v-ce4e730e {
+  font-size: 36rpx;
+  margin-right: 10rpx;
+}
+.gender-selector.data-v-ce4e730e {
+  display: flex;
+  background-color: #f0ece5;
+  border-radius: 50rpx;
+  padding: 4rpx;
+}
+.gender-option.data-v-ce4e730e {
+  padding: 12rpx 30rpx;
+  border-radius: 50rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+.gender-option.active.data-v-ce4e730e {
+  background-color: #fff;
+  color: #9ea97f;
+  font-weight: 500;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+}
+
+/* 模特展示区域 */
+.model-container.data-v-ce4e730e {
+  position: relative;
+  height: 600rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 40rpx 0;
+}
+.model-base.data-v-ce4e730e {
+  width: 300rpx;
+  height: auto;
+}
+.clothing-layer.data-v-ce4e730e {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300rpx;
+  height: auto;
+  pointer-events: none;
+}
+.top-layer.data-v-ce4e730e {
+  z-index: 10;
+}
+.bottom-layer.data-v-ce4e730e {
+  z-index: 5;
+}
+.outerwear-layer.data-v-ce4e730e {
+  z-index: 15;
+}
+
+/* 分类标签 */
+.category-tabs.data-v-ce4e730e {
+  display: flex;
+  overflow-x: auto;
+  padding: 20rpx 40rpx;
+  background-color: #fff;
+  border-bottom: 1rpx solid #e8e1d7;
+  white-space: nowrap;
+}
+.category-tab.data-v-ce4e730e {
+  padding: 16rpx 32rpx;
+  font-size: 26rpx;
+  color: #666;
+  border-radius: 40rpx;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+.category-tab.active.data-v-ce4e730e {
+  background-color: #9ea97f;
+  color: #fff;
+}
+
+/* 服装选择区域 */
+.clothing-selector.data-v-ce4e730e {
+  margin: 30rpx 40rpx;
+  background-color: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.06);
+}
+.selector-content.data-v-ce4e730e {
+  min-height: 200rpx;
+}
+
+/* 形制选择 */
+.style-selector.data-v-ce4e730e {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+.style-item.data-v-ce4e730e {
+  width: 160rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20rpx;
+  border-radius: 16rpx;
+  border: 2rpx solid #e8e1d7;
+  background-color: #fcfaf7;
+}
+.style-item.data-v-ce4e730e:active {
+  background-color: #f0ece5;
+}
+.style-icon.data-v-ce4e730e {
+  width: 80rpx;
+  height: 80rpx;
+  margin-bottom: 16rpx;
+}
+.style-name.data-v-ce4e730e {
+  font-size: 24rpx;
+  color: #333;
+  text-align: center;
+  line-height: 1.3;
+}
+
+/* 颜色选择 */
+.color-selector.data-v-ce4e730e {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30rpx;
+}
+.color-item.data-v-ce4e730e {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.color-circle.data-v-ce4e730e {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  margin-bottom: 16rpx;
+  border: 2rpx solid #e8e1d7;
+}
+.color-name.data-v-ce4e730e {
+  font-size: 24rpx;
+  color: #333;
+}
+
+/* 布料和花纹选择 */
+.fabric-selector.data-v-ce4e730e,
+.pattern-selector.data-v-ce4e730e {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+.fabric-item.data-v-ce4e730e,
+.pattern-item.data-v-ce4e730e {
+  width: 160rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.fabric-preview.data-v-ce4e730e,
+.pattern-preview.data-v-ce4e730e {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 12rpx;
+  margin-bottom: 16rpx;
+  border: 2rpx solid #e8e1d7;
+}
+.fabric-name.data-v-ce4e730e,
+.pattern-name.data-v-ce4e730e {
+  font-size: 24rpx;
+  color: #333;
+  text-align: center;
+}
+
+/* 服装项目选择 */
+.clothing-items.data-v-ce4e730e {
+  display: flex;
+  overflow-x: auto;
+  gap: 20rpx;
+  padding: 10rpx 0;
+}
+.clothing-item.data-v-ce4e730e {
+  flex-shrink: 0;
+  width: 180rpx;
+  padding: 20rpx;
+  border-radius: 16rpx;
+  border: 2rpx solid #e8e1d7;
+  background-color: #fcfaf7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.clothing-item.selected.data-v-ce4e730e {
+  border-color: #9ea97f;
+  background-color: #f0f2e6;
+}
+.clothing-thumb.data-v-ce4e730e {
+  width: 120rpx;
+  height: 120rpx;
+  margin-bottom: 16rpx;
+}
+.clothing-name.data-v-ce4e730e {
+  font-size: 24rpx;
+  color: #333;
+  text-align: center;
+}
+
+/* 当前信息 */
+.current-info.data-v-ce4e730e {
+  margin: 30rpx 40rpx;
+  padding: 30rpx;
+  background-color: #fff;
+  border-radius: 20rpx;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.06);
+}
+.info-section.data-v-ce4e730e {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+.info-label.data-v-ce4e730e {
+  font-size: 26rpx;
+  color: #666;
+  margin-right: 16rpx;
+}
+.info-value.data-v-ce4e730e {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+.info-color.data-v-ce4e730e {
+  display: flex;
+  align-items: center;
+}
+.current-color-circle.data-v-ce4e730e {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  margin-right: 16rpx;
+  border: 2rpx solid #e8e1d7;
+}
+
+/* 操作按钮 */
+.action-buttons.data-v-ce4e730e {
+  display: flex;
+  padding: 0 40rpx;
+  gap: 30rpx;
+  margin-top: 40rpx;
+}
+.btn.data-v-ce4e730e {
+  flex: 1;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  border: none;
+}
+.reset-btn.data-v-ce4e730e {
+  background-color: #f0ece5;
+  color: #666;
+}
+.save-btn.data-v-ce4e730e {
+  background-color: #9ea97f;
+  color: #fff;
+}

@@ -36,10 +36,32 @@ const _sfc_main = {
       }, 150);
     },
     handleCard(item) {
-      common_vendor.index.showToast({
-        title: `前往${item.title}`,
-        icon: "none"
-      });
+      if (item.title === "服饰") {
+        common_vendor.index.redirectTo({
+          // 修改为 redirectTo
+          url: "/pages/clothes/index1"
+        });
+      } else if (item.title === "饮食") {
+        common_vendor.index.redirectTo({
+          // 修改为 redirectTo
+          url: "/pages/food/index"
+        });
+      } else if (item.title === "住宿") {
+        common_vendor.index.redirectTo({
+          // 修改为 redirectTo
+          url: "/pages/lodging/index"
+        });
+      } else if (item.title === "出行") {
+        common_vendor.index.redirectTo({
+          // 修改为 redirectTo
+          url: "/pages/travel/index"
+        });
+      } else {
+        common_vendor.index.showToast({
+          title: `前往${item.title}`,
+          icon: "none"
+        });
+      }
     },
     switchTab(key) {
       this.activeTab = key;
@@ -86,3 +108,4 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-03c595bb"]]);
 wx.createPage(MiniProgramPage);
+//# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/main_index/main_index.js.map

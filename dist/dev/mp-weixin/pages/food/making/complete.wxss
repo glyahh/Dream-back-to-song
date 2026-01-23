@@ -1,0 +1,152 @@
+
+.complete-page.data-v-61a885d5 {
+  background-color: #f6f2e9;
+  min-height: 100vh;
+  font-family: 'SimSun', 'STSong', serif;
+}
+
+/* 导航栏 */
+.nav-bar.data-v-61a885d5 {
+  display: flex;
+  align-items: center;
+  padding: 30rpx;
+  background-color: rgba(200, 210, 190, 0.95);
+  height: 200rpx;
+  padding-top: env(safe-area-inset-top);
+}
+.back-btn.data-v-61a885d5 {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  margin-top: 140rpx;
+}
+.back-icon.data-v-61a885d5 {
+  font-size: 64rpx;
+  color: #333;
+  font-weight: 300;
+  margin-top: -8rpx;
+  margin-left: -6rpx;
+}
+.nav-title.data-v-61a885d5 {
+  font-size: 50rpx;
+  font-weight: 700;
+  color: black;
+  letter-spacing: 8rpx;
+  font-family: 'LiSu', 'SimLi', serif;
+  flex: 1;
+  text-align: center;
+  margin-left: -40rpx;
+  margin-top: 130rpx;
+}
+.right-actions.data-v-61a885d5 {
+  width: 80rpx;
+}
+
+/* 主内容区 */
+.main-content.data-v-61a885d5 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60rpx 30rpx 100rpx;
+}
+.complete-title.data-v-61a885d5 {
+  margin-bottom: 40rpx;
+}
+.title-text.data-v-61a885d5 {
+  font-size: 60rpx;
+  color: #5a4a42;
+  font-family: 'LiSu', 'SimLi', serif;
+  letter-spacing: 8rpx;
+  text-align: center;
+}
+.complete-message.data-v-61a885d5 {
+  margin-bottom: 60rpx;
+}
+.message-text.data-v-61a885d5 {
+  font-size: 40rpx;
+  color: #5a4a42;
+  font-family: 'KaiTi', 'SimKai', serif;
+  text-align: center;
+}
+
+/* 菜品图片容器 */
+.dish-image-container.data-v-61a885d5 {
+  position: relative;
+  width: 600rpx;
+  height: 1000rpx; /* 2:3比例 */
+  border-radius: 30rpx;
+  overflow: hidden;
+  margin-top: 40rpx;
+}
+
+/* 主菜品图片 */
+.main-dish-image.data-v-61a885d5 {
+  width: 100%;
+  height: 100%;
+}
+
+/* 顶部文字容器 */
+.top-text.data-v-61a885d5 {
+  position: absolute;
+  top: 850rpx; /* 距离顶部的距离 */
+  left: 50%;
+  transform: translateX(-50%); /* 水平居中 */
+  width: 600rpx;
+  text-align: center;
+  z-index: 9;
+}
+
+/* 顶部文字内容 */
+.top-text-content.data-v-61a885d5 {
+  font-weight:200rpx;
+  font-size: 32rpx;
+  color: black;
+  font-family: 'KaiTi', 'SimKai', serif;
+  letter-spacing: 8rpx;
+}
+
+
+/* 功能按钮通用样式 */
+.action-button.data-v-61a885d5 {
+  position: absolute;
+  bottom: 20rpx;
+  width: 180rpx;
+  height: 83rpx;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+/* 左下角按钮 */
+.left-button.data-v-61a885d5 {
+  left: 70rpx;
+}
+
+/* 右下角按钮 */
+.right-button.data-v-61a885d5 {
+  right: 70rpx;
+}
+
+/* 按钮图标 */
+.action-icon.data-v-61a885d5 {
+  width: 100%;
+  height: 100%;
+  margin-bottom: 0;
+  mode: aspectFill;
+}
+
+/* 按钮文字 */
+.action-text.data-v-61a885d5 {
+  font-size: 28rpx;
+  color: #5a4a42;
+  font-family: 'KaiTi', 'SimKai', serif;
+  font-weight: 500;
+}

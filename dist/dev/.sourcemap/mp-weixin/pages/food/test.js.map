@@ -1,0 +1,1 @@
+{"version":3,"file":"test.js","sources":["../uniPage:/cGFnZXMvZm9vZC90ZXN0LnZ1ZQ"],"sourcesContent":["import MiniProgramPage from 'D:/Dream-back-to-song/src/pages/food/test.vue'\nwx.createPage(MiniProgramPage)"],"names":[],"mappings":";;;;;;;AACA,GAAG,WAAW,eAAe;"}

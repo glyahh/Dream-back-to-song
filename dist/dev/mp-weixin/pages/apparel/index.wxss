@@ -1,0 +1,186 @@
+
+.apparel-page.data-v-6cfcb87a {
+  background-color: #f6f2e9;
+  min-height: 100vh;
+  font-family: 'PingFang SC', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+}
+
+/* 状态栏占位 */
+.status-bar-placeholder.data-v-6cfcb87a {
+  height: var(--status-bar-height, 88rpx);
+  background-color: #f6f2e9;
+}
+
+/* 顶部导航栏 */
+.nav-header.data-v-6cfcb87a {
+  height:140rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 30rpx;
+  background-color: #f6f2e9;
+  border-bottom: 1rpx solid rgba(0, 0, 0, 0.05);
+}
+.nav-back.data-v-6cfcb87a {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+  margin-top: 12rpx;
+}
+.back-icon.data-v-6cfcb87a {
+  font-size: 40rpx;
+  color: #333;
+  font-weight: 300;
+  margin-top: -4rpx;
+  margin-left: -4rpx;
+}
+.nav-title.data-v-6cfcb87a {
+  font-size: 50rpx;
+  font-weight: 700;
+  color: #3b352b;
+  letter-spacing: 4rpx;
+  font-family: 'LiSu', 'SimLi', 'STLiti', 'KaiTi', serif;
+}
+.nav-placeholder.data-v-6cfcb87a {
+  width: 60rpx;
+}
+
+/* 筛选分类 - 修改为flex均匀分布 */
+.filter-section.data-v-6cfcb87a {
+  padding: 30rpx 0 20rpx;
+  background-color: #f6f2e9;
+}
+.filter-tags.data-v-6cfcb87a {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 20rpx;
+}
+.filter-tag.data-v-6cfcb87a {
+  position: relative;
+  padding: 12rpx 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.filter-text.data-v-6cfcb87a {
+  font-size: 32rpx;
+  color: #7a756e;
+  font-weight: 500;
+  letter-spacing: 2rpx;
+  transition: all 0.3s ease;
+}
+.filter-tag.active .filter-text.data-v-6cfcb87a {
+  color: #3b352b;
+  font-weight: 600;
+  transform: translateY(-2rpx);
+}
+.filter-indicator.data-v-6cfcb87a {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40rpx;
+  height: 4rpx;
+  background-color: #9ea97f;
+  border-radius: 2rpx;
+  animation: indicatorAppear-6cfcb87a 0.3s ease;
+}
+@keyframes indicatorAppear-6cfcb87a {
+from {
+    transform: translateX(-50%) scaleX(0);
+}
+to {
+    transform: translateX(-50%) scaleX(1);
+}
+}
+
+/* 分割线 */
+.divider.data-v-6cfcb87a {
+  height: 1rpx;
+  background-color: rgba(0, 0, 0, 0.1);
+  margin: 0 30rpx;
+}
+
+/* 瀑布流列表 */
+.waterfall-list.data-v-6cfcb87a {
+  height: calc(100vh - 280rpx);
+}
+.waterfall-container.data-v-6cfcb87a {
+  display: flex;
+  justify-content: space-between;
+  padding: 20rpx 15rpx;
+}
+.waterfall-column.data-v-6cfcb87a {
+  width: 345rpx;
+}
+.left-column.data-v-6cfcb87a {
+  padding-right: 5rpx;
+}
+.right-column.data-v-6cfcb87a {
+  padding-left: 5rpx;
+}
+.apparel-item.data-v-6cfcb87a {
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+.apparel-img.data-v-6cfcb87a {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* 修复文字样式 */
+.apparel-info.data-v-6cfcb87a {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 30rpx 25rpx;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.4) 30%, transparent 70%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 120rpx;
+}
+.apparel-name.data-v-6cfcb87a {
+  font-size: 34rpx;
+  color: #ffffff;
+  font-weight: 600;
+  margin-bottom: 8rpx;
+  letter-spacing: 1rpx;
+  text-shadow: 0 2rpx 6rpx rgba(0, 0, 0, 0.7);
+  line-height: 1.2;
+  white-space: normal;
+  word-break: break-all;
+  display: block;
+}
+
+/* 触摸效果 */
+.nav-back.data-v-6cfcb87a,
+.filter-tag.data-v-6cfcb87a,
+.apparel-item.data-v-6cfcb87a {
+  transition: all 0.2s ease;
+}
+.nav-back.data-v-6cfcb87a:active {
+  opacity: 0.8;
+  transform: scale(0.95);
+}
+.filter-tag:active .filter-text.data-v-6cfcb87a {
+  opacity: 0.8;
+  transform: scale(0.98);
+}
+.apparel-item.data-v-6cfcb87a:active {
+  opacity: 0.9;
+  transform: translateY(-4rpx);
+}

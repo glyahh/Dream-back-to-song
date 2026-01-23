@@ -1,51 +1,262 @@
 {
-	"pages": [
-		{
-			"path": "pages/loading/loading",
-			"style": {
-				"navigationBarTitleText": "",
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/index/index",
-			"style": {
-				"navigationBarTitleText": ""
-			}
-		},
-		{
-			"path": "pages/main_index/main_index",
-			"style": {
-				"navigationBarTitleText": "",
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/discover/discover",
-			"style": {
-				"navigationBarTitleText": "",
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/market/market",
-			"style": {
-				"navigationBarTitleText": "",
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/me/me",
-			"style": {
-				"navigationBarTitleText": "",
-				"navigationStyle": "custom"
-			}
-		}
-	],
-	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
-	}
+  "pages": [
+    {
+      "path": "pages/loading/loading",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": ""
+      }
+    },
+    {
+      "path": "pages/main_index/main_index",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/clothes/index1",
+      "style": {
+        "navigationBarTitleText": "服饰",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/index",
+      "style": {
+        "navigationBarTitleText": "饮食",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/apparel/index",
+      "style": {
+        "navigationBarTitleText": "服饰图鉴",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/apparel/beizi",
+      "style": {
+        "navigationBarTitleText": "宋代褙子",
+        "navigationStyle": "custom",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/clothes/design/design",
+      "style": {
+        "navigationBarTitleText": "服饰设计",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/category/meat",
+      "style": {
+        "navigationBarTitleText": "肉食",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/detail/dongporou",
+      "style": {
+        "navigationBarTitleText": "东坡肉",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/detail/pangxiegeng",
+      "style": {
+        "navigationBarTitleText": "螃蟹羹",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/detail/xieliangcheng",
+      "style": {
+        "navigationBarTitleText": "蟹酿橙",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/detail/xiansunzhengji",
+      "style": {
+        "navigationBarTitleText": "鲜笋蒸鸡",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/detail/shanzhuyang",
+      "style": {
+        "navigationBarTitleText": "山煮羊",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/detail/jianxiaoji",
+      "style": {
+        "navigationBarTitleText": "煎小鸡",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/making/making",
+      "style": {
+        "navigationBarTitleText": "制作步骤",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/making/step2",
+      "style": {
+        "navigationBarTitleText": "制作步骤",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/making/step3",
+      "style": {
+        "navigationBarTitleText": "制作步骤",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/making/step4",
+      "style": {
+        "navigationBarTitleText": "制作步骤",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/making/step5",
+      "style": {
+        "navigationBarTitleText": "制作步骤",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/making/step6",
+      "style": {
+        "navigationBarTitleText": "制作步骤",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/making/complete",
+      "style": {
+        "navigationBarTitleText": "完成",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/lodging/index",
+      "style": {
+        "navigationBarTitleText": "住所",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/lodging/more",
+      "style": {
+        "navigationBarTitleText": "更多建筑",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/lodging/detail/huanyixi",
+      "style": {
+        "navigationBarTitleText": "环溪",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/lodging/detail/jinci",
+      "style": {
+        "navigationBarTitleText": "晋祠圣母殿",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/lodging/detail/hebei",
+      "style": {
+        "navigationBarTitleText": "河北建筑",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/lodging/detail/suzhou",
+      "style": {
+        "navigationBarTitleText": "拙政园",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/lodging/category/garden",
+      "style": {
+        "navigationBarTitleText": "园林景观",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/lodging/category/architecture",
+      "style": {
+        "navigationBarTitleText": "建筑类型",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/lodging/category/interior",
+      "style": {
+        "navigationBarTitleText": "室内设计",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/lodging/painting/gallery",
+      "style": {
+        "navigationBarTitleText": "名画建筑",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/discover/discover",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/market/market",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/me/me",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/travel/index",
+      "style": {
+        "navigationBarTitleText": "出行",
+        "navigationStyle": "custom"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  }
 }

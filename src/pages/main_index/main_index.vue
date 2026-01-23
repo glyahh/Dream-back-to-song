@@ -100,12 +100,34 @@ export default {
         this.pressedIndex = -1
       }, 150)
     },
-    handleCard(item) {
-      uni.showToast({
-        title: `前往${item.title}`,
-        icon: 'none',
-      })
-    },
+   handleCard(item) {
+     if (item.title === '服饰') {
+       uni.redirectTo({  // 修改为 redirectTo
+         url: '/pages/clothes/index1'
+       })
+     }
+     else if (item.title === '饮食') {
+       uni.redirectTo({  // 修改为 redirectTo
+         url: '/pages/food/index'
+       })
+     }
+     else if (item.title === '住宿') {
+       uni.redirectTo({  // 修改为 redirectTo
+         url: '/pages/lodging/index'
+       })
+     }
+     else if (item.title === '出行') {
+       uni.redirectTo({  // 修改为 redirectTo
+         url: '/pages/travel/index'
+       })
+     }
+     else {
+       uni.showToast({
+         title: `前往${item.title}`,
+         icon: 'none',
+       })
+     }
+   },
     switchTab(key) {
       this.activeTab = key
       const tab = this.tabs.find((t) => t.key === key)

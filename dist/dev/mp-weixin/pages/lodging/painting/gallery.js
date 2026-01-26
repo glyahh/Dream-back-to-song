@@ -67,16 +67,16 @@ const _sfc_main = {
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return {
     a: common_vendor.o((...args) => $options.goBack && $options.goBack(...args)),
-    b: common_assets._imports_0$14,
+    b: common_assets._imports_0$23,
     c: common_vendor.o(($event) => $options.navigateToDetail(1)),
     d: common_vendor.o(($event) => $options.navigateToDetail(1)),
     e: common_assets._imports_1$6,
     f: common_vendor.o(($event) => $options.navigateToDetail(2)),
     g: common_vendor.o(($event) => $options.navigateToDetail(2)),
-    h: common_assets._imports_2$5,
+    h: common_assets._imports_2$4,
     i: common_vendor.o(($event) => $options.navigateToDetail(3)),
     j: common_vendor.o(($event) => $options.navigateToDetail(3)),
-    k: common_assets._imports_3$2,
+    k: common_assets._imports_3$1,
     l: common_vendor.o(($event) => $options.navigateToDetail(4)),
     m: common_vendor.o(($event) => $options.navigateToDetail(4)),
     n: $data.scrollTop,
@@ -85,4 +85,3 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-41b59307"]]);
 wx.createPage(MiniProgramPage);
-//# sourceMappingURL=../../../../.sourcemap/mp-weixin/pages/lodging/painting/gallery.js.map

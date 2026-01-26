@@ -93,7 +93,7 @@ const _sfc_main = {
 };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return {
-    a: common_assets._imports_0$18,
+    a: common_assets._imports_0$27,
     b: common_vendor.o((...args) => $options.goBack && $options.goBack(...args)),
     c: common_vendor.f($data.navItems, (item, index, i0) => {
       return {
@@ -124,4 +124,3 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-8cb6d06b"]]);
 wx.createPage(MiniProgramPage);
-//# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/travel/index.js.map

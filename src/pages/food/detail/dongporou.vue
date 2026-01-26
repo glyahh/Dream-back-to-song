@@ -59,9 +59,10 @@ export default {
       dish: {
         id: 1,
         name: '东坡肉',
-        image: '/static/dongporou-detail.png', // 请确保路径正确
+        image: '/static/dongporou-detail.png',
         liked: false,
-      }
+      },
+      isNavigating: false
     }
   },
 
@@ -76,9 +77,22 @@ export default {
 
   methods: {
     goBack() {
-      uni.redirectTo({
-        url: '/pages/food/category/meat'
-      });
+      if (this.isNavigating) return
+      this.isNavigating = true
+      uni.navigateBack({
+        delta: 1,
+        fail: () => {
+          this.isNavigating = false
+          uni.redirectTo({
+            url: '/pages/food/category/meat'
+          })
+        },
+        complete: () => {
+          setTimeout(() => {
+            this.isNavigating = false
+          }, 300)
+        }
+      })
     },
 
     toggleLike() {
@@ -91,9 +105,9 @@ export default {
     },
 
     startMaking() {
-      uni.reLaunch({
-        url: '/pages/food/making/making?id=' + this.dishId
-      });
+      uni.navigateTo({
+        url: '/pages/food/making/making?id=' + this.dish.id
+      })
     }
   }
 }

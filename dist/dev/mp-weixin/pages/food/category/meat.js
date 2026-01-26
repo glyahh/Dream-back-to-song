@@ -5,6 +5,7 @@ const _sfc_main = {
     return {
       searchKeyword: "",
       pressedIndex: -1,
+      isNavigating: false,
       dishes: [
         {
           id: 1,
@@ -82,12 +83,26 @@ const _sfc_main = {
   },
   methods: {
     goBack() {
-      common_vendor.index.redirectTo({
-        url: "/pages/food/index"
+      if (this.isNavigating)
+        return;
+      this.isNavigating = true;
+      common_vendor.index.navigateBack({
+        delta: 1,
+        fail: () => {
+          this.isNavigating = false;
+          common_vendor.index.redirectTo({
+            url: "/pages/food/index"
+          });
+        },
+        complete: () => {
+          setTimeout(() => {
+            this.isNavigating = false;
+          }, 300);
+        }
       });
     },
     onSearch() {
-      common_vendor.index.__f__("log", "at pages/food/category/meat.vue:170", "搜索关键词:", this.searchKeyword);
+      console.log("搜索关键词:", this.searchKeyword);
     },
     handleTouchStart(index) {
       this.pressedIndex = index;
@@ -116,7 +131,7 @@ const _sfc_main = {
       });
     },
     goToDishDetail(dish) {
-      common_vendor.index.__f__("log", "at pages/food/category/meat.vue:206", "点击菜品:", dish.name, "ID:", dish.id);
+      console.log("点击菜品:", dish.name, "ID:", dish.id);
       const detailPages = {
         1: "/pages/food/detail/dongporou",
         // 东坡肉
@@ -132,15 +147,15 @@ const _sfc_main = {
         // 煎小鸡
       };
       const pagePath = detailPages[dish.id];
-      common_vendor.index.__f__("log", "at pages/food/category/meat.vue:220", "跳转路径:", pagePath);
+      console.log("跳转路径:", pagePath);
       if (pagePath) {
         common_vendor.index.navigateTo({
           url: `${pagePath}?id=${dish.id}&name=${encodeURIComponent(dish.name)}`,
           success: (res) => {
-            common_vendor.index.__f__("log", "at pages/food/category/meat.vue:226", "跳转成功", res);
+            console.log("跳转成功", res);
           },
           fail: (err) => {
-            common_vendor.index.__f__("log", "at pages/food/category/meat.vue:229", "跳转失败", err);
+            console.log("跳转失败", err);
             common_vendor.index.showToast({
               title: "页面未找到",
               icon: "none"
@@ -148,7 +163,7 @@ const _sfc_main = {
           }
         });
       } else {
-        common_vendor.index.__f__("log", "at pages/food/category/meat.vue:237", "找不到对应页面，ID:", dish.id);
+        console.log("找不到对应页面，ID:", dish.id);
         common_vendor.index.showToast({
           title: "页面开发中",
           icon: "none"
@@ -182,4 +197,3 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-34df1a7f"]]);
 wx.createPage(MiniProgramPage);
-//# sourceMappingURL=../../../../.sourcemap/mp-weixin/pages/food/category/meat.js.map

@@ -64,9 +64,9 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         b: index === $data.heroCurrentIndex ? 1 : ""
       };
     }),
-    f: common_assets._imports_0$17,
+    f: common_assets._imports_0$26,
     g: common_assets._imports_1$8,
-    h: common_assets._imports_2$7,
+    h: common_assets._imports_2$6,
     i: $data.pageReady ? 1 : "",
     j: $data.pageReady ? 1 : "",
     k: common_vendor.f($data.hotProducts, (item, k0, i0) => {
@@ -77,7 +77,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       };
     }),
     l: $data.pageReady ? 1 : "",
-    m: common_assets._imports_3$3,
+    m: common_assets._imports_3$2,
     n: common_vendor.f($data.tabs, (tab, k0, i0) => {
       return {
         a: common_vendor.n("icon-" + tab.key),
@@ -91,4 +91,3 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-d5ebafbc"]]);
 wx.createPage(MiniProgramPage);
-//# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/market/market.js.map

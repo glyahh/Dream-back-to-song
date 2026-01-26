@@ -61,7 +61,7 @@ const _sfc_main = {
 };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return {
-    a: common_assets._imports_0$5,
+    a: common_assets._imports_0$10,
     b: common_vendor.o((...args) => $options.goBack && $options.goBack(...args)),
     c: common_vendor.o((...args) => $options.expandIntroduction && $options.expandIntroduction(...args)),
     d: common_vendor.o((...args) => $options.goToAllRecommend && $options.goToAllRecommend(...args)),
@@ -78,4 +78,3 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-4bcf10df"]]);
 wx.createPage(MiniProgramPage);
-//# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/apparel/beizi.js.map

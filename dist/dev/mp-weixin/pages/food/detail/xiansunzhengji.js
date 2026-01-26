@@ -20,10 +20,35 @@ const _sfc_main = {
       this.dish.name = decodeURIComponent(options.name);
     }
   },
+  data() {
+    return {
+      dish: {
+        id: 1,
+        name: "东坡肉",
+        image: "/static/xiansunzhengji-detail.png",
+        liked: false
+      },
+      isNavigating: false
+    };
+  },
   methods: {
     goBack() {
-      common_vendor.index.redirectTo({
-        url: "/pages/food/category/meat"
+      if (this.isNavigating)
+        return;
+      this.isNavigating = true;
+      common_vendor.index.navigateBack({
+        delta: 1,
+        fail: () => {
+          this.isNavigating = false;
+          common_vendor.index.redirectTo({
+            url: "/pages/food/category/meat"
+          });
+        },
+        complete: () => {
+          setTimeout(() => {
+            this.isNavigating = false;
+          }, 300);
+        }
       });
     },
     toggleLike() {
@@ -54,4 +79,3 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-0bf22eaf"]]);
 wx.createPage(MiniProgramPage);
-//# sourceMappingURL=../../../../.sourcemap/mp-weixin/pages/food/detail/xiansunzhengji.js.map

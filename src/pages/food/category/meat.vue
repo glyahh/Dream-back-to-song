@@ -82,6 +82,7 @@ export default {
     return {
       searchKeyword: '',
       pressedIndex: -1,
+      isNavigating: false,
       dishes: [
         {
           id: 1,
@@ -160,10 +161,23 @@ export default {
   },
   methods: {
     goBack() {
+      if (this.isNavigating) return
+      this.isNavigating = true
+      uni.navigateBack({
+        delta: 1,
+        fail: () => {
+          this.isNavigating = false
           uni.redirectTo({
             url: '/pages/food/index'
-          });
+          })
         },
+        complete: () => {
+          setTimeout(() => {
+            this.isNavigating = false
+          }, 300)
+        }
+      })
+    },
 
 
     onSearch() {

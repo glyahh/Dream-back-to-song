@@ -167,7 +167,7 @@ const _sfc_main = {
     },
     // 应用视觉效果（颜色、布料、花纹）
     applyVisualEffects() {
-      common_vendor.index.__f__("log", "at pages/clothes/design/design.vue:359", "应用视觉效果:", {
+      console.log("应用视觉效果:", {
         color: this.currentColor,
         fabric: this.currentFabric,
         pattern: this.currentPattern
@@ -308,4 +308,3 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-ce4e730e"]]);
 wx.createPage(MiniProgramPage);
-//# sourceMappingURL=../../../../.sourcemap/mp-weixin/pages/clothes/design/design.js.map

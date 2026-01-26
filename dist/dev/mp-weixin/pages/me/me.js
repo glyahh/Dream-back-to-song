@@ -65,7 +65,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     a: $data.pageReady ? 1 : "",
     b: common_vendor.o((...args) => $options.editProfile && $options.editProfile(...args)),
     c: $data.pageReady ? 1 : "",
-    d: common_assets._imports_0$15,
+    d: common_assets._imports_0$24,
     e: $data.pageReady ? 1 : "",
     f: common_vendor.o((...args) => $options.goToOrders && $options.goToOrders(...args)),
     g: common_vendor.o((...args) => $options.goToCreations && $options.goToCreations(...args)),
@@ -90,4 +90,3 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-371b06ea"]]);
 wx.createPage(MiniProgramPage);
-//# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/me/me.js.map

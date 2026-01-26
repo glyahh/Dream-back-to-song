@@ -7,9 +7,9 @@ const _sfc_main = {
         id: 1,
         name: "东坡肉",
         image: "/static/dongporou-detail.png",
-        // 请确保路径正确
         liked: false
-      }
+      },
+      isNavigating: false
     };
   },
   onLoad(options) {
@@ -22,8 +22,22 @@ const _sfc_main = {
   },
   methods: {
     goBack() {
-      common_vendor.index.redirectTo({
-        url: "/pages/food/category/meat"
+      if (this.isNavigating)
+        return;
+      this.isNavigating = true;
+      common_vendor.index.navigateBack({
+        delta: 1,
+        fail: () => {
+          this.isNavigating = false;
+          common_vendor.index.redirectTo({
+            url: "/pages/food/category/meat"
+          });
+        },
+        complete: () => {
+          setTimeout(() => {
+            this.isNavigating = false;
+          }, 300);
+        }
       });
     },
     toggleLike() {
@@ -35,8 +49,8 @@ const _sfc_main = {
       });
     },
     startMaking() {
-      common_vendor.index.reLaunch({
-        url: "/pages/food/making/making?id=" + this.dishId
+      common_vendor.index.navigateTo({
+        url: "/pages/food/making/making?id=" + this.dish.id
       });
     }
   }
@@ -54,4 +68,3 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-3f30cacb"]]);
 wx.createPage(MiniProgramPage);
-//# sourceMappingURL=../../../../.sourcemap/mp-weixin/pages/food/detail/dongporou.js.map

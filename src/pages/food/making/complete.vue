@@ -58,7 +58,8 @@
 export default {
   data() {
     return {
-      dishId: ''
+      dishId: '',
+      isNavigating: false
     }
   },
 
@@ -71,9 +72,22 @@ export default {
 
   methods: {
     goBack() {
-      uni.reLaunch({
-        url: '/pages/food/detail/dongporou?id=' + this.dishId
-      });
+      if (this.isNavigating) return
+      this.isNavigating = true
+      uni.navigateBack({
+        delta: 1,
+        fail: () => {
+          this.isNavigating = false
+          uni.redirectTo({
+            url: '/pages/food/detail/dongporou?id=' + this.dishId
+          })
+        },
+        complete: () => {
+          setTimeout(() => {
+            this.isNavigating = false
+          }, 300)
+        }
+      })
     },
 
     // 保存功能

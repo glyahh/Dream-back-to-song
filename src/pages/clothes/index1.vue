@@ -114,19 +114,19 @@ export default {
           id: 'apparel',
           label: '服饰图鉴',
           logo: '/static/cloth_logo1.jpg',
-          path: '/pages/apparel/index'
+          path: '/pages/clothes/apparel/index'
         },
         {
           id: 'history',
           label: '服饰历史',
           logo: '/static/cloth_logo2.jpg',
-          path: '/pages/history/index'
+          path: '/pages/clothes/history/index'
         },
         {
           id: 'course',
           label: '课程讲解',
           logo: '/static/cloth_logo3.jpg',
-          path: '/pages/course/index'
+          path: '/pages/clothes/course/index'
         }
       ],
       recommendList: [
@@ -176,11 +176,19 @@ export default {
 
     // 切换顶部标签
     switchTab(tabId) {
-      this.activeTab = tabId
       const tab = this.tabs.find(t => t.id === tabId)
       if (tab && tab.path) {
+        // 无论当前是否已选中，都执行跳转
+        this.activeTab = tabId
         uni.navigateTo({
-          url: tab.path
+          url: tab.path,
+          fail: (err) => {
+            console.error('跳转失败:', err)
+            // 如果跳转失败，尝试使用 redirectTo
+            uni.redirectTo({
+              url: tab.path
+            })
+          }
         })
       }
     },
@@ -195,14 +203,14 @@ export default {
     // 前往所有推荐
     goToAllRecommend() {
       uni.navigateTo({
-        url: '/pages/recommend/all'
+        url: '/pages/clothes/recommend/all'
       })
     },
 
     // 前往推荐详情
     goToRecommendDetail(id) {
       uni.navigateTo({
-        url: `/pages/recommend/detail?id=${id}`
+        url: `/pages/clothes/recommend/detail?id=${id}`
       })
     },
   }
@@ -580,6 +588,7 @@ export default {
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 1;
+  line-clamp: 1;
   -webkit-box-orient: vertical;
 }
 

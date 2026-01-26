@@ -11,19 +11,19 @@ const _sfc_main = {
           id: "apparel",
           label: "服饰图鉴",
           logo: "/static/cloth_logo1.jpg",
-          path: "/pages/apparel/index"
+          path: "/pages/clothes/apparel/index"
         },
         {
           id: "history",
           label: "服饰历史",
           logo: "/static/cloth_logo2.jpg",
-          path: "/pages/history/index"
+          path: "/pages/clothes/history/index"
         },
         {
           id: "course",
           label: "课程讲解",
           logo: "/static/cloth_logo3.jpg",
-          path: "/pages/course/index"
+          path: "/pages/clothes/course/index"
         }
       ],
       recommendList: [
@@ -71,11 +71,17 @@ const _sfc_main = {
     },
     // 切换顶部标签
     switchTab(tabId) {
-      this.activeTab = tabId;
       const tab = this.tabs.find((t) => t.id === tabId);
       if (tab && tab.path) {
+        this.activeTab = tabId;
         common_vendor.index.navigateTo({
-          url: tab.path
+          url: tab.path,
+          fail: (err) => {
+            console.error("跳转失败:", err);
+            common_vendor.index.redirectTo({
+              url: tab.path
+            });
+          }
         });
       }
     },
@@ -88,13 +94,13 @@ const _sfc_main = {
     // 前往所有推荐
     goToAllRecommend() {
       common_vendor.index.navigateTo({
-        url: "/pages/recommend/all"
+        url: "/pages/clothes/recommend/all"
       });
     },
     // 前往推荐详情
     goToRecommendDetail(id) {
       common_vendor.index.navigateTo({
-        url: `/pages/recommend/detail?id=${id}`
+        url: `/pages/clothes/recommend/detail?id=${id}`
       });
     }
   }
@@ -131,4 +137,3 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-b5036269"]]);
 wx.createPage(MiniProgramPage);
-//# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/clothes/index1.js.map

@@ -48,7 +48,8 @@
 export default {
   data() {
     return {
-      dishId: ''
+      dishId: '',
+      isNavigating: false
     }
   },
 
@@ -61,10 +62,22 @@ export default {
 
   methods: {
     goBack() {
-      // 跳转到东坡肉详情页
-      uni.redirectTo({
-        url: '/pages/food/detail/dongporou?id=' + this.dishId
-      });
+      if (this.isNavigating) return
+      this.isNavigating = true
+      uni.navigateBack({
+        delta: 1,
+        fail: () => {
+          this.isNavigating = false
+          uni.redirectTo({
+            url: '/pages/food/detail/dongporou?id=' + this.dishId
+          })
+        },
+        complete: () => {
+          setTimeout(() => {
+            this.isNavigating = false
+          }, 300)
+        }
+      })
     },
 
     goToStep5() {

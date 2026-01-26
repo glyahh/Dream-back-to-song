@@ -103,7 +103,7 @@ const _sfc_main = {
     },
     // 加载服饰数据（示例函数）
     loadApparelData(filterId) {
-      common_vendor.index.__f__("log", "at pages/apparel/index.vue:175", "加载筛选数据:", filterId);
+      console.log("加载筛选数据:", filterId);
     },
     // 跳转到服饰详情
     // 跳转到服饰详情
@@ -157,4 +157,3 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-6cfcb87a"]]);
 wx.createPage(MiniProgramPage);
-//# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/apparel/index.js.map

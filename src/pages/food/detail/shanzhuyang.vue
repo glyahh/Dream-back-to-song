@@ -74,12 +74,36 @@ export default {
     }
   },
 
+  data() {
+    return {
+      dish: {
+        id: 1,
+        name: '东坡肉',
+        image: '/static/shanzhuyang-detail.jpg',
+        liked: false,
+      },
+      isNavigating: false
+    }
+  },
   methods: {
     goBack() {
+      if (this.isNavigating) return
+      this.isNavigating = true
+      uni.navigateBack({
+        delta: 1,
+        fail: () => {
+          this.isNavigating = false
           uni.redirectTo({
             url: '/pages/food/category/meat'
-          });
+          })
         },
+        complete: () => {
+          setTimeout(() => {
+            this.isNavigating = false
+          }, 300)
+        }
+      })
+    },
 
     toggleLike() {
       this.dish.liked = !this.dish.liked;

@@ -57,9 +57,79 @@
       }
     },
     {
+      "path": "pages/clothes/apparel/index",
+      "style": {
+        "navigationBarTitleText": "服饰图鉴",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/clothes/apparel/detail",
+      "style": {
+        "navigationBarTitleText": "服饰详情",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/clothes/history/index",
+      "style": {
+        "navigationBarTitleText": "服饰历史",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/clothes/course/index",
+      "style": {
+        "navigationBarTitleText": "课程讲解",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/clothes/recommend/all",
+      "style": {
+        "navigationBarTitleText": "全部推荐",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/clothes/recommend/detail",
+      "style": {
+        "navigationBarTitleText": "推荐详情",
+        "navigationStyle": "custom"
+      }
+    },
+    {
       "path": "pages/food/category/meat",
       "style": {
         "navigationBarTitleText": "肉食",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/category/vegetarian",
+      "style": {
+        "navigationBarTitleText": "素食",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/category/noodle",
+      "style": {
+        "navigationBarTitleText": "面食",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/category/dessert",
+      "style": {
+        "navigationBarTitleText": "点心",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/category/drink",
+      "style": {
+        "navigationBarTitleText": "饮品",
         "navigationStyle": "custom"
       }
     },
@@ -102,6 +172,34 @@
       "path": "pages/food/detail/jianxiaoji",
       "style": {
         "navigationBarTitleText": "煎小鸡",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/detail/sucaidoufu",
+      "style": {
+        "navigationBarTitleText": "素炒豆腐",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/detail/tangmian",
+      "style": {
+        "navigationBarTitleText": "汤面",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/detail/guihuagao",
+      "style": {
+        "navigationBarTitleText": "桂花糕",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/detail/cha",
+      "style": {
+        "navigationBarTitleText": "茶",
         "navigationStyle": "custom"
       }
     },
@@ -151,6 +249,111 @@
       "path": "pages/food/making/complete",
       "style": {
         "navigationBarTitleText": "完成",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/making/sucaidoufu_making",
+      "style": {
+        "navigationBarTitleText": "制作步骤",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/making/sucaidoufu_step2",
+      "style": {
+        "navigationBarTitleText": "制作步骤",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/making/sucaidoufu_step3",
+      "style": {
+        "navigationBarTitleText": "制作步骤",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/making/sucaidoufu_complete",
+      "style": {
+        "navigationBarTitleText": "制作完成",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/making/tangmian_making",
+      "style": {
+        "navigationBarTitleText": "制作步骤",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/making/tangmian_step2",
+      "style": {
+        "navigationBarTitleText": "制作步骤",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/making/tangmian_complete",
+      "style": {
+        "navigationBarTitleText": "制作完成",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/making/guihuagao_making",
+      "style": {
+        "navigationBarTitleText": "制作步骤",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/making/guihuagao_step2",
+      "style": {
+        "navigationBarTitleText": "制作步骤",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/making/guihuagao_step3",
+      "style": {
+        "navigationBarTitleText": "制作步骤",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/making/guihuagao_complete",
+      "style": {
+        "navigationBarTitleText": "制作完成",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/making/cha_making",
+      "style": {
+        "navigationBarTitleText": "制作步骤",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/making/cha_step2",
+      "style": {
+        "navigationBarTitleText": "制作步骤",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/making/cha_complete",
+      "style": {
+        "navigationBarTitleText": "制作完成",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/food/song-dynasty",
+      "style": {
+        "navigationBarTitleText": "食在宋朝",
         "navigationStyle": "custom"
       }
     },
@@ -249,6 +452,69 @@
       "path": "pages/travel/index",
       "style": {
         "navigationBarTitleText": "出行",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/travel/method/index",
+      "style": {
+        "navigationBarTitleText": "出行方式",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/travel/vehicle/index",
+      "style": {
+        "navigationBarTitleText": "交通工具",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/travel/wiki/index",
+      "style": {
+        "navigationBarTitleText": "出行百科",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/travel/atlas/index",
+      "style": {
+        "navigationBarTitleText": "交通图典",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/travel/explore/experience",
+      "style": {
+        "navigationBarTitleText": "出行体验",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/travel/explore/category",
+      "style": {
+        "navigationBarTitleText": "分类",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/travel/explore/feature",
+      "style": {
+        "navigationBarTitleText": "特征",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/travel/recommend/detail",
+      "style": {
+        "navigationBarTitleText": "推荐详情",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/travel/recommend/more",
+      "style": {
+        "navigationBarTitleText": "更多推荐",
         "navigationStyle": "custom"
       }
     }

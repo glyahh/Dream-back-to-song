@@ -442,6 +442,27 @@
       }
     },
     {
+      "path": "pages/market/detail",
+      "style": {
+        "navigationBarTitleText": "商品详情",
+        "navigationStyle": "default"
+      }
+    },
+    {
+      "path": "pages/market/series",
+      "style": {
+        "navigationBarTitleText": "系列好物",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/market/all",
+      "style": {
+        "navigationBarTitleText": "全部好物",
+        "navigationStyle": "custom"
+      }
+    },
+    {
       "path": "pages/me/me",
       "style": {
         "navigationBarTitleText": "",

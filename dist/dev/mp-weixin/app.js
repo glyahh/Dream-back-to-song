@@ -10,6 +10,12 @@ if (!Math) {
   "./pages/apparel/index.js";
   "./pages/apparel/beizi.js";
   "./pages/clothes/design/design.js";
+  "./pages/clothes/apparel/index.js";
+  "./pages/clothes/apparel/detail.js";
+  "./pages/clothes/history/index.js";
+  "./pages/clothes/course/index.js";
+  "./pages/clothes/recommend/all.js";
+  "./pages/clothes/recommend/detail.js";
   "./pages/food/category/meat.js";
   "./pages/food/category/vegetarian.js";
   "./pages/food/category/noodle.js";
@@ -21,6 +27,10 @@ if (!Math) {
   "./pages/food/detail/xiansunzhengji.js";
   "./pages/food/detail/shanzhuyang.js";
   "./pages/food/detail/jianxiaoji.js";
+  "./pages/food/detail/sucaidoufu.js";
+  "./pages/food/detail/tangmian.js";
+  "./pages/food/detail/guihuagao.js";
+  "./pages/food/detail/cha.js";
   "./pages/food/making/making.js";
   "./pages/food/making/step2.js";
   "./pages/food/making/step3.js";
@@ -28,7 +38,30 @@ if (!Math) {
   "./pages/food/making/step5.js";
   "./pages/food/making/step6.js";
   "./pages/food/making/complete.js";
+  "./pages/food/making/sucaidoufu_making.js";
+  "./pages/food/making/sucaidoufu_step2.js";
+  "./pages/food/making/sucaidoufu_step3.js";
+  "./pages/food/making/sucaidoufu_complete.js";
+  "./pages/food/making/tangmian_making.js";
+  "./pages/food/making/tangmian_step2.js";
+  "./pages/food/making/tangmian_complete.js";
+  "./pages/food/making/guihuagao_making.js";
+  "./pages/food/making/guihuagao_step2.js";
+  "./pages/food/making/guihuagao_step3.js";
+  "./pages/food/making/guihuagao_complete.js";
+  "./pages/food/making/cha_making.js";
+  "./pages/food/making/cha_step2.js";
+  "./pages/food/making/cha_complete.js";
+  "./pages/food/song-dynasty.js";
   "./pages/lodging/index.js";
+  "./pages/lodging/more.js";
+  "./pages/lodging/detail/huanyixi.js";
+  "./pages/lodging/detail/jinci.js";
+  "./pages/lodging/detail/hebei.js";
+  "./pages/lodging/detail/suzhou.js";
+  "./pages/lodging/category/garden.js";
+  "./pages/lodging/category/architecture.js";
+  "./pages/lodging/category/interior.js";
   "./pages/lodging/painting/gallery.js";
   "./pages/discover/discover.js";
   "./pages/market/market.js";
@@ -37,6 +70,15 @@ if (!Math) {
   "./pages/market/all.js";
   "./pages/me/me.js";
   "./pages/travel/index.js";
+  "./pages/travel/method/index.js";
+  "./pages/travel/vehicle/index.js";
+  "./pages/travel/wiki/index.js";
+  "./pages/travel/atlas/index.js";
+  "./pages/travel/explore/experience.js";
+  "./pages/travel/explore/category.js";
+  "./pages/travel/explore/feature.js";
+  "./pages/travel/recommend/detail.js";
+  "./pages/travel/recommend/more.js";
 }
 const _sfc_main = {
   onLaunch: function() {

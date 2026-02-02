@@ -1,0 +1,128 @@
+
+.recommend-all-page.data-v-e14d5d1e {
+  background-color: #f6f2e9;
+  min-height: 100vh;
+  font-family: 'PingFang SC', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+}
+.nav-bar.data-v-e14d5d1e {
+  height: 140rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 30rpx;
+  background-color: #f6f2e9;
+  border-bottom: 1rpx solid rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.back-btn.data-v-e14d5d1e {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+.back-icon.data-v-e14d5d1e {
+  font-size: 40rpx;
+  color: #333;
+  font-weight: 300;
+  margin-top: -4rpx;
+  margin-left: -4rpx;
+}
+.nav-title.data-v-e14d5d1e {
+  font-size: 50rpx;
+  font-weight: 700;
+  color: #3b352b;
+  letter-spacing: 4rpx;
+  font-family: 'LiSu', 'SimLi', 'STLiti', 'KaiTi', serif;
+}
+.right-actions.data-v-e14d5d1e {
+  width: 70rpx;
+}
+.filter-section.data-v-e14d5d1e {
+  padding: 20rpx 0;
+  background-color: #f6f2e9;
+  border-bottom: 1rpx solid rgba(0, 0, 0, 0.05);
+}
+.filter-scroll.data-v-e14d5d1e {
+  white-space: nowrap;
+}
+.filter-container.data-v-e14d5d1e {
+  display: inline-flex;
+  padding: 0 30rpx;
+  gap: 20rpx;
+}
+.filter-tag.data-v-e14d5d1e {
+  padding: 12rpx 28rpx;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 30rpx;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+.filter-tag.active.data-v-e14d5d1e {
+  background-color: #9ea97f;
+}
+.filter-text.data-v-e14d5d1e {
+  font-size: 26rpx;
+  color: #5a5a5a;
+  font-weight: 500;
+}
+.filter-tag.active .filter-text.data-v-e14d5d1e {
+  color: #ffffff;
+  font-weight: 600;
+}
+.recommend-scroll.data-v-e14d5d1e {
+  height: calc(100vh - 240rpx);
+}
+.recommend-container.data-v-e14d5d1e {
+  padding: 30rpx;
+}
+.recommend-item.data-v-e14d5d1e {
+  display: flex;
+  background-color: #ffffff;
+  border-radius: 24rpx;
+  overflow: hidden;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+.recommend-image.data-v-e14d5d1e {
+  width: 240rpx;
+  height: 240rpx;
+  flex-shrink: 0;
+}
+.recommend-info.data-v-e14d5d1e {
+  flex: 1;
+  padding: 30rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.recommend-name.data-v-e14d5d1e {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #3b352b;
+  margin-bottom: 8rpx;
+  letter-spacing: 1rpx;
+  font-family: 'SimSun', 'Songti SC', 'STSong', serif;
+}
+.recommend-dynasty.data-v-e14d5d1e {
+  font-size: 24rpx;
+  color: #9ea97f;
+  margin-bottom: 12rpx;
+  font-weight: 500;
+}
+.recommend-desc.data-v-e14d5d1e {
+  font-size: 26rpx;
+  color: #7a756e;
+  line-height: 1.6;
+}
+.back-btn.data-v-e14d5d1e:active,
+.filter-tag.data-v-e14d5d1e:active,
+.recommend-item.data-v-e14d5d1e:active {
+  opacity: 0.8;
+  transform: scale(0.98);
+}

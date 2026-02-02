@@ -1,0 +1,97 @@
+
+.feature-page.data-v-4a879bc9 {
+  background-color: #f6f2e9;
+  min-height: 100vh;
+  font-family: 'PingFang SC', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+}
+.nav-bar.data-v-4a879bc9 {
+  height: 140rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 30rpx;
+  background-color: #f6f2e9;
+  border-bottom: 1rpx solid rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.back-btn.data-v-4a879bc9 {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+.back-icon.data-v-4a879bc9 {
+  font-size: 40rpx;
+  color: #333;
+  font-weight: 300;
+  margin-top: -4rpx;
+  margin-left: -4rpx;
+}
+.nav-title.data-v-4a879bc9 {
+  font-size: 50rpx;
+  font-weight: 700;
+  color: #3b352b;
+  letter-spacing: 4rpx;
+  font-family: 'LiSu', 'SimLi', 'STLiti', 'KaiTi', serif;
+}
+.right-actions.data-v-4a879bc9 {
+  width: 70rpx;
+}
+.content-scroll.data-v-4a879bc9 {
+  height: calc(100vh - 140rpx);
+}
+.content-container.data-v-4a879bc9 {
+  padding: 30rpx;
+}
+.section.data-v-4a879bc9 {
+  background-color: #ffffff;
+  border-radius: 24rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+.section-title.data-v-4a879bc9 {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #3b352b;
+  margin-bottom: 24rpx;
+  letter-spacing: 1rpx;
+  font-family: 'SimSun', 'Songti SC', 'STSong', serif;
+}
+.feature-list.data-v-4a879bc9 {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+.feature-item.data-v-4a879bc9 {
+  padding-bottom: 24rpx;
+  border-bottom: 1rpx solid rgba(0, 0, 0, 0.05);
+}
+.feature-item.data-v-4a879bc9:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+.feature-name.data-v-4a879bc9 {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #9ea97f;
+  margin-bottom: 12rpx;
+}
+.feature-desc.data-v-4a879bc9 {
+  display: block;
+  font-size: 26rpx;
+  color: #5a5a5a;
+  line-height: 1.6;
+}
+.back-btn.data-v-4a879bc9:active {
+  opacity: 0.8;
+  transform: scale(0.95);
+}

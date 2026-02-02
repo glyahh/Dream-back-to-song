@@ -1,0 +1,108 @@
+
+.detail-page.data-v-655e322c {
+  background-color: #f6f2e9;
+  min-height: 100vh;
+  font-family: 'PingFang SC', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+}
+.nav-bar.data-v-655e322c {
+  height: 140rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 30rpx;
+  background-color: #f6f2e9;
+  border-bottom: 1rpx solid rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.back-btn.data-v-655e322c {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+.back-icon.data-v-655e322c {
+  font-size: 40rpx;
+  color: #333;
+  font-weight: 300;
+  margin-top: -4rpx;
+  margin-left: -4rpx;
+}
+.nav-title.data-v-655e322c {
+  font-size: 50rpx;
+  font-weight: 700;
+  color: #3b352b;
+  letter-spacing: 4rpx;
+  font-family: 'LiSu', 'SimLi', 'STLiti', 'KaiTi', serif;
+}
+.right-actions.data-v-655e322c {
+  width: 70rpx;
+}
+.detail-scroll.data-v-655e322c {
+  height: calc(100vh - 140rpx);
+}
+.detail-container.data-v-655e322c {
+  padding-bottom: 40rpx;
+}
+.detail-image.data-v-655e322c {
+  width: 100%;
+  height: 500rpx;
+  display: block;
+}
+.info-section.data-v-655e322c {
+  padding: 40rpx 30rpx;
+  background-color: #ffffff;
+  margin-bottom: 20rpx;
+}
+.detail-name.data-v-655e322c {
+  display: block;
+  font-size: 42rpx;
+  font-weight: 700;
+  color: #3b352b;
+  margin-bottom: 12rpx;
+  letter-spacing: 2rpx;
+  font-family: 'SimSun', 'Songti SC', 'STSong', serif;
+}
+.detail-location.data-v-655e322c {
+  display: block;
+  font-size: 28rpx;
+  color: #9ea97f;
+  margin-bottom: 20rpx;
+  font-weight: 500;
+}
+.detail-description.data-v-655e322c {
+  display: block;
+  font-size: 28rpx;
+  color: #5a5a5a;
+  line-height: 1.8;
+  letter-spacing: 1rpx;
+}
+.detail-section.data-v-655e322c {
+  padding: 40rpx 30rpx;
+  background-color: #ffffff;
+  margin-bottom: 20rpx;
+}
+.section-title.data-v-655e322c {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #3b352b;
+  margin-bottom: 20rpx;
+  letter-spacing: 1rpx;
+  font-family: 'SimSun', 'Songti SC', 'STSong', serif;
+}
+.section-content.data-v-655e322c {
+  display: block;
+  font-size: 28rpx;
+  color: #5a5a5a;
+  line-height: 1.8;
+  letter-spacing: 1rpx;
+}
+.back-btn.data-v-655e322c:active {
+  opacity: 0.8;
+  transform: scale(0.95);
+}

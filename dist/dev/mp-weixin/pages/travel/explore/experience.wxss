@@ -1,0 +1,131 @@
+
+.experience-page.data-v-ba7150d5 {
+  background-color: #f6f2e9;
+  min-height: 100vh;
+  font-family: 'PingFang SC', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+}
+.nav-bar.data-v-ba7150d5 {
+  height: 140rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 30rpx;
+  background-color: #f6f2e9;
+  border-bottom: 1rpx solid rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.back-btn.data-v-ba7150d5 {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+.back-icon.data-v-ba7150d5 {
+  font-size: 40rpx;
+  color: #333;
+  font-weight: 300;
+  margin-top: -4rpx;
+  margin-left: -4rpx;
+}
+.nav-title.data-v-ba7150d5 {
+  font-size: 50rpx;
+  font-weight: 700;
+  color: #3b352b;
+  letter-spacing: 4rpx;
+  font-family: 'LiSu', 'SimLi', 'STLiti', 'KaiTi', serif;
+}
+.right-actions.data-v-ba7150d5 {
+  width: 70rpx;
+}
+.content-scroll.data-v-ba7150d5 {
+  height: calc(100vh - 140rpx);
+}
+.content-container.data-v-ba7150d5 {
+  padding: 30rpx;
+}
+.intro-section.data-v-ba7150d5 {
+  padding: 40rpx 30rpx;
+  background-color: #ffffff;
+  border-radius: 24rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+.intro-title.data-v-ba7150d5 {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #3b352b;
+  margin-bottom: 20rpx;
+  letter-spacing: 2rpx;
+  font-family: 'SimSun', 'Songti SC', 'STSong', serif;
+}
+.intro-content.data-v-ba7150d5 {
+  display: block;
+  font-size: 28rpx;
+  color: #5a5a5a;
+  line-height: 1.8;
+  letter-spacing: 1rpx;
+}
+.scene-card.data-v-ba7150d5 {
+  position: relative;
+  width: 100%;
+  height: 400rpx;
+  border-radius: 24rpx;
+  overflow: hidden;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+.scene-image.data-v-ba7150d5 {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.scene-overlay.data-v-ba7150d5 {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.7) 100%);
+  display: flex;
+  align-items: flex-end;
+  padding: 30rpx;
+}
+.scene-info.data-v-ba7150d5 {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.scene-title.data-v-ba7150d5 {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 12rpx;
+  letter-spacing: 1rpx;
+  font-family: 'SimSun', 'Songti SC', 'STSong', serif;
+}
+.scene-desc.data-v-ba7150d5 {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 20rpx;
+  line-height: 1.6;
+}
+.scene-btn.data-v-ba7150d5 {
+  align-self: flex-start;
+  padding: 16rpx 32rpx;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 30rpx;
+}
+.btn-text.data-v-ba7150d5 {
+  font-size: 28rpx;
+  color: #9ea97f;
+  font-weight: 600;
+}
+.back-btn.data-v-ba7150d5:active,
+.scene-card.data-v-ba7150d5:active {
+  opacity: 0.8;
+  transform: scale(0.98);
+}

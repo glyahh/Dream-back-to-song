@@ -1,0 +1,195 @@
+
+.apparel-page.data-v-39915756 {
+  background-color: #f6f2e9;
+  min-height: 100vh;
+  font-family: 'PingFang SC', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+}
+.nav-bar.data-v-39915756 {
+  height: 140rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 30rpx;
+  background-color: #f6f2e9;
+  border-bottom: 1rpx solid rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.back-btn.data-v-39915756 {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+.back-icon.data-v-39915756 {
+  font-size: 40rpx;
+  color: #333;
+  font-weight: 300;
+  margin-top: -4rpx;
+  margin-left: -4rpx;
+}
+.nav-title.data-v-39915756 {
+  font-size: 50rpx;
+  font-weight: 700;
+  color: #3b352b;
+  letter-spacing: 4rpx;
+  font-family: 'LiSu', 'SimLi', 'STLiti', 'KaiTi', serif;
+}
+.right-actions.data-v-39915756 {
+  width: 70rpx;
+}
+.filter-section.data-v-39915756 {
+  padding: 20rpx 0;
+  background-color: #f6f2e9;
+  border-bottom: 1rpx solid rgba(0, 0, 0, 0.05);
+}
+.filter-scroll.data-v-39915756 {
+  white-space: nowrap;
+}
+.filter-container.data-v-39915756 {
+  display: inline-flex;
+  padding: 0 30rpx;
+  gap: 20rpx;
+}
+.filter-tag.data-v-39915756 {
+  padding: 12rpx 28rpx;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 30rpx;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+.filter-tag.active.data-v-39915756 {
+  background-color: #9ea97f;
+}
+.filter-text.data-v-39915756 {
+  font-size: 26rpx;
+  color: #5a5a5a;
+  font-weight: 500;
+}
+.filter-tag.active .filter-text.data-v-39915756 {
+  color: #ffffff;
+  font-weight: 600;
+}
+.waterfall-list.data-v-39915756 {
+  height: calc(100vh - 240rpx);
+}
+.waterfall-container.data-v-39915756 {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20rpx 15rpx;
+}
+.waterfall-column.data-v-39915756 {
+  width: 345rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+.left-column.data-v-39915756 {
+  padding-right: 5rpx;
+}
+.right-column.data-v-39915756 {
+  padding-left: 5rpx;
+}
+.apparel-item.data-v-39915756 {
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.1);
+  position: relative;
+  opacity: 0;
+  transform: translateX(-50rpx);
+  animation: slideInFromLeft-39915756 0.5s ease-out forwards;
+  flex-shrink: 0;
+  display: block;
+}
+.apparel-image-wrapper.data-v-39915756 {
+  width: 100%;
+  height: calc(100% - 140rpx);
+  position: relative;
+  overflow: hidden;
+}
+.apparel-item.item-enter.data-v-39915756 {
+  animation: slideInFromLeft-39915756 0.5s ease-out forwards;
+}
+@keyframes slideInFromLeft-39915756 {
+from {
+    opacity: 0;
+    transform: translateX(-50rpx);
+}
+to {
+    opacity: 1;
+    transform: translateX(0);
+}
+}
+.apparel-img.data-v-39915756 {
+  width: 100%;
+  height: 100%;
+  display: block;
+  -o-object-fit: cover;
+     object-fit: cover;
+  vertical-align: top;
+}
+.apparel-info.data-v-39915756 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  padding: 30rpx 25rpx 20rpx;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 50%, rgba(255, 255, 255, 0.7) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  z-index: 10;
+  margin: 0;
+  box-sizing: border-box;
+  border-radius: 0 0 20rpx 20rpx;
+  min-height: 140rpx;
+}
+.apparel-name.data-v-39915756 {
+  font-size: 34rpx;
+  color: #3b352b;
+  font-weight: 600;
+  margin-bottom: 8rpx;
+  letter-spacing: 1rpx;
+  text-shadow: 0 1rpx 2rpx rgba(255, 255, 255, 0.8);
+  line-height: 1.2;
+  white-space: normal;
+  word-break: break-all;
+  display: block;
+}
+.apparel-dynasty.data-v-39915756 {
+  font-size: 24rpx;
+  color: #5a4a42;
+  text-shadow: 0 1rpx 2rpx rgba(255, 255, 255, 0.6);
+}
+.back-btn.data-v-39915756:active,
+.filter-tag.data-v-39915756:active,
+.apparel-item.data-v-39915756:active {
+  opacity: 0.8;
+  transform: scale(0.98);
+}
+
+/* 空状态样式 */
+.empty-state.data-v-39915756 {
+  width: 100%;
+  padding: 200rpx 30rpx;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400rpx;
+}
+.empty-text.data-v-39915756 {
+  font-size: 28rpx;
+  color: #999;
+  letter-spacing: 2rpx;
+  font-family: 'PingFang SC', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+}

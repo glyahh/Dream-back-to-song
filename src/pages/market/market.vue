@@ -1,5 +1,5 @@
 <template>
-  <view class="page">
+  <view class="page" :class="{ 'has-cart-float': cartTotalCount > 0 }">
     <!-- 顶部大图 + 搜索栏 + 购物车 -->
     <view class="hero">
       <swiper
@@ -40,19 +40,19 @@
 
     <!-- 快捷入口 -->
     <view class="quick-nav" :class="{ 'animate-in': pageReady }">
-      <view class="nav-item">
+      <view class="nav-item" @click="goNew">
         <view class="nav-icon-wrapper">
           <image class="nav-icon-img" src="/static/ji_shi/left.png" mode="aspectFit" />
         </view>
         <text class="nav-text">新品速递</text>
       </view>
-      <view class="nav-item">
+      <view class="nav-item" @click="goSeries">
         <view class="nav-icon-wrapper">
           <image class="nav-icon-img" src="/static/ji_shi/middle.png" mode="aspectFit" />
         </view>
         <text class="nav-text">系列好物</text>
       </view>
-      <view class="nav-item">
+      <view class="nav-item" @click="goAll">
         <view class="nav-icon-wrapper">
           <image class="nav-icon-img" src="/static/ji_shi/right.png" mode="aspectFit" />
         </view>
@@ -62,28 +62,117 @@
 
     <!-- 热门商品 -->
     <view class="section">
-      <view class="section-header" :class="{ 'animate-in': pageReady }">
+      <view class="section-header" :class="{ 'animate-in': pageReady }" @click="goAll">
         <text class="section-title">热门商品</text>
         <text class="section-arrow">→</text>
       </view>
       <view class="product-grid" :class="{ 'animate-in': pageReady }">
-        <view class="product-card" v-for="item in hotProducts" :key="item.name">
+        <view
+          class="product-card"
+          v-for="item in hotProducts"
+          :key="item.name"
+          @click="goProductDetail(item)"
+        >
           <view class="product-card-img-wrapper">
             <image class="product-card-img" :src="item.img" mode="aspectFill" />
           </view>
-          <text class="product-card-name">{{ item.name }}</text>
+          <view class="product-card-info">
+            <text class="product-card-name">{{ item.name }}</text>
+            <text class="product-card-price">¥{{ item.price }}</text>
+          </view>
         </view>
       </view>
     </view>
 
-    <!-- 新品推荐 -->
-    <view class="section">
-      <view class="section-header">
-        <text class="section-title">新品推荐</text>
+    <!-- 新品速递 -->
+    <view class="section section-new">
+      <view class="section-header" :class="{ 'animate-in': pageReady }" @click="goNew">
+        <text class="section-title">新品速递</text>
         <text class="section-arrow">→</text>
       </view>
-      <view class="new-products-banner">
-        <image class="new-products-img" src="/static/ji_shi/right_bg.png" mode="aspectFill" />
+      <view class="new-list" :class="{ 'animate-in': pageReady }">
+        <view
+          class="new-item"
+          v-for="(item, index) in newProducts"
+          :key="item.id"
+          @click="goProductDetail(item)"
+        >
+          <view class="new-item-img-wrap">
+            <image class="new-item-img" :src="item.img" mode="aspectFill" />
+            <view v-if="item.tag" class="new-item-tag">{{ item.tag }}</view>
+          </view>
+          <view class="new-item-body">
+            <text class="new-item-title">{{ item.name }}</text>
+            <text class="new-item-desc">{{ item.desc }}</text>
+            <view class="new-item-price-row">
+              <text class="new-item-price">¥{{ item.price }}</text>
+              <view v-if="item.originPrice" class="new-item-origin">¥{{ item.originPrice }}</view>
+            </view>
+            <view class="new-item-tags">
+              <text
+                class="new-item-tag-item"
+                v-for="t in item.tags"
+                :key="t"
+              >{{ t }}</text>
+            </view>
+            <view class="new-item-extra">
+              <text class="new-item-sales">{{ item.sales }}</text>
+              <text class="new-item-shop">{{ item.shop }}</text>
+            </view>
+            <view class="new-item-stepper">
+              <template v-if="getCartQty(item) > 0">
+                <view class="stepper-btn minus" @click.stop="minusFromCart(item)">－</view>
+                <text class="stepper-num">{{ getCartQty(item) }}</text>
+                <view class="stepper-btn plus" @click.stop="addToCart(item)">＋</view>
+              </template>
+              <view v-else class="new-item-add" @click.stop="addToCart(item)">
+                <text class="new-item-add-icon">+</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 购物车浮窗 -->
+    <view v-if="cartTotalCount > 0" class="cart-float-wrap">
+      <view v-if="cartPanelOpen" class="cart-panel">
+        <view class="cart-panel-title">购物车</view>
+        <scroll-view class="cart-panel-list" scroll-y>
+          <view class="cart-panel-item" v-for="row in cartList" :key="row.id">
+            <image class="cart-panel-img" :src="row.img" mode="aspectFill" />
+            <view class="cart-panel-info">
+              <text class="cart-panel-name">{{ row.name }}</text>
+              <view class="cart-panel-row">
+                <text class="cart-panel-price">¥{{ row.price }} × {{ row.qty }}</text>
+                <view class="cart-panel-stepper">
+                  <view class="cps-btn" @click.stop="cartMinus(row)">－</view>
+                  <text class="cps-num">{{ row.qty }}</text>
+                  <view class="cps-btn" @click.stop="cartPlus(row)">＋</view>
+                </view>
+              </view>
+              <text class="cart-panel-subtotal">小计 ¥{{ row.subtotal }}</text>
+            </view>
+          </view>
+        </scroll-view>
+        <view class="cart-panel-footer">
+          <text class="cart-panel-total">共 {{ cartTotalCount }} 件 ¥{{ cartTotalPrice }}</text>
+          <view class="cart-panel-settle" @click="goSettle">去结算</view>
+        </view>
+      </view>
+      <view class="cart-float" @click="toggleCartPanel">
+        <view class="cart-float-left">
+          <view class="cart-float-icon-wrap">
+            <text class="cart-float-icon">🛒</text>
+            <view class="cart-float-badge">{{ cartTotalCount }}</view>
+          </view>
+        </view>
+        <view class="cart-float-center">
+          <text class="cart-float-total">¥{{ cartTotalPrice }}</text>
+          <text v-if="cartTotalDiscount > 0" class="cart-float-discount">共减¥{{ cartTotalDiscount.toFixed(2) }}</text>
+        </view>
+        <view class="cart-float-btn" @click.stop="goSettle">去结算</view>
+        <view class="cart-float-arrow" :class="{ up: cartPanelOpen }">∧</view>
       </view>
     </view>
 
@@ -104,9 +193,13 @@
 </template>
 
 <script>
+import { getCart, setCart, getCartList, addToCart as cartAdd, minusFromCart as cartMinus } from '@/utils/marketCart'
+import { newProducts as newProductsData, allProducts, getProductMap } from '@/utils/marketProducts'
+
 export default {
   data() {
     return {
+      cartPanelOpen: false,
       activeNav: 'market',
       pageReady: false,
       heroCurrentIndex: 0,
@@ -117,16 +210,62 @@ export default {
         '/static/ji_shi/market_4.png',
       ],
       hotProducts: [
-        { name: '青山远黛餐盘', img: '/static/ji_shi/left_picture.png' },
-        { name: '青绿流苏团扇', img: '/static/ji_shi/right_bg.png' },
+        {
+          id: 1,
+          name: '千里江山图系列餐盘-青山远黛',
+          img: '/static/ji_shi/left_picture.png',
+          price: '48',
+        },
+        {
+          id: 2,
+          name: '青绿流苏团扇',
+          img: '/static/ji_shi/right_bg.png',
+          price: '68',
+        },
       ],
+      newProducts: newProductsData,
       tabs: [
         { key: 'home', label: '首页', path: '/pages/main_index/main_index' },
         { key: 'discover', label: '发现', path: '/pages/discover/discover' },
         { key: 'market', label: '集市', path: '/pages/market/market' },
         { key: 'me', label: '我的', path: '/pages/me/me' },
       ],
+      cart: {},
     }
+  },
+  computed: {
+    productMap() {
+      return getProductMap(allProducts)
+    },
+    cartList() {
+      return getCartList(this.productMap, this.cart)
+    },
+    cartTotalCount() {
+      return Object.values(this.cart).reduce((s, q) => s + (Number(q) || 0), 0)
+    },
+    cartTotalPrice() {
+      let total = 0
+      allProducts.forEach((p) => {
+        const q = this.cart[p.id] || this.cart[String(p.id)] || 0
+        if (q > 0) total += parseFloat(p.price) * q
+      })
+      return total.toFixed(2)
+    },
+    cartTotalDiscount() {
+      let discount = 0
+      this.newProducts.forEach((p) => {
+        const q = this.cart[p.id] || this.cart[String(p.id)] || 0
+        if (q > 0 && p.originPrice) {
+          const orig = parseFloat(p.originPrice)
+          const curr = parseFloat(p.price)
+          if (orig > curr) discount += (orig - curr) * q
+        }
+      })
+      return Math.round(discount * 100) / 100
+    },
+  },
+  onShow() {
+    this.cart = getCart()
   },
   onReady() {
     setTimeout(() => {
@@ -146,6 +285,43 @@ export default {
           url: tab.path,
         })
       }
+    },
+    goProductDetail(item) {
+      uni.setStorageSync('market_detail_product', item)
+      uni.navigateTo({
+        url: `/pages/market/detail?id=${item.id}`,
+      })
+    },
+    goNew() {
+      uni.navigateTo({ url: '/pages/market/all?tab=new' })
+    },
+    goSeries() {
+      uni.navigateTo({ url: '/pages/market/series' })
+    },
+    goAll() {
+      uni.navigateTo({ url: '/pages/market/all' })
+    },
+    getCartQty(item) {
+      return this.cart[item.id] || this.cart[String(item.id)] || 0
+    },
+    addToCart(item) {
+      this.cart = cartAdd(String(item.id), 1)
+    },
+    minusFromCart(item) {
+      this.cart = cartMinus(String(item.id), 1)
+    },
+    toggleCartPanel() {
+      this.cartPanelOpen = !this.cartPanelOpen
+    },
+    cartPlus(row) {
+      this.cart = cartAdd(String(row.id), 1)
+    },
+    cartMinus(row) {
+      this.cart = cartMinus(String(row.id), 1)
+    },
+    goSettle() {
+      if (this.cartTotalCount <= 0) return
+      uni.showToast({ title: '去结算', icon: 'none' })
     },
   },
 }
@@ -385,13 +561,25 @@ export default {
   height: 100%;
 }
 
+.product-card-info {
+  padding: 20rpx;
+}
+
 .product-card-name {
   display: block;
-  padding: 20rpx;
   font-size: 28rpx;
   color: #333;
   text-align: center;
   font-weight: 500;
+  margin-bottom: 8rpx;
+}
+
+.product-card-price {
+  display: block;
+  font-size: 32rpx;
+  color: #e64340;
+  font-weight: 600;
+  text-align: center;
 }
 
 /* H5悬停效果 */
@@ -417,17 +605,440 @@ export default {
   }
 }
 
-/* 新品推荐 */
-.new-products-banner {
-  width: 100%;
-  height: 200rpx;
-  border-radius: 20rpx;
-  overflow: hidden;
+/* 新品速递 - 左右分栏列表 */
+.section-new {
+  padding-top: 16rpx;
 }
 
-.new-products-img {
+.new-list {
+  opacity: 0;
+  transform: translateY(30rpx);
+  transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
+}
+
+.new-list.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.new-item {
+  display: flex;
+  background-color: #fff;
+  border-radius: 20rpx;
+  overflow: hidden;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+  align-items: stretch;
+}
+
+.new-item:last-child {
+  margin-bottom: 0;
+}
+
+.new-item-img-wrap {
+  position: relative;
+  width: 240rpx;
+  height: 240rpx;
+  flex-shrink: 0;
+  background-color: #f8f6f2;
+}
+
+.new-item-img {
   width: 100%;
   height: 100%;
+  display: block;
+}
+
+.new-item-tag {
+  position: absolute;
+  left: 0;
+  top: 12rpx;
+  padding: 4rpx 16rpx;
+  font-size: 20rpx;
+  color: #fff;
+  background-color: #9ea97f;
+  border-radius: 0 8rpx 8rpx 0;
+}
+
+.new-item-body {
+  flex: 1;
+  padding: 20rpx 20rpx 20rpx 24rpx;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  position: relative;
+  padding-right: 170rpx;
+}
+
+.new-item-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.4;
+  margin-bottom: 8rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.new-item-desc {
+  font-size: 24rpx;
+  color: #999;
+  line-height: 1.4;
+  margin-bottom: 12rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.new-item-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12rpx;
+  margin-bottom: 10rpx;
+}
+
+.new-item-price {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #9ea97f;
+}
+
+.new-item-origin {
+  font-size: 24rpx;
+  color: #bbb;
+  text-decoration: line-through;
+}
+
+.new-item-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8rpx;
+  margin-bottom: 10rpx;
+}
+
+.new-item-tag-item {
+  padding: 2rpx 12rpx;
+  font-size: 20rpx;
+  color: #9ea97f;
+  background-color: rgba(158, 169, 127, 0.12);
+  border-radius: 6rpx;
+  border: 1rpx solid rgba(158, 169, 127, 0.35);
+}
+
+.new-item-extra {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  font-size: 22rpx;
+  color: #999;
+}
+
+.new-item-sales {
+  flex-shrink: 0;
+}
+
+.new-item-shop {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.new-item-add {
+  position: absolute;
+  right: 16rpx;
+  bottom: 20rpx;
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  background-color: #9ea97f;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.new-item-add-icon {
+  margin-top: -4rpx;
+}
+
+.new-item-stepper {
+  position: absolute;
+  right: 16rpx;
+  bottom: 20rpx;
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.stepper-btn {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 50%;
+  background-color: #9ea97f;
+  color: #fff;
+  font-size: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.stepper-btn.minus {
+  font-weight: 300;
+}
+
+.stepper-num {
+  min-width: 40rpx;
+  font-size: 28rpx;
+  color: #333;
+  text-align: center;
+}
+
+.cart-float-wrap {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(140rpx + env(safe-area-inset-bottom));
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.cart-float {
+  margin: 0 24rpx;
+  height: 100rpx;
+  background-color: #fff;
+  border-radius: 50rpx;
+  box-shadow: 0 -4rpx 24rpx rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  padding: 0 24rpx;
+}
+
+.cart-float-arrow {
+  font-size: 24rpx;
+  color: #999;
+  margin-left: 12rpx;
+  transform: rotate(180deg);
+  transition: transform 0.3s ease;
+}
+
+.cart-float-arrow.up {
+  transform: rotate(0deg);
+}
+
+.cart-panel {
+  margin: 0 24rpx 16rpx;
+  max-height: 400rpx;
+  background-color: #fff;
+  border-radius: 20rpx 20rpx 0 0;
+  box-shadow: 0 -4rpx 24rpx rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-panel-title {
+  padding: 24rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 1rpx solid #eee;
+}
+
+.cart-panel-list {
+  flex: 1;
+  max-height: 300rpx;
+  padding: 16rpx;
+}
+
+.cart-panel-item {
+  display: flex;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.cart-panel-item:last-child {
+  border-bottom: none;
+}
+
+.cart-panel-img {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 12rpx;
+  background-color: #f8f6f2;
+  flex-shrink: 0;
+}
+
+.cart-panel-info {
+  flex: 1;
+  margin-left: 20rpx;
+  min-width: 0;
+}
+
+.cart-panel-name {
+  display: block;
+  font-size: 26rpx;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 8rpx;
+}
+
+.cart-panel-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6rpx;
+}
+
+.cart-panel-price {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.cart-panel-stepper {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.cart-panel-stepper .cps-btn {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  background-color: #9ea97f;
+  color: #fff;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-panel-stepper .cps-num {
+  min-width: 36rpx;
+  font-size: 26rpx;
+  color: #333;
+  text-align: center;
+}
+
+.cart-panel-subtotal {
+  font-size: 24rpx;
+  color: #9ea97f;
+  font-weight: 500;
+}
+
+.cart-panel-footer {
+  padding: 20rpx 24rpx;
+  border-top: 1rpx solid #eee;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cart-panel-total {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.cart-panel-settle {
+  padding: 16rpx 40rpx;
+  background-color: #9ea97f;
+  color: #fff;
+  font-size: 28rpx;
+  font-weight: 500;
+  border-radius: 36rpx;
+}
+
+.cart-float-left {
+  margin-right: 24rpx;
+}
+
+.cart-float-icon-wrap {
+  position: relative;
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-float-icon {
+  font-size: 48rpx;
+}
+
+.cart-float-badge {
+  position: absolute;
+  top: -4rpx;
+  right: -4rpx;
+  min-width: 36rpx;
+  height: 36rpx;
+  padding: 0 8rpx;
+  background-color: #9ea97f;
+  color: #fff;
+  font-size: 22rpx;
+  border-radius: 18rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-float-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.cart-float-total {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.cart-float-discount {
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 4rpx;
+}
+
+.cart-float-btn {
+  width: 180rpx;
+  height: 72rpx;
+  background-color: #9ea97f;
+  color: #fff;
+  font-size: 28rpx;
+  font-weight: 500;
+  border-radius: 36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page.has-cart-float {
+  padding-bottom: 260rpx;
+}
+
+@media (hover: hover) {
+  .new-item {
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .new-item:hover {
+    box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.1);
+  }
+  .new-item-add:hover {
+    opacity: 0.9;
+  }
 }
 
 /* 底部导航栏 */

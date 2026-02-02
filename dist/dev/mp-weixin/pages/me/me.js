@@ -65,7 +65,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     a: $data.pageReady ? 1 : "",
     b: common_vendor.o((...args) => $options.editProfile && $options.editProfile(...args)),
     c: $data.pageReady ? 1 : "",
-    d: common_assets._imports_0$24,
+    d: common_assets._imports_0$15,
     e: $data.pageReady ? 1 : "",
     f: common_vendor.o((...args) => $options.goToOrders && $options.goToOrders(...args)),
     g: common_vendor.o((...args) => $options.goToCreations && $options.goToCreations(...args)),

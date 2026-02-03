@@ -28,7 +28,7 @@
         @change="onSwiperChange"
       >
         <swiper-item v-for="(item, index) in carouselList" :key="index">
-          <view class="carousel-card">
+          <view class="carousel-card" @click="onCarouselClick(index, item)">
             <image class="carousel-image" :src="item.image" mode="aspectFill" />
             <text class="carousel-title" v-if="item.title">{{ item.title }}</text>
           </view>
@@ -52,7 +52,7 @@
       </view>
       <view class="topic-layout" :class="{ 'animate-in': pageReady }">
         <!-- 左侧大卡片 -->
-        <view class="topic-card topic-card-large">
+        <view class="topic-card topic-card-large" @click="goTopic('life')">
           <image class="topic-image" src="/static/live_in_song.png" mode="aspectFill" />
           <view class="topic-mask" />
           <view class="topic-content">
@@ -62,8 +62,8 @@
         </view>
 
         <!-- 右侧上下两个小卡片 -->
-        <view class="topic-right-column">
-          <view class="topic-card topic-card-small">
+          <view class="topic-right-column">
+          <view class="topic-card topic-card-small" @click="goTopic('clothing')">
             <image class="topic-image" src="/static/song_cloth.png" mode="aspectFill" />
             <view class="topic-mask" />
             <view class="topic-content">
@@ -71,7 +71,7 @@
               <view class="topic-arrow-round">→</view>
             </view>
           </view>
-          <view class="topic-card topic-card-small">
+          <view class="topic-card topic-card-small" @click="goTopic('food')">
             <image class="topic-image" src="/static/song_food.png" mode="aspectFill" />
             <view class="topic-mask" />
             <view class="topic-content">
@@ -95,25 +95,77 @@
 
     <!-- 内容流 -->
     <view class="feed-section" :class="{ 'animate-in': pageReady }">
-      <view class="feed-item">
-        <image class="feed-avatar" src="/static/avatar.png" mode="aspectFill" />
-        <view class="feed-content">
-          <view class="feed-header">
-            <view class="feed-user-info">
-              <text class="feed-username">山河入梦</text>
-              <text class="feed-time">一天前</text>
+      <!-- 热门列表 -->
+      <view v-if="activeTab === 'hot'">
+        <view
+          class="feed-item"
+          v-for="item in feedList"
+          :key="item.id"
+        >
+          <image class="feed-avatar" :src="item.avatar" mode="aspectFill" />
+          <view class="feed-content">
+            <view class="feed-header">
+              <view class="feed-user-info">
+                <text class="feed-username">{{ item.username }}</text>
+                <text class="feed-time">{{ item.time }}</text>
+              </view>
+              <view
+                class="follow-btn"
+                :class="{ followed: item.followed }"
+                @click.stop="toggleFollow(item)"
+              >
+                {{ item.followed ? '已关注' : '+ 关注' }}
+              </view>
             </view>
-            <view class="follow-btn">+ 关注</view>
+            <text class="feed-text">{{ item.text }}</text>
+            <view class="feed-images" v-if="item.images && item.images.length">
+              <view
+                class="feed-image-wrapper"
+                v-for="(img, imgIndex) in item.images"
+                :key="imgIndex"
+              >
+                <image class="feed-image" :src="img" mode="aspectFit" />
+              </view>
+            </view>
           </view>
-          <text class="feed-text">好喜欢这个配色</text>
-          <view class="feed-images">
-            <view class="feed-image-wrapper">
-              <image class="feed-image" src="/static/hanfu1.png" mode="aspectFit" />
-            </view>
-            <view class="feed-image-wrapper">
-              <image class="feed-image" src="/static/hanfu2.png" mode="aspectFit" />
+        </view>
+      </view>
+
+      <!-- 关注列表 -->
+      <view v-else>
+        <view v-if="followedFeeds.length">
+          <view
+            class="feed-item"
+            v-for="item in followedFeeds"
+            :key="item.id"
+          >
+            <image class="feed-avatar" :src="item.avatar" mode="aspectFill" />
+            <view class="feed-content">
+              <view class="feed-header">
+                <view class="feed-user-info">
+                  <text class="feed-username">{{ item.username }}</text>
+                  <text class="feed-time">{{ item.time }}</text>
+                </view>
+                <view class="follow-btn followed">
+                  已关注
+                </view>
+              </view>
+              <text class="feed-text">{{ item.text }}</text>
+              <view class="feed-images" v-if="item.images && item.images.length">
+                <view
+                  class="feed-image-wrapper"
+                  v-for="(img, imgIndex) in item.images"
+                  :key="imgIndex"
+                >
+                  <image class="feed-image" :src="img" mode="aspectFit" />
+                </view>
+              </view>
             </view>
           </view>
+        </view>
+        <view v-else class="empty-follow">
+          <text class="empty-follow-title">还没有关注任何人</text>
+          <text class="empty-follow-desc">去「热门」看看大家在聊什么吧～</text>
         </view>
       </view>
     </view>
@@ -153,16 +205,79 @@ export default {
         { key: 'market', label: '集市', path: '/pages/market/market' },
         { key: 'me', label: '我的', path: '/pages/me/me' },
       ],
+      // 内容流数据
+      feedList: [
+        {
+          id: 'user_shanhe',
+          username: '山河入梦',
+          time: '一天前',
+          text: '好喜欢这个配色',
+          avatar: '/static/guanzhu/1.png',
+          images: ['/static/guanzhu/hanfu3.png', '/static/guanzhu/hanfu4.png'],
+          followed: false,
+        },
+        {
+          id: 'user_qinghe',
+          username: '清河小筑',
+          time: '2 天前',
+          text: '晨起焚一柱香，看竹影晃动，仿佛回到京都巷陌。',
+          avatar: '/static/touxiang/touxiang2.png',
+          images: ['/static/guanzhu/song_study.png'],
+          followed: false,
+        },
+        {
+          id: 'user_zhumo',
+          username: '竹墨留香',
+          time: '3 天前',
+          text: '新绣了一件团花纹褙子，淡青配牙白，走在廊下风一吹就像画里人。',
+          avatar: '/static/touxiang/touxiang3.png',
+          images: ['/static/guanzhu/hanfu3.png', '/static/guanzhu/hanfu4.png'],
+          followed: false,
+        },
+        {
+          id: 'user_meishi',
+          username: '一碗清欢',
+          time: '5 天前',
+          text: '用《山家清供》里的方子做了碗蟹酿橙，酸甜里带着桂花香。',
+          avatar: '/static/touxiang/touxiang4.png',
+          images: ['/static/guanzhu/food_guihuagao.png', '/static/guanzhu/food_xieliangcheng.png'],
+          followed: false,
+        },
+        {
+          id: 'user_shufa',
+          username: '墨池边',
+          time: '一周前',
+          text: '练完小楷，把案几上的宣纸铺开，才发现窗外的月色也写进了字里行间。',
+          avatar: '/static/touxiang/touxiang5.png',
+          images: ['/static/guanzhu/song_study.png'],
+          followed: false,
+        },
+      ],
     }
+  },
+  onLoad() {
+    this.initFollowState()
   },
   onReady() {
     setTimeout(() => {
       this.pageReady = true
     }, 50)
   },
+  computed: {
+    // 关注列表：从所有内容里筛选已关注的用户
+    followedFeeds() {
+      return this.feedList.filter((item) => item.followed)
+    },
+  },
   methods: {
     onSwiperChange(e) {
       this.currentIndex = e.detail.current
+    },
+    onCarouselClick(index, item) {
+      // 当轮播图为“宋代衣食住行”主题时，进入总览话题页
+      if (item && item.title === '宋代衣食住行') {
+        this.goTopic('overview')
+      }
     },
     switchTab(tab) {
       this.activeTab = tab
@@ -176,6 +291,55 @@ export default {
           url: tab.path,
         })
       }
+    },
+    goTopic(key) {
+      const map = {
+        life: '/pages/discover/topic_life',
+        clothing: '/pages/discover/topic_clothing',
+        food: '/pages/discover/topic_food',
+        overview: '/pages/discover/topic_overview',
+      }
+      const url = map[key]
+      if (!url) return
+      uni.navigateTo({ url })
+    },
+    initFollowState() {
+      try {
+        const stored = uni.getStorageSync('discover_follow_ids')
+        if (Array.isArray(stored) && stored.length) {
+          this.feedList = this.feedList.map((item) => ({
+            ...item,
+            followed: stored.includes(item.id),
+          }))
+        }
+      } catch (e) {
+        // 读取失败时忽略，使用默认状态
+      }
+    },
+    toggleFollow(item) {
+      const index = this.feedList.findIndex((feed) => feed.id === item.id)
+      if (index === -1) return
+
+      const target = this.feedList[index]
+      const newFollowed = !target.followed
+
+      this.$set(this.feedList, index, {
+        ...target,
+        followed: newFollowed,
+      })
+
+      const followedIds = this.feedList.filter((f) => f.followed).map((f) => f.id)
+      try {
+        uni.setStorageSync('discover_follow_ids', followedIds)
+      } catch (e) {
+        // 存储失败时忽略
+      }
+
+      uni.showToast({
+        title: newFollowed ? '已关注' : '已取消关注',
+        icon: 'success',
+        duration: 1500,
+      })
     },
   },
 }
@@ -584,6 +748,11 @@ export default {
   flex-shrink: 0;
 }
 
+.follow-btn.followed {
+  background-color: #9ea97f;
+  color: #fff;
+}
+
 .feed-text {
   display: block;
   font-size: 28rpx;
@@ -612,6 +781,23 @@ export default {
   width: 100%;
   height: 100%;
   display: block;
+}
+
+.empty-follow {
+  padding: 80rpx 40rpx 40rpx;
+  text-align: center;
+  color: #999;
+}
+
+.empty-follow-title {
+  display: block;
+  font-size: 30rpx;
+  margin-bottom: 12rpx;
+}
+
+.empty-follow-desc {
+  display: block;
+  font-size: 26rpx;
 }
 
 /* 底部导航栏 */

@@ -3,8 +3,8 @@
     <!-- 用户资料头部 -->
     <view class="profile-header">
       <view class="edit-btn" :class="{ 'animate-in': pageReady }" @click="editProfile">编辑资料</view>
-      <image class="profile-avatar" :class="{ 'animate-in': pageReady }" src="/static/avatar.png" mode="aspectFill" />
-      <text class="profile-name" :class="{ 'animate-in': pageReady }">烟雨朦胧</text>
+      <image class="profile-avatar" :class="{ 'animate-in': pageReady }" :src="profile.avatar" mode="aspectFill" />
+      <text class="profile-name" :class="{ 'animate-in': pageReady }">{{ profile.nickname }}</text>
     </view>
 
     <!-- 功能区域 -->
@@ -77,6 +77,10 @@ export default {
     return {
       activeNav: 'me',
       pageReady: false,
+      profile: {
+        nickname: '烟雨朦胧',
+        avatar: '/static/avatar.png',
+      },
       tabs: [
         { key: 'home', label: '首页', path: '/pages/main_index/main_index' },
         { key: 'discover', label: '发现', path: '/pages/discover/discover' },
@@ -85,7 +89,8 @@ export default {
       ],
     }
   },
-  onReady() {
+  onShow() {
+    this.loadProfile()
     setTimeout(() => {
       this.pageReady = true
     }, 50)
@@ -101,32 +106,63 @@ export default {
         })
       }
     },
+    loadProfile() {
+      try {
+        const stored = uni.getStorageSync('me_profile')
+        if (stored && typeof stored === 'object') {
+          this.profile = {
+            ...this.profile,
+            ...stored,
+          }
+        }
+      } catch (e) {
+        // ignore
+      }
+    },
     editProfile() {
-      uni.showToast({ title: '编辑资料', icon: 'none' })
+      uni.navigateTo({
+        url: '/pages/me/profile-edit',
+      })
     },
     goToOrders() {
-      uni.showToast({ title: '我的订单', icon: 'none' })
+      uni.navigateTo({
+        url: '/pages/me/orders',
+      })
     },
     goToCreations() {
-      uni.showToast({ title: '我的创作', icon: 'none' })
+      uni.navigateTo({
+        url: '/pages/me/creations',
+      })
     },
     goToCollections() {
-      uni.showToast({ title: '我的收藏', icon: 'none' })
+      uni.navigateTo({
+        url: '/pages/me/collections',
+      })
     },
     goToPosts() {
-      uni.showToast({ title: '我的发布', icon: 'none' })
+      uni.navigateTo({
+        url: '/pages/me/posts',
+      })
     },
     goToFollowing() {
-      uni.showToast({ title: '我的关注', icon: 'none' })
+      uni.navigateTo({
+        url: '/pages/me/following',
+      })
     },
     goToMessages() {
-      uni.showToast({ title: '消息通知', icon: 'none' })
+      uni.navigateTo({
+        url: '/pages/me/messages',
+      })
     },
     goToFeedback() {
-      uni.showToast({ title: '意见反馈', icon: 'none' })
+      uni.navigateTo({
+        url: '/pages/me/feedback',
+      })
     },
     goToSettings() {
-      uni.showToast({ title: '设置', icon: 'none' })
+      uni.navigateTo({
+        url: '/pages/me/settings',
+      })
     },
   },
 }

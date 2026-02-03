@@ -18,6 +18,31 @@ const _sfc_main = {
         { key: "discover", label: "发现", path: "/pages/discover/discover" },
         { key: "market", label: "集市", path: "/pages/market/market" },
         { key: "me", label: "我的", path: "/pages/me/me" }
+      ],
+      // 宋朝美学画卷轮播
+      aestheticCurrentIndex: 0,
+      aestheticGallery: [
+        {
+          key: "qingming",
+          img: "/static/painting-qingming.png",
+          tag: "宋画一角",
+          title: "汴河烟树",
+          desc: "沿着画卷缓缓移动，街市与楼船次第展开，是可以行走其间的宋朝烟火。"
+        },
+        {
+          key: "qianli",
+          img: "/static/painting-qianli.png",
+          tag: "远山长卷",
+          title: "千里江山",
+          desc: "青绿与金粉铺陈山川气象，色彩却温润内敛，如同宋人收拾好的山河梦。"
+        },
+        {
+          key: "qiuchuang",
+          img: "/static/painting-qiuchuang.png",
+          tag: "一窗秋意",
+          title: "秋窗风雨",
+          desc: "檐下几片落叶、案头一卷残书，画中留住的是宋人最细微的日常心绪。"
+        }
       ]
     };
   },
@@ -34,6 +59,9 @@ const _sfc_main = {
       setTimeout(() => {
         this.pressedIndex = -1;
       }, 150);
+    },
+    onAestheticSwiperChange(e) {
+      this.aestheticCurrentIndex = e.detail.current;
     },
     handleCard(item) {
       if (item.title === "服饰") {
@@ -95,7 +123,26 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     g: $data.pageReady ? 1 : "",
     h: $data.pageReady ? 1 : "",
     i: $data.pageReady ? 1 : "",
-    j: common_vendor.f($data.tabs, (tab, k0, i0) => {
+    j: common_vendor.f($data.aestheticGallery, (item, index, i0) => {
+      return {
+        a: item.img,
+        b: common_vendor.t(item.tag),
+        c: common_vendor.t(item.title),
+        d: common_vendor.t(item.desc),
+        e: item.key
+      };
+    }),
+    k: $data.aestheticCurrentIndex,
+    l: common_vendor.o((...args) => $options.onAestheticSwiperChange && $options.onAestheticSwiperChange(...args)),
+    m: common_vendor.f($data.aestheticGallery, (item, index, i0) => {
+      return {
+        a: item.key,
+        b: index === $data.aestheticCurrentIndex ? 1 : ""
+      };
+    }),
+    n: $data.pageReady ? 1 : "",
+    o: $data.pageReady ? 1 : "",
+    p: common_vendor.f($data.tabs, (tab, k0, i0) => {
       return {
         a: common_vendor.n("icon-" + tab.key),
         b: common_vendor.t(tab.label),

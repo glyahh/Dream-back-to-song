@@ -267,15 +267,17 @@ export default {
 .product-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 20rpx;
+  justify-content: space-between;
 }
 
 .all-card {
-  width: calc(50% - 10rpx);
+  flex: 0 0 48%;
+  max-width: 48%;
   background-color: #fff;
   border-radius: 16rpx;
   overflow: hidden;
   box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+  margin-bottom: 20rpx;
 }
 
 .all-card-img-wrap {

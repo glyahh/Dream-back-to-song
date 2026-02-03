@@ -605,7 +605,7 @@ export default {
   }
 }
 
-/* 新品速递 - 左右分栏列表 */
+/* 新品速递 - 改为两列卡片网格 */
 .section-new {
   padding-top: 16rpx;
 }
@@ -614,6 +614,9 @@ export default {
   opacity: 0;
   transform: translateY(30rpx);
   transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
 }
 
 .new-list.animate-in {
@@ -622,24 +625,19 @@ export default {
 }
 
 .new-item {
+  width: calc(50% - 10rpx);
   display: flex;
+  flex-direction: column;
   background-color: #fff;
   border-radius: 20rpx;
   overflow: hidden;
-  margin-bottom: 24rpx;
   box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
-  align-items: stretch;
-}
-
-.new-item:last-child {
-  margin-bottom: 0;
 }
 
 .new-item-img-wrap {
   position: relative;
-  width: 240rpx;
-  height: 240rpx;
-  flex-shrink: 0;
+  width: 100%;
+  height: 260rpx;
   background-color: #f8f6f2;
 }
 
@@ -662,12 +660,12 @@ export default {
 
 .new-item-body {
   flex: 1;
-  padding: 20rpx 20rpx 20rpx 24rpx;
+  padding: 20rpx;
   display: flex;
   flex-direction: column;
   min-width: 0;
   position: relative;
-  padding-right: 170rpx;
+  padding-right: 100rpx;
 }
 
 .new-item-title {

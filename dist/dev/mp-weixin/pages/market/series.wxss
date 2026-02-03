@@ -230,14 +230,16 @@
 .product-grid.data-v-4048659c {
   display: flex;
   flex-wrap: wrap;
-  gap: 20rpx;
+  justify-content: space-between;
 }
 .series-card.data-v-4048659c {
-  width: calc(50% - 10rpx);
+  flex: 0 0 48%;
+  max-width: 48%;
   background-color: #fff;
   border-radius: 16rpx;
   overflow: hidden;
   box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+  margin-bottom: 20rpx;
 }
 .series-card-img-wrap.data-v-4048659c {
   position: relative;

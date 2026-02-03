@@ -29,7 +29,7 @@
         <view class="tags" v-else>
           <text class="tag">包邮</text>
         </view>
-        <text class="view-offer" @click="viewOffers">查看优惠 ></text>
+        <text class="view-offer" @click="viewOffers">查看优惠 ›</text>
       </view>
       <view v-if="product.originPrice" class="origin-price-row">
         <text class="origin-price">¥{{ product.originPrice }}</text>
@@ -75,7 +75,7 @@
             <view v-if="idx === selectedStyleIndex" class="style-check">✓</view>
           </view>
         </view>
-        <text class="arrow">></text>
+        <text class="arrow">›</text>
       </view>
     </view>
 

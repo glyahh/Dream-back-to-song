@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules/
 .claude/skills/
+AGENTS.md
 .DS_Store
 *.local
 Git 指南.pdf

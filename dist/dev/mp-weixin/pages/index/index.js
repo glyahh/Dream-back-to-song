@@ -1,14 +1,19 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
+const utils_userProfile = require("../../utils/userProfile.js");
 const common_assets = require("../../common/assets.js");
 const _sfc_main = {
   data() {
     return {
-      // 当前识别手机号（示例），实际可从后端或微信能力获取
-      phone: "15212345746",
+      // 当前识别手机号，初始为空，待用户授权后由微信能力或后端写入
+      phone: "",
       // 是否已勾选协议
       isAgreed: false
     };
+  },
+  onShow() {
+    const profile = utils_userProfile.getUserProfile();
+    this.phone = profile.phone || "";
   },
   computed: {
     // 掩码后的手机号显示，保护隐私
@@ -23,7 +28,9 @@ const _sfc_main = {
     toggleAgree() {
       this.isAgreed = !this.isAgreed;
     },
-    // 一键登录点击
+    // 一键登录点击：
+    // - 如果还没有手机号：提示当前无法自动获取微信手机号，引导去短信验证码登录页
+    // - 如果已有手机号（用户之前用验证码登陆过）：直接进入首页
     handleOneTapLogin() {
       if (!this.isAgreed) {
         common_vendor.index.showToast({
@@ -32,15 +39,33 @@ const _sfc_main = {
         });
         return;
       }
+      if (!this.phone) {
+        common_vendor.index.showModal({
+          title: "请先绑定手机号",
+          content: "当前版本暂不支持自动获取微信绑定手机号，请先使用手机号码 + 短信验证码登录。登录成功后，下次即可在此一键登录。",
+          confirmText: "去验证码登录",
+          success: (res) => {
+            if (res.confirm) {
+              common_vendor.index.navigateTo({
+                url: "/pages/login/phone"
+              });
+            }
+          }
+        });
+        return;
+      }
+      this.completeLogin();
+    },
+    // 完成登录：统一的跳转逻辑
+    completeLogin() {
       common_vendor.index.reLaunch({
         url: "/pages/main_index/main_index"
       });
     },
     // 其他手机号登录点击
     handleOtherPhone() {
-      common_vendor.index.showToast({
-        title: "模拟：跳转到手机号验证码登录页",
-        icon: "none"
+      common_vendor.index.navigateTo({
+        url: "/pages/login/phone"
       });
     },
     // 打开用户协议

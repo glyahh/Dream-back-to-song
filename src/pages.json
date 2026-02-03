@@ -14,6 +14,13 @@
       }
     },
     {
+      "path": "pages/login/phone",
+      "style": {
+        "navigationBarTitleText": "手机号登录",
+        "navigationStyle": "custom"
+      }
+    },
+    {
       "path": "pages/main_index/main_index",
       "style": {
         "navigationBarTitleText": "",
@@ -435,6 +442,34 @@
       }
     },
     {
+      "path": "pages/discover/topic_life",
+      "style": {
+        "navigationBarTitleText": "生活在宋朝",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/discover/topic_clothing",
+      "style": {
+        "navigationBarTitleText": "宋韵服饰大赏",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/discover/topic_food",
+      "style": {
+        "navigationBarTitleText": "宋朝美食盛宴",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/discover/topic_overview",
+      "style": {
+        "navigationBarTitleText": "宋代衣食住行",
+        "navigationStyle": "custom"
+      }
+    },
+    {
       "path": "pages/market/market",
       "style": {
         "navigationBarTitleText": "",
@@ -466,6 +501,69 @@
       "path": "pages/me/me",
       "style": {
         "navigationBarTitleText": "",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/me/orders",
+      "style": {
+        "navigationBarTitleText": "我的订单",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/me/creations",
+      "style": {
+        "navigationBarTitleText": "我的创作",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/me/collections",
+      "style": {
+        "navigationBarTitleText": "我的收藏",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/me/posts",
+      "style": {
+        "navigationBarTitleText": "我的发布",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/me/following",
+      "style": {
+        "navigationBarTitleText": "我的关注",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/me/messages",
+      "style": {
+        "navigationBarTitleText": "消息通知",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/me/feedback",
+      "style": {
+        "navigationBarTitleText": "意见反馈",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/me/settings",
+      "style": {
+        "navigationBarTitleText": "设置",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/me/profile-edit",
+      "style": {
+        "navigationBarTitleText": "编辑资料",
         "navigationStyle": "custom"
       }
     },

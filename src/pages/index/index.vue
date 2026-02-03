@@ -14,12 +14,14 @@
           <text class="login-title">登录</text>
         </view>
 
-        <!-- 已识别手机号展示 -->
+        <!-- 已识别手机号展示：来自微信授权 / 最近一次登录 -->
         <view class="phone-display">
           <text class="phone-text">{{ maskedPhone }}</text>
         </view>
 
-        <!-- 一键登录按钮 -->
+        <!-- 一键登录按钮：当前版本统一走「手机号 + 验证码」登录。
+             第一次点击时提示无法自动获取手机号，并跳转到验证码登录页；
+             当已经有手机号记录时，直接一键进入首页。 -->
         <button
           class="primary-btn"
           :class="{ 'primary-btn--disabled': !isAgreed }"
@@ -64,14 +66,21 @@
 
 <script>
 // 说明：本页面为微信小程序登录原型 UI，在 uni-app 中即可预览交互效果
+import { getUserProfile } from '@/utils/userProfile.js'
+
 export default {
   data() {
     return {
-      // 当前识别手机号（示例），实际可从后端或微信能力获取
-      phone: '15212345746',
+      // 当前识别手机号，初始为空，待用户授权后由微信能力或后端写入
+      phone: '',
       // 是否已勾选协议
       isAgreed: false,
     }
+  },
+  onShow() {
+    // 从本地资料中读取最近一次登录使用的手机号，在一键登录按钮上方展示
+    const profile = getUserProfile()
+    this.phone = profile.phone || ''
   },
   computed: {
     // 掩码后的手机号显示，保护隐私
@@ -87,7 +96,9 @@ export default {
       this.isAgreed = !this.isAgreed
     },
 
-    // 一键登录点击
+    // 一键登录点击：
+    // - 如果还没有手机号：提示当前无法自动获取微信手机号，引导去短信验证码登录页
+    // - 如果已有手机号（用户之前用验证码登陆过）：直接进入首页
     handleOneTapLogin() {
       if (!this.isAgreed) {
         uni.showToast({
@@ -96,7 +107,29 @@ export default {
         })
         return
       }
-      // 同意后直接跳转主页面
+      if (!this.phone) {
+        // 第一次点击，无手机号记录：明确告知无法自动获取手机号，引导到验证码登录
+        uni.showModal({
+          title: '请先绑定手机号',
+          content:
+            '当前版本暂不支持自动获取微信绑定手机号，请先使用手机号码 + 短信验证码登录。登录成功后，下次即可在此一键登录。',
+          confirmText: '去验证码登录',
+          success: (res) => {
+            if (res.confirm) {
+              uni.navigateTo({
+                url: '/pages/login/phone',
+              })
+            }
+          },
+        })
+        return
+      }
+      // 已有手机号记录，直接完成一键登录
+      this.completeLogin()
+    },
+
+    // 完成登录：统一的跳转逻辑
+    completeLogin() {
       uni.reLaunch({
         url: '/pages/main_index/main_index',
       })
@@ -104,10 +137,9 @@ export default {
 
     // 其他手机号登录点击
     handleOtherPhone() {
-      // 可以在此跳转到手机号 + 验证码登录页，这里先用 Toast 模拟
-      uni.showToast({
-        title: '模拟：跳转到手机号验证码登录页',
-        icon: 'none',
+      // 跳转到手机号 + 验证码登录页
+      uni.navigateTo({
+        url: '/pages/login/phone',
       })
     },
 

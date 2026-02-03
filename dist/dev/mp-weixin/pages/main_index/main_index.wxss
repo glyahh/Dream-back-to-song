@@ -209,6 +209,143 @@
 .aesthetics.data-v-03c595bb {
   padding-bottom: 140rpx;
 }
+.aesthetics-gallery.data-v-03c595bb {
+  margin: 6rpx 8rpx 24rpx;
+  border-radius: 26rpx;
+  overflow: hidden;
+  box-shadow: 0 10rpx 26rpx rgba(0, 0, 0, 0.08);
+  opacity: 0;
+  transform: translateY(24rpx);
+  transition: opacity 0.8s ease 0.1s, transform 0.8s ease 0.1s;
+}
+.aesthetics-gallery.animate-in.data-v-03c595bb {
+  opacity: 1;
+  transform: translateY(0);
+}
+.aesthetics-swiper.data-v-03c595bb {
+  width: 100%;
+  height: 260rpx;
+}
+.aesthetics-slide.data-v-03c595bb {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.aesthetics-img.data-v-03c595bb {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.aesthetics-mask.data-v-03c595bb {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.05));
+}
+.aesthetics-slide-content.data-v-03c595bb {
+  position: absolute;
+  left: 32rpx;
+  right: 32rpx;
+  bottom: 26rpx;
+  color: #fdfaf4;
+}
+.aesthetics-slide-tag.data-v-03c595bb {
+  font-size: 22rpx;
+  padding: 6rpx 14rpx;
+  border-radius: 26rpx;
+  background-color: rgba(158, 169, 127, 0.88);
+  display: inline-block;
+  margin-bottom: 10rpx;
+}
+.aesthetics-slide-title.data-v-03c595bb {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 600;
+  letter-spacing: 3rpx;
+  margin-bottom: 6rpx;
+}
+.aesthetics-slide-desc.data-v-03c595bb {
+  display: block;
+  font-size: 24rpx;
+  line-height: 1.7;
+  opacity: 0.92;
+}
+.aesthetics-dots.data-v-03c595bb {
+  position: absolute;
+  right: 28rpx;
+  bottom: 20rpx;
+  display: flex;
+  gap: 10rpx;
+}
+.aesthetics-dots .dot.data-v-03c595bb {
+  width: 10rpx;
+  height: 10rpx;
+  background-color: rgba(255, 255, 255, 0.55);
+}
+.aesthetics-dots .dot.active.data-v-03c595bb {
+  background-color: #ffffff;
+}
+.aesthetics-list.data-v-03c595bb {
+  margin-top: 12rpx;
+  padding: 0 8rpx;
+  opacity: 0;
+  transform: translateY(20rpx);
+  transition: opacity 0.6s ease 0.15s, transform 0.6s ease 0.15s;
+}
+.aesthetics-list.animate-in.data-v-03c595bb {
+  opacity: 1;
+  transform: translateY(0);
+}
+.aesthetics-item.data-v-03c595bb {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 20rpx 24rpx;
+  margin-bottom: 16rpx;
+  border-radius: 20rpx;
+  background-color: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 6rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+/* H5 悬停与点击微交互，让卡片更有“呼吸感” */
+@media (hover: hover) {
+.aesthetics-item.data-v-03c595bb {
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+.aesthetics-item.data-v-03c595bb:hover {
+    transform: translateY(-4rpx);
+    box-shadow: 0 12rpx 30rpx rgba(0, 0, 0, 0.12);
+    background-color: rgba(255, 255, 255, 0.98);
+}
+}
+.aesthetics-item.data-v-03c595bb:active {
+  transform: scale(0.98);
+  opacity: 0.96;
+}
+.aesthetics-dot.data-v-03c595bb {
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background-color: #9ea97f;
+  margin-top: 18rpx;
+  margin-right: 18rpx;
+  flex-shrink: 0;
+}
+.aesthetics-texts.data-v-03c595bb {
+  flex: 1;
+}
+.aesthetics-title.data-v-03c595bb {
+  display: block;
+  font-size: 26rpx;
+  color: #333;
+  margin-bottom: 6rpx;
+  letter-spacing: 3rpx;
+}
+.aesthetics-desc.data-v-03c595bb {
+  display: block;
+  font-size: 24rpx;
+  color: #7a7a7a;
+  line-height: 1.7;
+}
 .tabbar.data-v-03c595bb {
   position: fixed;
   left: 0;

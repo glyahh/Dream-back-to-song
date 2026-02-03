@@ -1,11 +1,14 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
-const common_assets = require("../../common/assets.js");
 const _sfc_main = {
   data() {
     return {
       activeNav: "me",
       pageReady: false,
+      profile: {
+        nickname: "烟雨朦胧",
+        avatar: "/static/avatar.png"
+      },
       tabs: [
         { key: "home", label: "首页", path: "/pages/main_index/main_index" },
         { key: "discover", label: "发现", path: "/pages/discover/discover" },
@@ -14,7 +17,8 @@ const _sfc_main = {
       ]
     };
   },
-  onReady() {
+  onShow() {
+    this.loadProfile();
     setTimeout(() => {
       this.pageReady = true;
     }, 50);
@@ -31,32 +35,62 @@ const _sfc_main = {
         });
       }
     },
+    loadProfile() {
+      try {
+        const stored = common_vendor.index.getStorageSync("me_profile");
+        if (stored && typeof stored === "object") {
+          this.profile = {
+            ...this.profile,
+            ...stored
+          };
+        }
+      } catch (e) {
+      }
+    },
     editProfile() {
-      common_vendor.index.showToast({ title: "编辑资料", icon: "none" });
+      common_vendor.index.navigateTo({
+        url: "/pages/me/profile-edit"
+      });
     },
     goToOrders() {
-      common_vendor.index.showToast({ title: "我的订单", icon: "none" });
+      common_vendor.index.navigateTo({
+        url: "/pages/me/orders"
+      });
     },
     goToCreations() {
-      common_vendor.index.showToast({ title: "我的创作", icon: "none" });
+      common_vendor.index.navigateTo({
+        url: "/pages/me/creations"
+      });
     },
     goToCollections() {
-      common_vendor.index.showToast({ title: "我的收藏", icon: "none" });
+      common_vendor.index.navigateTo({
+        url: "/pages/me/collections"
+      });
     },
     goToPosts() {
-      common_vendor.index.showToast({ title: "我的发布", icon: "none" });
+      common_vendor.index.navigateTo({
+        url: "/pages/me/posts"
+      });
     },
     goToFollowing() {
-      common_vendor.index.showToast({ title: "我的关注", icon: "none" });
+      common_vendor.index.navigateTo({
+        url: "/pages/me/following"
+      });
     },
     goToMessages() {
-      common_vendor.index.showToast({ title: "消息通知", icon: "none" });
+      common_vendor.index.navigateTo({
+        url: "/pages/me/messages"
+      });
     },
     goToFeedback() {
-      common_vendor.index.showToast({ title: "意见反馈", icon: "none" });
+      common_vendor.index.navigateTo({
+        url: "/pages/me/feedback"
+      });
     },
     goToSettings() {
-      common_vendor.index.showToast({ title: "设置", icon: "none" });
+      common_vendor.index.navigateTo({
+        url: "/pages/me/settings"
+      });
     }
   }
 };
@@ -65,19 +99,20 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     a: $data.pageReady ? 1 : "",
     b: common_vendor.o((...args) => $options.editProfile && $options.editProfile(...args)),
     c: $data.pageReady ? 1 : "",
-    d: common_assets._imports_0$24,
-    e: $data.pageReady ? 1 : "",
-    f: common_vendor.o((...args) => $options.goToOrders && $options.goToOrders(...args)),
-    g: common_vendor.o((...args) => $options.goToCreations && $options.goToCreations(...args)),
-    h: common_vendor.o((...args) => $options.goToCollections && $options.goToCollections(...args)),
-    i: $data.pageReady ? 1 : "",
-    j: common_vendor.o((...args) => $options.goToPosts && $options.goToPosts(...args)),
-    k: common_vendor.o((...args) => $options.goToFollowing && $options.goToFollowing(...args)),
-    l: common_vendor.o((...args) => $options.goToMessages && $options.goToMessages(...args)),
-    m: common_vendor.o((...args) => $options.goToFeedback && $options.goToFeedback(...args)),
-    n: common_vendor.o((...args) => $options.goToSettings && $options.goToSettings(...args)),
-    o: $data.pageReady ? 1 : "",
-    p: common_vendor.f($data.tabs, (tab, k0, i0) => {
+    d: $data.profile.avatar,
+    e: common_vendor.t($data.profile.nickname),
+    f: $data.pageReady ? 1 : "",
+    g: common_vendor.o((...args) => $options.goToOrders && $options.goToOrders(...args)),
+    h: common_vendor.o((...args) => $options.goToCreations && $options.goToCreations(...args)),
+    i: common_vendor.o((...args) => $options.goToCollections && $options.goToCollections(...args)),
+    j: $data.pageReady ? 1 : "",
+    k: common_vendor.o((...args) => $options.goToPosts && $options.goToPosts(...args)),
+    l: common_vendor.o((...args) => $options.goToFollowing && $options.goToFollowing(...args)),
+    m: common_vendor.o((...args) => $options.goToMessages && $options.goToMessages(...args)),
+    n: common_vendor.o((...args) => $options.goToFeedback && $options.goToFeedback(...args)),
+    o: common_vendor.o((...args) => $options.goToSettings && $options.goToSettings(...args)),
+    p: $data.pageReady ? 1 : "",
+    q: common_vendor.f($data.tabs, (tab, k0, i0) => {
       return {
         a: common_vendor.n("icon-" + tab.key),
         b: common_vendor.t(tab.label),

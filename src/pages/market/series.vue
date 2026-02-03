@@ -20,7 +20,7 @@
     <!-- 精选话题/活动横幅 -->
     <view class="banner" v-if="bannerText">
       <text class="banner-text">{{ bannerText }}</text>
-      <text class="banner-action" @click="onBannerAction">立即查看 ></text>
+      <text class="banner-action" @click="onBannerAction">立即查看 ›</text>
       <view class="banner-close" @click="bannerText = ''">×</view>
     </view>
 
@@ -55,7 +55,7 @@
         <view class="topic-tag">精选话题</view>
         <view class="topic-body">
           <text class="topic-title">宋韵雅集的文创好物</text>
-          <text class="topic-link" @click="goTopic">立即围观讨论 >></text>
+          <text class="topic-link" @click="goTopic">立即围观讨论 ››</text>
         </view>
       </view>
 
@@ -489,15 +489,17 @@ export default {
 .product-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 20rpx;
+  justify-content: space-between;
 }
 
 .series-card {
-  width: calc(50% - 10rpx);
+  flex: 0 0 48%;
+  max-width: 48%;
   background-color: #fff;
   border-radius: 16rpx;
   overflow: hidden;
   box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+  margin-bottom: 20rpx;
 }
 
 .series-card-img-wrap {

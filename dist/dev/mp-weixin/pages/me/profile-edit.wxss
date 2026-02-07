@@ -1,0 +1,107 @@
+
+.page.data-v-aef46dc4 {
+  background-color: #f5f0e8;
+  min-height: 100vh;
+  padding-bottom: 80rpx;
+  box-sizing: border-box;
+}
+.nav.data-v-aef46dc4 {
+  padding: 60rpx 30rpx 10rpx;
+}
+.nav-back.data-v-aef46dc4 {
+  font-size: 34rpx;
+  color: #666;
+}
+.nav-title.data-v-aef46dc4 {
+  display: block;
+  margin-top: 12rpx;
+  font-size: 32rpx;
+  color: #111;
+  font-weight: 600;
+  letter-spacing: 3rpx;
+}
+.nav-sub.data-v-aef46dc4 {
+  display: block;
+  margin-top: 4rpx;
+  font-size: 24rpx;
+  color: #7a7a7a;
+}
+.card.data-v-aef46dc4 {
+  margin: 20rpx 26rpx 0;
+  padding: 26rpx 24rpx 40rpx;
+  background-color: #fff;
+  border-radius: 18rpx;
+  box-shadow: 0 4rpx 10rpx rgba(0, 0, 0, 0.04);
+}
+.avatar-row.data-v-aef46dc4 {
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+.avatar-label.data-v-aef46dc4 {
+  font-size: 26rpx;
+  color: #333;
+  margin-right: 20rpx;
+}
+.avatar-img.data-v-aef46dc4 {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+  margin-right: 20rpx;
+  border: 4rpx solid rgba(158, 169, 127, 0.3);
+}
+.avatar-btn.data-v-aef46dc4 {
+  padding: 0 24rpx;
+  height: 56rpx;
+  line-height: 56rpx;
+  border-radius: 999rpx;
+  font-size: 24rpx;
+  color: #9ea97f;
+  background-color: #f4f6ec;
+  border: none;
+}
+.field.data-v-aef46dc4 {
+  margin-top: 18rpx;
+}
+.field-label.data-v-aef46dc4 {
+  font-size: 26rpx;
+  color: #333;
+  margin-bottom: 10rpx;
+  display: block;
+}
+.field-input.data-v-aef46dc4 {
+  padding: 18rpx 20rpx;
+  border-radius: 12rpx;
+  background-color: #f8f6f2;
+  font-size: 26rpx;
+  color: #333;
+}
+.field-textarea.data-v-aef46dc4 {
+  padding: 18rpx 20rpx 30rpx;
+  border-radius: 12rpx;
+  background-color: #f8f6f2;
+  font-size: 24rpx;
+  color: #333;
+  min-height: 140rpx;
+}
+.placeholder.data-v-aef46dc4 {
+  color: #b0b0b0;
+}
+.counter.data-v-aef46dc4 {
+  text-align: right;
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 6rpx;
+}
+.save-btn.data-v-aef46dc4 {
+  margin: 40rpx 40rpx 0;
+  height: 88rpx;
+  line-height: 88rpx;
+  border-radius: 999rpx;
+  background-color: #9ea97f;
+  color: #ffffff;
+  font-size: 28rpx;
+  border: none;
+  letter-spacing: 4rpx;
+}

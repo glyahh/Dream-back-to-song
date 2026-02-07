@@ -1,0 +1,75 @@
+
+.page.data-v-9b3b4787 {
+  background-color: #f5f0e8;
+  min-height: 100vh;
+  padding-bottom: 80rpx;
+  box-sizing: border-box;
+}
+.nav.data-v-9b3b4787 {
+  padding: 60rpx 30rpx 10rpx;
+}
+.nav-back.data-v-9b3b4787 {
+  font-size: 34rpx;
+  color: #666;
+}
+.nav-title.data-v-9b3b4787 {
+  display: block;
+  margin-top: 12rpx;
+  font-size: 32rpx;
+  color: #111;
+  font-weight: 600;
+  letter-spacing: 3rpx;
+}
+.nav-sub.data-v-9b3b4787 {
+  display: block;
+  margin-top: 4rpx;
+  font-size: 24rpx;
+  color: #7a7a7a;
+}
+.section.data-v-9b3b4787 {
+  margin: 16rpx 26rpx 0;
+  background-color: #fff;
+  border-radius: 18rpx;
+  box-shadow: 0 4rpx 10rpx rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+.item.data-v-9b3b4787 {
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  padding: 20rpx 22rpx;
+  border-bottom: 1rpx solid #f1f1f1;
+}
+.item.data-v-9b3b4787:last-child {
+  border-bottom: none;
+}
+.item-main.data-v-9b3b4787 {
+  flex: 1;
+}
+.item-title.data-v-9b3b4787 {
+  font-size: 26rpx;
+  color: #333;
+  margin-bottom: 4rpx;
+}
+.item-desc.data-v-9b3b4787 {
+  font-size: 22rpx;
+  color: #999;
+}
+.item-extra.data-v-9b3b4787 {
+  font-size: 22rpx;
+  color: #999;
+}
+.arrow.data-v-9b3b4787 {
+  font-size: 26rpx;
+  color: #ccc;
+}
+.logout.data-v-9b3b4787 {
+  margin: 40rpx 30rpx 0;
+  padding: 14rpx 0;
+  text-align: center;
+  border-radius: 999rpx;
+  background-color: #ffffff;
+  color: #c14b40;
+  font-size: 26rpx;
+  box-shadow: 0 4rpx 10rpx rgba(0, 0, 0, 0.05);
+}

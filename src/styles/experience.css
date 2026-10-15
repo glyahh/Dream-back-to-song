@@ -1,0 +1,117 @@
+.experience-page {
+  min-height: 100vh;
+  background-color: #f6f2e9;
+  color: #5a4a42;
+  font-family: 'SimSun', 'STSong', serif;
+}
+
+.nav-bar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 200rpx;
+  padding: env(safe-area-inset-top) 30rpx 22rpx;
+  background-color: rgba(200, 210, 190, 0.95);
+}
+
+.back-btn,
+.nav-spacer {
+  width: 88rpx;
+  height: 88rpx;
+  min-width: 44px;
+  min-height: 44px;
+  flex-shrink: 0;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.back-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  color: #333;
+  font-size: 64rpx;
+  line-height: 1;
+}
+
+.nav-title {
+  flex: 1;
+  color: #000;
+  font-size: 50rpx;
+  font-weight: 700;
+  font-family: 'LiSu', 'SimLi', serif;
+  letter-spacing: 8rpx;
+  line-height: 88rpx;
+  text-align: center;
+  pointer-events: none;
+}
+
+.experience-action {
+  min-height: 44px;
+  height: 100rpx;
+  margin: 0;
+  padding: 0 12rpx;
+  border-radius: 0;
+  background: transparent url('https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/begin.jpg') center / 100% 100% no-repeat;
+  color: #333;
+  font-size: 40rpx;
+  font-weight: bold;
+  font-family: 'LiSu', 'SimLi', serif;
+  line-height: 100rpx;
+  cursor: pointer;
+}
+
+.back-btn::after,
+.experience-action::after {
+  border: 0;
+}
+
+.experience-action:active {
+  transform: scale(0.98);
+}
+
+.back-btn:focus-visible,
+.experience-action:focus-visible {
+  outline: 2px solid #5d4f3a;
+  outline-offset: 2px;
+}
+
+.empty-state {
+  max-width: 500rpx;
+  margin: 100rpx auto;
+  text-align: center;
+}
+
+.empty-title,
+.storage-error,
+.progress-error {
+  display: block;
+  margin-bottom: 28rpx;
+  font-size: 28rpx;
+  line-height: 1.7;
+}
+
+.storage-error,
+.progress-error {
+  color: #9b4339;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .experience-action:active {
+    transform: none;
+  }
+}

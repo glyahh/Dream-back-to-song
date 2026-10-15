@@ -1,0 +1,47 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules/
+dist/
+project.private.config.json
+**/target/
+**/__pycache__/
+tools/course-videos-source/
+tools/course-videos-h264/
+tools/static-assets-source/
+tools/ffmpeg.zip
+.claude/skills/
+AGENTS.md
+.DS_Store
+*.local
+Git 指南.pdf
+
+# 敏感配置（不提交）：阿里云 AccessKey、SecretKey、API Key 等
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+*.env
+config/secret*.js
+config/private*.js
+**/credentials*.js
+**/*-credentials*
+**/*-secret*
+**/aliyun*.local*
+**/secret.config*
+
+# Editor directories and files
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+

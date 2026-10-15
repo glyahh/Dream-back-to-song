@@ -1,0 +1,724 @@
+{
+  "pages": [
+    {
+      "path": "pages/loading/loading",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": ""
+      }
+    },
+    {
+      "path": "pages/login/phone",
+      "style": {
+        "navigationBarTitleText": "手机号登录",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/main_index/main_index",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationStyle": "custom"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "subPackages": [
+    {
+      "root": "pages/clothes",
+      "pages": [
+        {
+          "path": "index1",
+          "style": {
+            "navigationBarTitleText": "服饰",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "design/design",
+          "style": {
+            "navigationBarTitleText": "服饰设计",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "apparel/index",
+          "style": {
+            "navigationBarTitleText": "服饰图鉴",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "apparel/detail",
+          "style": {
+            "navigationBarTitleText": "服饰详情",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "history/index",
+          "style": {
+            "navigationBarTitleText": "服饰历史",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "course/index",
+          "style": {
+            "navigationBarTitleText": "课程讲解",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "course/detail",
+          "style": {
+            "navigationBarTitleText": "课程详情",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "course/player",
+          "style": {
+            "navigationBarTitleText": "课程播放",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "recommend/all",
+          "style": {
+            "navigationBarTitleText": "全部推荐",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "recommend/detail",
+          "style": {
+            "navigationBarTitleText": "推荐详情",
+            "navigationStyle": "custom"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pages/food",
+      "pages": [
+        {
+          "path": "index",
+          "style": {
+            "navigationBarTitleText": "饮食",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "category/meat",
+          "style": {
+            "navigationBarTitleText": "肉食",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "category/vegetarian",
+          "style": {
+            "navigationBarTitleText": "素食",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "category/noodle",
+          "style": {
+            "navigationBarTitleText": "面食",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "category/dessert",
+          "style": {
+            "navigationBarTitleText": "点心",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "category/drink",
+          "style": {
+            "navigationBarTitleText": "饮品",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "detail/content",
+          "style": {
+            "navigationBarTitleText": "食谱",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "detail/dongporou",
+          "style": {
+            "navigationBarTitleText": "东坡肉",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "detail/pangxiegeng",
+          "style": {
+            "navigationBarTitleText": "螃蟹羹",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "detail/xieliangcheng",
+          "style": {
+            "navigationBarTitleText": "蟹酿橙",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "detail/xiansunzhengji",
+          "style": {
+            "navigationBarTitleText": "鲜笋蒸鸡",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "detail/shanzhuyang",
+          "style": {
+            "navigationBarTitleText": "山煮羊",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "detail/jianxiaoji",
+          "style": {
+            "navigationBarTitleText": "煎小鸡",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "detail/sucaidoufu",
+          "style": {
+            "navigationBarTitleText": "素炒豆腐",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "detail/tangmian",
+          "style": {
+            "navigationBarTitleText": "汤面",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "detail/guihuagao",
+          "style": {
+            "navigationBarTitleText": "桂花糕",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "detail/cha",
+          "style": {
+            "navigationBarTitleText": "茶",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "making/guide",
+          "style": {
+            "navigationBarTitleText": "制作",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "making/making",
+          "style": {
+            "navigationBarTitleText": "制作步骤",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "making/step2",
+          "style": {
+            "navigationBarTitleText": "制作步骤",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "making/step3",
+          "style": {
+            "navigationBarTitleText": "制作步骤",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "making/step4",
+          "style": {
+            "navigationBarTitleText": "制作步骤",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "making/step5",
+          "style": {
+            "navigationBarTitleText": "制作步骤",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "making/step6",
+          "style": {
+            "navigationBarTitleText": "制作步骤",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "making/complete",
+          "style": {
+            "navigationBarTitleText": "完成",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "making/sucaidoufu_making",
+          "style": {
+            "navigationBarTitleText": "制作步骤",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "making/sucaidoufu_step2",
+          "style": {
+            "navigationBarTitleText": "制作步骤",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "making/sucaidoufu_step3",
+          "style": {
+            "navigationBarTitleText": "制作步骤",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "making/sucaidoufu_complete",
+          "style": {
+            "navigationBarTitleText": "制作完成",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "making/tangmian_making",
+          "style": {
+            "navigationBarTitleText": "制作步骤",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "making/tangmian_step2",
+          "style": {
+            "navigationBarTitleText": "制作步骤",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "making/tangmian_complete",
+          "style": {
+            "navigationBarTitleText": "制作完成",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "making/guihuagao_making",
+          "style": {
+            "navigationBarTitleText": "制作步骤",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "making/guihuagao_step2",
+          "style": {
+            "navigationBarTitleText": "制作步骤",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "making/guihuagao_step3",
+          "style": {
+            "navigationBarTitleText": "制作步骤",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "making/guihuagao_complete",
+          "style": {
+            "navigationBarTitleText": "制作完成",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "making/cha_making",
+          "style": {
+            "navigationBarTitleText": "制作步骤",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "making/cha_step2",
+          "style": {
+            "navigationBarTitleText": "制作步骤",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "making/cha_complete",
+          "style": {
+            "navigationBarTitleText": "制作完成",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "song-dynasty",
+          "style": {
+            "navigationBarTitleText": "食在宋朝",
+            "navigationStyle": "custom"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pages/lodging",
+      "pages": [
+        {
+          "path": "index",
+          "style": {
+            "navigationBarTitleText": "住所",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "more",
+          "style": {
+            "navigationBarTitleText": "更多建筑",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "detail/huanyixi",
+          "style": {
+            "navigationBarTitleText": "环溪",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "detail/jinci",
+          "style": {
+            "navigationBarTitleText": "晋祠圣母殿",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "detail/hebei",
+          "style": {
+            "navigationBarTitleText": "河北建筑",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "detail/suzhou",
+          "style": {
+            "navigationBarTitleText": "拙政园",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "category/garden",
+          "style": {
+            "navigationBarTitleText": "园林景观",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "category/architecture",
+          "style": {
+            "navigationBarTitleText": "建筑类型",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "category/interior",
+          "style": {
+            "navigationBarTitleText": "室内设计",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "painting/gallery",
+          "style": {
+            "navigationBarTitleText": "名画建筑",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "painting/detail",
+          "style": {
+            "navigationBarTitleText": "名画赏析",
+            "navigationStyle": "custom"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pages/discover",
+      "pages": [
+        {
+          "path": "discover",
+          "style": {
+            "navigationBarTitleText": "",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "topic_life",
+          "style": {
+            "navigationBarTitleText": "生活在宋朝",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "topic_clothing",
+          "style": {
+            "navigationBarTitleText": "宋韵服饰大赏",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "topic_food",
+          "style": {
+            "navigationBarTitleText": "宋朝美食盛宴",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "topic_overview",
+          "style": {
+            "navigationBarTitleText": "宋代衣食住行",
+            "navigationStyle": "custom"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pages/market",
+      "pages": [
+        {
+          "path": "market",
+          "style": {
+            "navigationBarTitleText": "",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "detail",
+          "style": {
+            "navigationBarTitleText": "商品详情",
+            "navigationStyle": "default"
+          }
+        },
+        {
+          "path": "series",
+          "style": {
+            "navigationBarTitleText": "系列好物",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "all",
+          "style": {
+            "navigationBarTitleText": "全部好物",
+            "navigationStyle": "custom"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pages/me",
+      "pages": [
+        {
+          "path": "me",
+          "style": {
+            "navigationBarTitleText": "",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "orders",
+          "style": {
+            "navigationBarTitleText": "我的订单",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "creations",
+          "style": {
+            "navigationBarTitleText": "我的创作",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "collections",
+          "style": {
+            "navigationBarTitleText": "我的收藏",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "posts",
+          "style": {
+            "navigationBarTitleText": "我的发布",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "following",
+          "style": {
+            "navigationBarTitleText": "我的关注",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "messages",
+          "style": {
+            "navigationBarTitleText": "消息通知",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "feedback",
+          "style": {
+            "navigationBarTitleText": "意见反馈",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "settings",
+          "style": {
+            "navigationBarTitleText": "设置",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "profile-edit",
+          "style": {
+            "navigationBarTitleText": "编辑资料",
+            "navigationStyle": "custom"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pages/travel",
+      "pages": [
+        {
+          "path": "index",
+          "style": {
+            "navigationBarTitleText": "出行",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "method/index",
+          "style": {
+            "navigationBarTitleText": "出行方式",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "vehicle/index",
+          "style": {
+            "navigationBarTitleText": "交通工具",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "wiki/index",
+          "style": {
+            "navigationBarTitleText": "出行百科",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "atlas/index",
+          "style": {
+            "navigationBarTitleText": "交通图典",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "explore/experience",
+          "style": {
+            "navigationBarTitleText": "出行体验",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "explore/category",
+          "style": {
+            "navigationBarTitleText": "分类",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "explore/feature",
+          "style": {
+            "navigationBarTitleText": "特征",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "recommend/detail",
+          "style": {
+            "navigationBarTitleText": "推荐详情",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "recommend/more",
+          "style": {
+            "navigationBarTitleText": "更多推荐",
+            "navigationStyle": "custom"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pages/apparel",
+      "pages": [
+        {
+          "path": "index",
+          "style": {
+            "navigationBarTitleText": "服饰图鉴",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "beizi",
+          "style": {
+            "navigationBarTitleText": "宋代褙子",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        }
+      ]
+    }
+  ]
+}

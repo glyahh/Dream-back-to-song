@@ -31,6 +31,12 @@ class Store:
                     turn_id TEXT NOT NULL REFERENCES turns(id), payload TEXT NOT NULL, PRIMARY KEY(turn_id,payload));
                 CREATE TABLE IF NOT EXISTS sources (
                     id TEXT PRIMARY KEY, turn_id TEXT NOT NULL REFERENCES turns(id), payload TEXT NOT NULL);
+                CREATE TABLE IF NOT EXISTS turn_events (
+                    turn_id TEXT NOT NULL REFERENCES turns(id), seq INTEGER NOT NULL,
+                    event_id TEXT NOT NULL UNIQUE, event_type TEXT NOT NULL,
+                    payload TEXT NOT NULL, created REAL NOT NULL,
+                    PRIMARY KEY(turn_id, seq));
+                CREATE INDEX IF NOT EXISTS turn_events_turn_seq ON turn_events(turn_id, seq);
             ''')
 
     @contextmanager
@@ -95,6 +101,33 @@ class Store:
                 'blocks': json.loads(row['blocks']), 'error': row['error'], 'created': row['created'],
                 'actions': [{**json.loads(action['payload']), 'actionId': action['id'], 'turnId': turn_id,
                              'receipt': json.loads(action['receipt']) if action['receipt'] else None} for action in actions]}
+
+    def append_event(self, session_id, turn_id, event_type, payload=None, event_id=None):
+        with self.connect() as db:
+            db.execute('BEGIN IMMEDIATE')
+            if not db.execute('SELECT 1 FROM turns WHERE id=? AND session_id=?', (turn_id, session_id)).fetchone():
+                raise LookupError('回合不存在')
+            if event_id:
+                old = db.execute('SELECT payload FROM turn_events WHERE event_id=?', (event_id,)).fetchone()
+                if old:
+                    return json.loads(old['payload'])
+            row = db.execute('SELECT COALESCE(MAX(seq), 0) + 1 AS seq FROM turn_events WHERE turn_id=?', (turn_id,)).fetchone()
+            event = {'version': 1, 'sessionId': session_id, 'turnId': turn_id,
+                     'seq': row['seq'], 'eventId': event_id or uuid4().hex, 'type': event_type,
+                     **(payload or {})}
+            db.execute('INSERT INTO turn_events VALUES (?,?,?,?,?,?)',
+                       (turn_id, event['seq'], event['eventId'], event_type,
+                        json.dumps(event, ensure_ascii=False), time.time()))
+        return event
+
+    def events(self, session_id, turn_id, after=0):
+        if not isinstance(after, int) or after < 0:
+            raise ValueError('事件游标必须为非负整数')
+        with self.connect() as db:
+            if not db.execute('SELECT 1 FROM turns WHERE id=? AND session_id=?', (turn_id, session_id)).fetchone():
+                raise LookupError('回合不存在')
+            return [json.loads(row['payload']) for row in db.execute(
+                'SELECT payload FROM turn_events WHERE turn_id=? AND seq>? ORDER BY seq', (turn_id, after))]
 
     def finish(self, turn_id, status, blocks=None, error=None):
         if status not in TERMINAL:

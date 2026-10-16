@@ -22,9 +22,17 @@ cd Dream-Back-To-Song_backend
 
 按后端 `.env.example` 配置本地 `.env`，默认使用 dev 配置，端口 8080，接口前缀 `/api`。数据库脚本位于 `Dream-Back-To-Song_backend/Sql_script`，按 `00_create_database.sql`、`01_schema.sql`、`02_seed_data.sql` 顺序导入；种子脚本会清空演示表，仅用于开发。前端目前仍以静态数据和本地存储为主，登录校验为模拟实现。
 
+本地微信开发和助手联调建议直接在根目录执行：
+
+```powershell
+.\script\start-all.ps1
+```
+
+它会分别打开前端 watch、Java 后端和 Python Agent 窗口。微信开发者工具首次导入 `dist/dev/mp-weixin` 后保持窗口不变；前端修改保存即可热重载，Java 修改执行 `.\script\restart-backend.ps1`，Agent 修改执行 `.\script\restart-agent.ps1`，结束时执行 `.\script\stop-all.ps1`。
+
 ## 验证
 
-助手本地联调需要 Python 3.11+ 与 OpenCode 1.19.0；Python 网关仅使用标准库。分别在终端启动：
+助手本地联调需要 Python 3.11+ 与 OpenCode 1.19.0；Python 网关仅使用标准库。推荐使用 `.\script\start-all.ps1` 一键启动；需要单独排查服务时再分别启动：
 
 ```powershell
 npm run agent:catalog

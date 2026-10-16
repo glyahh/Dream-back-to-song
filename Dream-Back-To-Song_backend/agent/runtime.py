@@ -17,6 +17,8 @@ from business import tools_for
 
 ROOT = Path(__file__).parent.resolve()
 MODEL = {'providerID': 'opencode', 'modelID': 'deepseek-v4.1-flash-free'}
+STREAM_CHUNK_SIZE = 32
+STREAM_INTERVAL = 0.04
 SYSTEM = '''你是梦回宋朝项目助手，使用中文简洁回答，输出纯文本，不使用 Markdown 标记。只调用 dbts 业务工具。
 面向用户只描述业务内容与实际结果，不显示工具名、能力 ID、内部字段或权限规则；询问操作后果时直接解释后果。
 根据真实内容回答，推荐前查询目录；涉及材料、步骤、历史等详情时 get_content 读取原文，不只凭搜索摘要。不虚构内容、页面或已执行结果。
@@ -34,6 +36,29 @@ SYSTEM = '''你是梦回宋朝项目助手，使用中文简洁回答，输出�
 '''
 
 
+def find_opencode_executable():
+    configured = os.environ.get('OPENCODE_BIN')
+    if configured:
+        return configured
+    for command in ('opencode.exe', 'opencode.cmd', 'opencode'):
+        executable = shutil.which(command)
+        if executable:
+            return executable
+    return None
+
+
+def normalize_event(raw):
+    if not isinstance(raw, dict):
+        return {}
+    payload = raw.get('payload')
+    if isinstance(payload, dict):
+        event = dict(payload)
+        if raw.get('id') and not event.get('id'):
+            event['id'] = raw['id']
+        return event
+    return raw
+
+
 def request(base, method, path, body=None, timeout=10):
     request = Request(base + path, method=method,
                       data=json.dumps(body, ensure_ascii=False).encode() if body is not None else None,
@@ -45,13 +70,14 @@ def request(base, method, path, body=None, timeout=10):
 class Runtime:
     def __init__(self, gateway_url):
         self.process = None
+        self.streaming = True
         self.stop = Event()
         self.permission_ready = Event()
         self.permission_epoch = 0
         self.gateway_url = gateway_url
 
     def start(self):
-        executable = os.environ.get('OPENCODE_BIN') or shutil.which('opencode.exe')
+        executable = find_opencode_executable()
         if not executable:
             raise RuntimeError('请安装 OpenCode 1.19.0，并通过 OPENCODE_BIN 指定可执行文件')
         self.work = ROOT / '.runtime'
@@ -126,7 +152,7 @@ class Runtime:
                             return
                         if not line.startswith(b'data: '):
                             continue
-                        event = json.loads(line[6:])
+                        event = normalize_event(json.loads(line[6:]))
                         if event.get('type') == 'question.asked':
                             # Native question bypasses permission.asked; product clarification is plain text.
                             question = event['properties']
@@ -157,18 +183,139 @@ class Runtime:
     def new_session(self):
         return request(self.base, 'POST', '/session', {'title': '梦回宋朝助手'})['id']
 
-    def message(self, runtime_id, turn_id, payload):
+    def message(self, runtime_id, turn_id, payload, on_text=None):
         started = time.monotonic()
-        response = request(self.base, 'POST', f'/session/{runtime_id}/message', {
-            'model': MODEL, 'system': SYSTEM,
-            'parts': [{'type': 'text', 'text': json.dumps({**payload, 'turnId': turn_id}, ensure_ascii=False)}],
-        }, timeout=125)
+        stream_stop = Event()
+        stream_thread = Thread(target=self.stream_text, args=(runtime_id, stream_stop, on_text), daemon=True) if on_text else None
+        if stream_thread:
+            stream_thread.start()
+        try:
+            response = request(self.base, 'POST', f'/session/{runtime_id}/message', {
+                'model': MODEL, 'system': SYSTEM,
+                'parts': [{'type': 'text', 'text': json.dumps({**payload, 'turnId': turn_id}, ensure_ascii=False)}],
+            }, timeout=125)
+        finally:
+            stream_stop.set()
+            if stream_thread:
+                stream_thread.join(timeout=1)
         info = response.get('info', {})
         with (self.work / 'model-runs.jsonl').open('a', encoding='utf-8') as audit:
             audit.write(json.dumps({'turnId': turn_id, 'model': MODEL, 'cost': info.get('cost'),
                                     'tokens': info.get('tokens'), 'error': info.get('error'),
                                     'elapsedSeconds': round(time.monotonic() - started, 2)}, ensure_ascii=False) + '\n')
         return response
+
+    def stream_text(self, runtime_id, stop, on_text):
+        """Forward only text parts as small, paced deltas; the final response remains authoritative."""
+        parts = {}
+        part_types = {}
+        pending = {}
+        assistant_message_ids = set()
+        seen_events = set()
+        last_emit = 0.0
+
+        def emit(delta):
+            nonlocal last_emit
+            for start in range(0, len(delta), STREAM_CHUNK_SIZE):
+                if stop.is_set():
+                    return
+                delay = STREAM_INTERVAL - (time.monotonic() - last_emit)
+                if last_emit and delay > 0:
+                    time.sleep(delay)
+                on_text(delta[start:start + STREAM_CHUNK_SIZE])
+                last_emit = time.monotonic()
+
+        try:
+            with urlopen(self.base + '/event', timeout=130) as stream:
+                for line in stream:
+                    if stop.is_set():
+                        return
+                    if not line.startswith(b'data: '):
+                        continue
+                    raw = json.loads(line[6:])
+                    event = normalize_event(raw)
+                    self.record_stream_probe(raw, event)
+                    upstream_id = event.get('eventID') or event.get('eventId') or event.get('id')
+                    if upstream_id and upstream_id in seen_events:
+                        continue
+                    if upstream_id:
+                        seen_events.add(upstream_id)
+                    properties = event.get('properties') or {}
+                    info = properties.get('info') or {}
+                    event_session_id = properties.get('sessionID') or properties.get('sessionId') or info.get('sessionID')
+                    if event_session_id not in (None, runtime_id):
+                        continue
+                    event_type = event.get('type', '')
+                    if event_type == 'message.updated':
+                        if info.get('role') == 'assistant' and info.get('id'):
+                            assistant_message_ids.add(info['id'])
+                        continue
+                    part = properties.get('part') or {}
+                    part_id = part.get('id') if isinstance(part, dict) else None
+                    part_id = part_id or properties.get('partID') or properties.get('partId')
+                    message_id = properties.get('messageID') or properties.get('messageId')
+                    message_id = message_id or (part.get('messageID') if isinstance(part, dict) else None)
+                    part_type = part.get('type') if isinstance(part, dict) else None
+                    part_type = part_type or properties.get('partType') or part_types.get(part_id)
+                    if part_id and part_type:
+                        part_types[part_id] = part_type
+                    if event_type == 'session.next.text.delta':
+                        if message_id and assistant_message_ids and message_id not in assistant_message_ids:
+                            continue
+                        delta = properties.get('delta', event.get('delta'))
+                        if isinstance(delta, str) and delta:
+                            emit(delta)
+                        continue
+                    if event_type != 'message.part.updated' and event_type != 'message.part.delta':
+                        continue
+                    if not part_id:
+                        continue
+                    if message_id and message_id not in assistant_message_ids:
+                        continue
+                    if event_type == 'message.part.delta':
+                        if properties.get('field') != 'text':
+                            continue
+                        delta = properties.get('delta')
+                        if not isinstance(delta, str) or not delta:
+                            continue
+                        if part_type == 'text':
+                            emit(delta)
+                            parts[part_id] = parts.get(part_id, '') + delta
+                        elif part_type is None:
+                            pending.setdefault(part_id, []).append(delta)
+                        continue
+                    if part_type != 'text':
+                        pending.pop(part_id, None)
+                        continue
+                    state = parts.get(part_id, '')
+                    for delta in pending.pop(part_id, []):
+                        emit(delta)
+                        state += delta
+                    current = part.get('text') if isinstance(part, dict) else None
+                    if isinstance(current, str) and current.startswith(state):
+                        suffix = current[len(state):]
+                        if suffix:
+                            emit(suffix)
+                        parts[part_id] = current
+                    else:
+                        parts[part_id] = state
+        except (OSError, ValueError, KeyError, TypeError):
+            return
+
+    def record_stream_probe(self, raw, event):
+        if os.environ.get('AGENT_STREAM_PROBE') != '1' or not hasattr(self, 'work'):
+            return
+        properties = event.get('properties') or {}
+        part = properties.get('part') or {}
+        summary = {'time': time.time(), 'wrapped': isinstance(raw.get('payload'), dict),
+                   'type': event.get('type'), 'sessionId': properties.get('sessionID') or properties.get('sessionId'),
+                   'messageId': properties.get('messageID') or properties.get('messageId') or (properties.get('info') or {}).get('id'),
+                   'role': (properties.get('info') or {}).get('role'),
+                   'partId': properties.get('partID') or properties.get('partId') or (part.get('id') if isinstance(part, dict) else None),
+                   'partType': part.get('type') if isinstance(part, dict) else properties.get('partType'),
+                   'field': properties.get('field'), 'deltaLength': len(properties.get('delta') or '')}
+        with (self.work / 'stream-events.jsonl').open('a', encoding='utf-8') as probe:
+            probe.write(json.dumps(summary, ensure_ascii=False) + '\n')
 
     def abort(self, runtime_id):
         if runtime_id:

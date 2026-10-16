@@ -38,7 +38,7 @@
           @touchend="handleTouchEnd"
           @click="handleCard(item)"
         >
-          <image class="card-img" :src="item.img" mode="aspectFill" @error="onCardImageError(index)" />
+          <image class="card-img" :src="item.img" mode="aspectFill" />
           <view class="card-mask" />
           <view class="card-label-bar">
             <text class="card-label">{{ item.title }}</text>
@@ -141,7 +141,7 @@ export default {
         { title: '服饰', img: 'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/fushi.png' },
         { title: '饮食', img: 'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/yinshi.png' },
         { title: '住宿', img: 'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/zhusuo.png' },
-        { title: '出行', img: 'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/chuxing.png' },
+        { title: '出行', img: 'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/chuxin.png' },
       ],
       tabs: [
         { key: 'home', label: '首页', path: '/pages/main_index/main_index' },
@@ -197,16 +197,6 @@ export default {
     },
     onAestheticSwiperChange(e) {
       this.aestheticCurrentIndex = e.detail.current
-    },
-    onCardImageError(index) {
-      // 线上偶发图片资源路径变更时，用兜底图保证卡片不留白。
-      const fallbackMap = {
-        'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/chuxing.png': 'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/chuxin.png',
-      }
-      const current = this.cards[index] && this.cards[index].img
-      const fallback = fallbackMap[current]
-      if (!fallback) return
-      this.cards.splice(index, 1, { ...this.cards[index], img: fallback })
     },
    handleCard(item) {
      // 首页四宫格统一走页面跳转，这里按标题做最小映射，后续扩展新卡片也直观。

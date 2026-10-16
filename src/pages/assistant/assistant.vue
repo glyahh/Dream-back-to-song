@@ -50,8 +50,10 @@
 </template>
 
 <script>
-import { agentId, agentRequest } from '@/utils/agentApi.js'
+import { agentBase, agentId, agentRequest } from '@/utils/agentApi.js'
 import { executeAgentAction, openAgentContent } from '@/utils/agentActions.js'
+import { createAgentStream } from '@/utils/agentStream.js'
+import { createTextBatcher } from '@/utils/agentTextQueue.js'
 
 const HISTORY_KEY = 'agent_session_v1'
 const isActive = (turn) => ['running', 'waiting_client'].includes(turn.status)
@@ -65,7 +67,9 @@ export default {
   data() {
     return { sessionId: '', turns: [], text: '', error: '', sending: false, refreshing: false,
       visible: false, timer: null, bottomId: '', entry: { source: 'assistant' }, pending: null, initialQuery: false,
-      entryRequestId: '', entryText: '' }
+      entryRequestId: '', entryText: '', stream: null, streamTurnId: '', streamError: false,
+      streamCursors: {}, streamBatcher: null, streamQueueTurnId: '',
+      saveTimer: null, scrollTimer: null }
   },
   computed: {
     activeTurn() { return this.turns.find(isActive) },
@@ -77,6 +81,7 @@ export default {
         this.sessionId = saved.sessionId
         this.turns = saved.turns || []
         this.pending = saved.pending || null
+        this.streamCursors = saved.streamCursors || {}
         this.text = this.pending?.text || ''
       }
       this.entry = { source: options.source || 'assistant' }
@@ -98,17 +103,102 @@ export default {
   onUnload() { this.pausePolling() },
   methods: {
     displayText(text) { return text.replace(/\*\*([^*]+)\*\*/g, '$1') },
-    save() {
-      uni.setStorageSync(HISTORY_KEY, { sessionId: this.sessionId, turns: this.turns, pending: this.pending })
+    saveNow() {
+      uni.setStorageSync(HISTORY_KEY, { sessionId: this.sessionId, turns: this.turns, pending: this.pending,
+        streamCursors: this.streamCursors })
+    },
+    save(immediate = false) {
+      if (immediate) {
+        clearTimeout(this.saveTimer)
+        this.saveTimer = null
+        this.saveNow()
+        return
+      }
+      if (this.saveTimer) return
+      this.saveTimer = setTimeout(() => {
+        this.saveTimer = null
+        this.saveNow()
+      }, 200)
     },
     pausePolling() {
       this.visible = false
       clearTimeout(this.timer)
+      this.stopStream()
+      this.save(true)
+    },
+    scheduleScroll() {
+      if (this.scrollTimer) return
+      this.scrollTimer = setTimeout(() => {
+        this.scrollTimer = null
+        this.bottomId = ''
+        this.$nextTick(() => { this.bottomId = 'conversation-end' })
+      }, 30)
+    },
+    appendStreamText(text) {
+      if (!this.streamQueueTurnId) return
+      const turn = this.turns.find((item) => item.turnId === this.streamQueueTurnId)
+      if (!turn) return
+      const block = turn.blocks.find((item) => item.type === 'text')
+      if (block) block.text += text
+      else turn.blocks.unshift({ type: 'text', text })
+      this.save()
+      this.scheduleScroll()
+    },
+    stopStream() {
+      this.streamBatcher?.close?.()
+      this.streamBatcher = null
+      this.stream?.close?.()
+      this.stream = null
+      this.streamTurnId = ''
+    },
+    startStream(turn) {
+      if (!turn || !isActive(turn) || (this.stream && this.streamTurnId === turn.turnId)) return
+      this.stopStream()
+      this.streamTurnId = turn.turnId
+      this.streamQueueTurnId = turn.turnId
+      this.streamBatcher = createTextBatcher((text) => this.appendStreamText(text))
+      this.streamError = false
+      this.stream = createAgentStream({
+        url: `${agentBase}/sessions/${this.sessionId}/turns/${turn.turnId}/events`,
+        after: this.streamCursors[turn.turnId] || 0,
+        onOpen: () => { this.streamError = false },
+        onEvent: (event) => this.applyStreamEvent(event),
+        onError: () => { this.streamError = true },
+        onClose: () => { if (this.streamTurnId === turn.turnId) this.stream = null },
+      })
+    },
+    applyStreamEvent(event) {
+      const payload = event.payload
+      if (!payload || payload.turnId !== this.streamTurnId) return
+      const seq = Number(payload.seq)
+      const cursor = this.streamCursors[payload.turnId] || 0
+      if (payload.type !== 'heartbeat') {
+        if (!Number.isInteger(seq) || seq <= cursor) return
+        if (seq > cursor + 1) {
+          this.stopStream()
+          const turn = this.turns.find((item) => item.turnId === payload.turnId)
+          if (turn) this.startStream(turn)
+          return
+        }
+        this.streamCursors[payload.turnId] = seq
+      }
+      const turn = this.turns.find((item) => item.turnId === payload.turnId)
+      if (!turn) return
+      if (payload.type === 'text_delta' && payload.delta) {
+        this.streamBatcher?.push(payload.delta)
+        turn.status = 'running'
+      } else if (payload.type === 'turn_waiting_client') {
+        turn.status = 'waiting_client'
+      } else if (payload.type === 'turn_completed' || payload.type === 'turn_failed' || payload.type === 'turn_cancelled') {
+        this.stopStream()
+        this.refresh()
+      }
+      this.scheduleScroll()
     },
     async ensureSession() {
       if (!this.sessionId) {
         this.sessionId = (await agentRequest('POST', '/sessions', {})).sessionId
-        this.save()
+        this.save(true)
       }
     },
     async refresh() {
@@ -127,9 +217,10 @@ export default {
           this.pending = null
           this.text = ''
         }
-        this.save()
+        this.save(true)
         this.error = ''
         const turn = this.activeTurn
+        this.startStream(turn)
         if (turn) {
           for (const action of turn.actions.filter((action) => !action.receipt)) {
             // Recheck immediately before executing a delivered action, including after a page reopen.
@@ -139,12 +230,11 @@ export default {
             await agentRequest('POST', `/sessions/${this.sessionId}/actions/${action.actionId}/receipt`, receipt)
           }
         }
-        this.bottomId = ''
-        this.$nextTick(() => { this.bottomId = 'conversation-end' })
+        this.scheduleScroll()
       } catch (error) { this.error = error.message }
       finally {
         this.refreshing = false
-        if (this.visible && this.activeTurn) this.timer = setTimeout(() => this.refresh(), 800)
+        if (this.visible && this.activeTurn && (!this.stream || this.streamError)) this.timer = setTimeout(() => this.refresh(), 800)
         else if (this.visible && this.initialQuery && !this.error && !this.sending) {
           this.send()
         }
@@ -159,7 +249,7 @@ export default {
         this.pending = this.pending || { requestId: this.initialQuery && this.text.trim() === this.entryText
           ? this.entryRequestId : agentId(), text: this.text.trim(), entry: this.entry }
         this.initialQuery = false
-        this.save()
+        this.save(true)
         await agentRequest('POST', `/sessions/${this.sessionId}/turns`, this.pending)
         this.pending = null
         this.text = ''

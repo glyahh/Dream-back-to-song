@@ -17,12 +17,20 @@ from business import Business
 from server import Gateway
 from web_research import PageText, WebResearch, public_target
 from business import tools_for
-from runtime import Runtime
+from runtime import Runtime, find_opencode_executable
 
 
 class AgentContractsTest(unittest.TestCase):
+    def test_runtime_finds_windows_command_shim_when_exe_is_not_on_path(self):
+        with patch.dict('os.environ', {'OPENCODE_BIN': ''}, clear=False), patch('runtime.shutil.which', side_effect=lambda command: {
+            'opencode.exe': None,
+            'opencode.cmd': r'C:\\Users\\test\\opencode.cmd',
+        }.get(command)):
+            self.assertEqual(find_opencode_executable(), r'C:\\Users\\test\\opencode.cmd')
+
     def test_interrupted_upstream_turn_is_removed_without_deleting_completed_context(self):
         runtime = Runtime('http://127.0.0.1:8091')
+        runtime.base = 'http://127.0.0.1:12345'
         runtime.base = 'http://127.0.0.1:12345'
         messages = [
             {'info': {'id': 'old-user', 'role': 'user'}, 'parts': [{'type': 'text', 'text': '{"turnId":"completed"}'}]},
@@ -108,6 +116,97 @@ class AgentContractsTest(unittest.TestCase):
             self.turn(request='request-2')
         self.store.finish(turn_id, 'completed', [{'type': 'text', 'text': '完成'}])
         self.assertNotEqual(self.turn(request='request-2'), turn_id)
+
+    def test_turn_events_replay_from_cursor_and_remain_session_scoped(self):
+        turn_id = self.turn()
+        first = self.store.append_event(self.session, turn_id, 'turn_started')
+        second = self.store.append_event(self.session, turn_id, 'text_delta', {'delta': '你好'})
+        third = self.store.append_event(self.session, turn_id, 'turn_completed', {'turn': self.store.turn(self.session, turn_id)})
+        self.assertEqual([event['seq'] for event in self.store.events(self.session, turn_id, 0)], [1, 2, 3])
+        self.assertEqual(self.store.events(self.session, turn_id, second['seq']), [third])
+        self.assertEqual(first['eventId'] != second['eventId'], True)
+        self.assertEqual(self.store.append_event(self.session, turn_id, 'text_delta', {'delta': '重复'}, event_id=second['eventId']), second)
+        with self.assertRaises(LookupError):
+            self.store.events(self.store.create_session()['sessionId'], turn_id, 0)
+
+    def test_runtime_maps_upstream_text_delta_and_part_snapshot(self):
+        runtime = Runtime('http://127.0.0.1:8091')
+        runtime.base = 'http://127.0.0.1:12345'
+        events = [
+            {'type': 'message.part.updated', 'properties': {'sessionID': 'runtime', 'part': {'id': 'p1', 'type': 'text', 'text': '你好'}}},
+            {'type': 'message.part.delta', 'properties': {'sessionID': 'runtime', 'partID': 'p1', 'field': 'text', 'delta': '！'}},
+            {'type': 'message.part.updated', 'properties': {'sessionID': 'runtime', 'part': {'id': 'p1', 'type': 'text', 'text': '你好！宋朝'}}},
+        ]
+        stream = BytesIO(b''.join(b'data: ' + json.dumps(event, ensure_ascii=False).encode() + b'\n\n' for event in events))
+        values = []
+        with patch('runtime.urlopen', return_value=stream):
+            runtime.stream_text('runtime', __import__('threading').Event(), values.append)
+        self.assertEqual(values, ['你好', '！', '宋朝'])
+
+    def test_runtime_ignores_reasoning_and_unknown_parts(self):
+        runtime = Runtime('http://127.0.0.1:8091')
+        runtime.base = 'http://127.0.0.1:12345'
+        events = [
+            {'type': 'message.part.updated', 'properties': {'sessionID': 'runtime', 'part': {'id': 'r1', 'type': 'reasoning', 'text': '内部推理'}}},
+            {'type': 'message.part.delta', 'properties': {'sessionID': 'runtime', 'partID': 'r1', 'field': 'text', 'delta': '更多推理'}},
+            {'type': 'message.part.delta', 'properties': {'sessionID': 'runtime', 'partID': 'unknown', 'field': 'text', 'delta': '未知内容'}},
+            {'type': 'message.part.updated', 'properties': {'sessionID': 'runtime', 'part': {'id': 't1', 'type': 'text', 'text': '最终回答'}}},
+        ]
+        stream = BytesIO(b''.join(b'data: ' + json.dumps(event, ensure_ascii=False).encode() + b'\n\n' for event in events))
+        values = []
+        with patch('runtime.urlopen', return_value=stream):
+            runtime.stream_text('runtime', __import__('threading').Event(), values.append)
+        self.assertEqual(values, ['最终回答'])
+
+    def test_runtime_splits_large_text_delta(self):
+        runtime = Runtime('http://127.0.0.1:8091')
+        runtime.base = 'http://127.0.0.1:12345'
+        event = {'type': 'message.part.delta', 'properties': {'sessionID': 'runtime',
+                                                               'part': {'id': 't1', 'type': 'text'},
+                                                               'field': 'text',
+                                                               'delta': '甲' * 70}}
+        stream = BytesIO(b'data: ' + json.dumps(event, ensure_ascii=False).encode() + b'\n\n')
+        values = []
+        with patch('runtime.urlopen', return_value=stream):
+            runtime.stream_text('runtime', __import__('threading').Event(), values.append)
+        self.assertEqual(''.join(values), '甲' * 70)
+        self.assertTrue(all(len(value) <= 32 for value in values))
+
+    def test_runtime_accepts_wrapped_v2_text_and_buffers_delta_before_part_type(self):
+        runtime = Runtime('http://127.0.0.1:8091')
+        runtime.base = 'http://127.0.0.1:12345'
+        events = [
+            {'payload': {'type': 'message.part.delta', 'properties': {
+                'sessionID': 'runtime', 'partID': 'p1', 'field': 'text', 'delta': '你'}}},
+            {'payload': {'type': 'message.part.updated', 'properties': {
+                'sessionID': 'runtime', 'part': {'id': 'p1', 'type': 'text', 'text': '你好'}}}},
+            {'payload': {'type': 'session.next.text.delta', 'properties': {
+                'sessionID': 'runtime', 'delta': '，世界'}}},
+            {'payload': {'type': 'session.next.reasoning.delta', 'properties': {
+                'sessionID': 'runtime', 'delta': '不应显示'}}},
+        ]
+        stream = BytesIO(b''.join(b'data: ' + json.dumps(event, ensure_ascii=False).encode() + b'\n\n' for event in events))
+        values = []
+        with patch('runtime.urlopen', return_value=stream):
+            runtime.stream_text('runtime', __import__('threading').Event(), values.append)
+        self.assertEqual(values, ['你', '好', '，世界'])
+
+    def test_runtime_only_streams_assistant_parts_not_user_text_parts(self):
+        runtime = Runtime('http://127.0.0.1:8091')
+        runtime.base = 'http://127.0.0.1:12345'
+        events = [
+            {'type': 'message.updated', 'properties': {'info': {'id': 'user-message', 'sessionID': 'runtime', 'role': 'user'}}},
+            {'type': 'message.part.updated', 'properties': {'sessionID': 'runtime', 'part': {
+                'id': 'user-part', 'messageID': 'user-message', 'type': 'text', 'text': '用户输入'}}},
+            {'type': 'message.updated', 'properties': {'info': {'id': 'assistant-message', 'sessionID': 'runtime', 'role': 'assistant'}}},
+            {'type': 'message.part.updated', 'properties': {'sessionID': 'runtime', 'part': {
+                'id': 'assistant-part', 'messageID': 'assistant-message', 'type': 'text', 'text': '助手回答'}}},
+        ]
+        stream = BytesIO(b''.join(b'data: ' + json.dumps(event, ensure_ascii=False).encode() + b'\n\n' for event in events))
+        values = []
+        with patch('runtime.urlopen', return_value=stream):
+            runtime.stream_text('runtime', __import__('threading').Event(), values.append)
+        self.assertEqual(values, ['助手回答'])
 
     def test_client_cannot_supply_runtime_turn_identifier(self):
         with self.assertRaises(ValueError):

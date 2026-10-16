@@ -15,6 +15,8 @@ function run(command, args, cwd = root) {
 
 run(process.execPath, ['--test', 'tools/content-details.test.mjs'])
 run(process.execPath, ['--test', 'tools/agent-actions.test.mjs'])
+run(process.execPath, ['--test', 'tools/agent-stream.test.mjs'])
+run(process.execPath, ['--test', 'tools/agent-text-queue.test.mjs'])
 run(process.execPath, ['tools/agent-catalog.mjs'])
 run(process.env.PYTHON ?? 'python', ['-m', 'unittest', 'discover', '-s', 'Dream-Back-To-Song_backend/agent', '-p', 'test_*.py'])
 

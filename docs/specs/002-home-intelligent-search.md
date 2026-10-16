@@ -35,7 +35,7 @@ H5 / 微信助手页 → Java /api/agent → Python 网关 → OpenCode Server �
 | Python | 会话映射、内容目录、业务工具、动作与回执、权限拒绝、回合预算及取消 |
 | OpenCode | 模型请求、多轮上下文、MCP 调用及原生模型循环；持久化使用独立运行目录 |
 
-第一版采用异步回合加短轮询，统一适配 H5/微信，先不增加双端流式解析。Java 请求快速返回任务 ID，不用一个长 HTTP 请求覆盖整个模型及客户端操作。Python 使用 SQLite 保存会话映射、回合与动作回执；设备存储保存当前会话标识和展示历史。服务端重启、断网或页面重开后对账，不能重放已成功动作。
+第一版采用异步回合加文字 SSE，统一适配 H5/微信；Java 请求快速返回任务 ID，事件流只负责增量展示，最终回合快照仍是事实来源。Python 使用 SQLite 保存会话映射、回合、动作回执和事件游标；设备存储保存当前会话标识、展示历史及最近游标。SSE 断开后按游标补发，无法流式时回退短轮询；服务端重启、断网或页面重开后对账，不能重放已成功动作。
 
 ### 2.1 运行时边界
 
@@ -102,6 +102,7 @@ OpenCode 只监听 `127.0.0.1`；Python 与 Java 分别只暴露必要的项目�
 | `GET /sessions/{id}` | 当前消息、回合和已完成/待执行动作；重开对账 |
 | `POST /sessions/{id}/turns` | `requestId,text,entry,clientState`；返回 `turnId`，相同请求 ID 不创建第二轮 |
 | `GET /sessions/{id}/turns/{turnId}` | `status,blocks,actions,error`；只返回本会话的内容 |
+| `GET /sessions/{id}/turns/{turnId}/events?after={seq}` | `text/event-stream`；按游标回放文字增量、心跳和终止事件 |
 | `POST /sessions/{id}/actions/{actionId}/receipt` | 客户端实际结果；绑定动作和回合，重复回执返回原结果 |
 | `POST /sessions/{id}/turns/{turnId}/cancel` | 停止模型回合及尚未执行的动作；已经成功的动作保留 |
 
@@ -175,7 +176,7 @@ OpenCode 只监听 `127.0.0.1`；Python 与 Java 分别只暴露必要的项目�
 
 复现实测：在原型目录运行 `python recipe_mcp.py --self-check`、`python run_http_probe.py`、`python run_http_probe.py --permission-probe`。原型使用本机官方 OpenCode 1.19.0，首次隔离目录需刷新模型目录。正常模型结果见 `http-probe.normal.result.json`，权限结果见 `http-probe.permission-result.json`；`--strict-permissions` 保留失败配置用于定位策略差异，不是预期通过的验收命令。
 
-正式实现新增验证：80 项目录及注册路由；Python 22 项契约测试覆盖请求/回执幂等、跨会话与跨回合拒绝、取消、重启、预算、中文 UTF-8、网页计划冻结、来源对账、免 Key 检索 JSON/SSE 解析、原生权限/提问事件、上游中断请求清理及 SSRF；Node 新增 20 项行为测试覆盖 17 道菜、个人功能、购物车、重放与存储错误、首页排队提交、刷新重复提交及旧详情冷启动返回；Java 新增 2 项转发测试。Windows MCP 曾因默认编码产生乱码，现已显式使用 UTF-8，并通过真实模型复验食材及末步。
+正式实现新增验证：80 项目录及注册路由；Python 24 项契约测试覆盖请求/回执幂等、事件游标回放、跨会话与跨回合拒绝、取消、重启、预算、中文 UTF-8、网页计划冻结、来源对账、免 Key 检索 JSON/SSE 解析、原生权限/提问事件、上游中断请求清理及 SSRF；Node 23 项行为/流式测试覆盖 17 道菜、个人功能、购物车、重放与存储错误、首页排队提交、刷新重复提交、SSE 分块解析、游标重连及旧详情冷启动返回；Java 3 项转发测试。Windows MCP 曾因默认编码产生乱码，现已显式使用 UTF-8，并通过真实模型复验食材及末步。
 
 正式原生权限验收：`accept_runtime.py` 对 bash/read/write/glob/grep/task/webfetch 七类工具逐项触发，均收到 Python 自动拒绝的工具错误，费用记录 0。H5 已真实验证推荐→开始→下一步、询问重做不执行、明确重做直接执行、原制作页状态一致、页面刷新与服务重启保留历史；旧素炒豆腐页实际打开后也写入正确步骤。
 
@@ -219,7 +220,7 @@ H5 已实测停止真实模型回合，服务端保存 `cancelled`，刷新后�
 7. 项目外问题实际联网取证并链接真实来源；检索未配置、失败或无可靠证据时不声称查证成功。
 8. 所有入口复用助手页与历史；入口参数不隐式授权动作。每一项额外已完成功能都有对应成功、失败和重复请求证据。
 
-2026-10-16 08:45 的 `npm run verify` 全部通过：35 项 Node 内容/行为检查、22 项 Python 契约、97 个页面及本地引用、微信/H5 构建、后端 3 项测试（0 失败、0 错误、0 跳过）。本次包含微信 AppID 配置修改。现有 Browserslist、uni-app 更新与 Mockito 警告未影响退出状态。以上不替代尚未完成的真实微信交互。
+本次 `npm run verify` 全部通过：38 项 Node 内容/行为/流式检查、24 项 Python 契约、97 个页面及本地引用、微信/H5 构建、后端 4 项测试（0 失败、0 错误、0 跳过）。现有 Browserslist、uni-app 更新与 Mockito 警告未影响退出状态。以上不替代尚未完成的真实微信交互。
 
 ## 8. 一手依据
 

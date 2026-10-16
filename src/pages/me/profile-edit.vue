@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { getUserProfile, saveUserProfile } from '@/utils/userProfile.js'
+import { getUserProfile, saveUserProfile, profileAvatars } from '@/utils/userProfile.js'
 
 export default {
   data() {
@@ -55,18 +55,7 @@ export default {
         avatar: 'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/avatar.png',
         bio: '',
       },
-      presetAvatars: [
-        'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/touxiang/touxiang1.png',
-        'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/touxiang/touxiang2.png',
-        'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/touxiang/touxiang3.png',
-        'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/touxiang/touxiang4.png',
-        'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/touxiang/touxiang5.png',
-        'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/touxiang/touxiang6.png',
-        'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/touxiang/touxiang7.png',
-        'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/touxiang/touxiang8.png',
-        'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/touxiang/touxiang9.png',
-        'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/touxiang/touxiang10.png',
-      ],
+      presetAvatars: profileAvatars,
     }
   },
   onLoad() {

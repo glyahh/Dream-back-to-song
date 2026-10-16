@@ -14,6 +14,9 @@ function run(command, args, cwd = root) {
 }
 
 run(process.execPath, ['--test', 'tools/content-details.test.mjs'])
+run(process.execPath, ['--test', 'tools/agent-actions.test.mjs'])
+run(process.execPath, ['tools/agent-catalog.mjs'])
+run(process.env.PYTHON ?? 'python', ['-m', 'unittest', 'discover', '-s', 'Dream-Back-To-Song_backend/agent', '-p', 'test_*.py'])
 
 const config = JSON.parse(read('src/pages.json'))
 const routes = [

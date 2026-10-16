@@ -1,4 +1,9 @@
 // 新品速递 + 系列好物 整合商品数据
+export const hotProducts = [
+  { id: 1, name: '千里江山图系列餐盘-青山远黛', img: 'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/ji_shi/left_picture.png', price: '48' },
+  { id: 2, name: '青绿流苏团扇', img: 'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/ji_shi/right_bg.png', price: '68' },
+]
+
 export const newProducts = [
   { id: 101, name: '汴梁旧帖', desc: '宋风雅韵 · 复古信笺 · 手写质感', img: 'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/market_newitem/汴梁旧帖.png', price: '28', originPrice: '36', tag: '新品', tags: ['包邮', '满减'], sales: '已售800+', shop: '宋韵文创' },
   { id: 102, name: '汴河清赏盘', desc: '青绿山水 · 陶瓷餐盘 · 家用款', img: 'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/market_newitem/汴河清赏盘.png', price: '48', originPrice: '', tag: '', tags: ['包邮', '破损包退'], sales: '已售1200+', shop: '宋韵文创' },

@@ -78,6 +78,10 @@ export default {
   methods: {
     goBack() {
       if (this.isNavigating) return
+      if (getCurrentPages().length < 2) {
+        uni.redirectTo({ url: '/pages/food/category/meat' })
+        return
+      }
       this.isNavigating = true
       uni.navigateBack({
         delta: 1,
@@ -153,6 +157,7 @@ export default {
 }
 
 .nav-title {
+  pointer-events: none;
   font-size: 50rpx;
   font-weight: 700;
   color: black;

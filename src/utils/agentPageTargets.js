@@ -1,0 +1,32 @@
+// Only independently completed detail routes; the remaining recommendation IDs are placeholders.
+export const agentPageTargets = Object.fromEntries([
+  ...[
+    ['home', '首页', '/pages/main_index/main_index'],
+    ['clothes', '服饰', '/pages/clothes/index1'],
+    ['apparel', '服饰图鉴', '/pages/clothes/apparel/index'],
+    ['food', '饮食', '/pages/food/index'],
+    ...['meat', 'vegetarian', 'noodle', 'dessert', 'drink'].map((key, index) => [
+      `food-${key}`, ['荤菜', '素食', '面食', '点心', '饮品'][index], `/pages/food/category/${key}`,
+    ]),
+    ['lodging', '建筑与名画', '/pages/lodging/index'],
+    ['paintings', '名画列表', '/pages/lodging/painting/gallery'],
+    ['discover', '发现', '/pages/discover/discover'],
+    ['market', '集市', '/pages/market/market'],
+    ['market-all', '全部好物', '/pages/market/all'],
+    ['market-series', '系列好物', '/pages/market/series'],
+    ['me', '我的', '/pages/me/me'],
+  ].map(([key, title, path]) => [`section:${key}`, { path, query: {}, title }]),
+  ['profile:self', { path: '/pages/me/profile-edit', query: {} }],
+  ['posts:self', { path: '/pages/me/posts', query: {} }],
+  ['creations:self', { path: '/pages/me/creations', query: {} }],
+  ['feedback:self', { path: '/pages/me/feedback', query: {} }],
+  ['messages:self', { path: '/pages/me/messages', query: {} }],
+  ['history:clothing', { path: '/pages/clothes/history/index', query: {} }],
+  ['article:beizi', { path: '/pages/apparel/beizi', query: {} }],
+  ['article:song-food', { path: '/pages/food/song-dynasty', query: {} }],
+  ...['overview', 'life', 'clothing', 'food'].map((key) => [`topic:${key}`, { path: `/pages/discover/topic_${key}`, query: {} }]),
+  ...[1, 2, 3, 4, 5, 6].map((id) => [`apparel:${id}`, { path: '/pages/clothes/apparel/detail', query: { id: String(id) } }]),
+  ...[1, 2].map((id) => [`outfit:${id}`, { path: '/pages/clothes/recommend/detail', query: { id: String(id) } }]),
+  ...[1, 2, 3, 4, 5].map((id) => [`course:${id}`, { path: '/pages/clothes/course/player', query: { id: String(id) } }]),
+  ...['jinci', 'suzhou', 'hebei', 'huanyixi'].map((key) => [`building:${key}`, { path: `/pages/lodging/detail/${key}`, query: {} }]),
+])

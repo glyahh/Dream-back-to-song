@@ -26,6 +26,10 @@
         "navigationBarTitleText": "",
         "navigationStyle": "custom"
       }
+    },
+    {
+      "path": "pages/assistant/assistant",
+      "style": { "navigationBarTitleText": "宋朝助手", "navigationStyle": "custom" }
     }
   ],
   "globalStyle": {

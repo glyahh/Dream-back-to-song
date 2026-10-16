@@ -2,6 +2,7 @@
   "name": "uni-preset-vue",
   "version": "0.0.0",
   "scripts": {
+    "agent:catalog": "node tools/agent-catalog.mjs",
     "dev:mp-weixin": "uni -p mp-weixin",
     "dev:h5": "uni",
     "build:mp-weixin": "uni build -p mp-weixin",

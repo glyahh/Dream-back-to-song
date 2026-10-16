@@ -24,11 +24,26 @@ cd Dream-Back-To-Song_backend
 
 ## 验证
 
+助手本地联调需要 Python 3.11+ 与 OpenCode 1.19.0；Python 网关仅使用标准库。分别在终端启动：
+
+```powershell
+npm run agent:catalog
+$env:OPENCODE_BIN = '本机 opencode.exe 的绝对路径'
+python Dream-Back-To-Song_backend/agent/server.py
+```
+
+```powershell
+cd Dream-Back-To-Song_backend
+.\mvnw.cmd spring-boot:run '-Dspring-boot.run.profiles=dev,agent-local' '-Dspring-boot.run.arguments=--server.port=8080'
+```
+
+前端请求 `http://127.0.0.1:8080/api/agent`；其他本地端口可通过 `VITE_AGENT_API_BASE` 指定后再启动/构建前端。Python 默认监听 8091，Java 的助手接口仅在 `agent-local` profile 注册并绑定本机。助手已接入 80 项内容/导航、17 套制作流程、本机个人功能及购物车；未完成的业务动作不开放。网页检索使用 Exa 官方免 Key、免费限流 MCP，另支持读取公开文本网页；免费模型或检索不可用时如实提示，不切换付费。H5 已进行真实模型联调，微信开发者工具扫码后的交互验收待完成，需允许本地 HTTP 调试。
+
 ```powershell
 npm run verify
 ```
 
-依次检查新增内容与素材、制作进度、菜品与名画导航/预览行为、页面及引用、构建微信小程序、构建 H5，再通过后端 Maven Wrapper 执行测试。任何一步失败都会返回非零退出码。
+依次检查内容素材与制作进度、助手动作、生成目录及 Python 契约、页面及引用、微信/H5 构建，再通过 Maven Wrapper 执行后端测试。任何一步失败都会返回非零退出码。真实模型与开发者工具交互另行验收。
 
 ## 目录
 
@@ -55,6 +70,8 @@ npm run verify
 - [菜品与名画详情 SPEC](docs/specs/001-content-details.md)
 - [内容来源与素材记录](docs/specs/001-content-sources.md)
 - [SPEC 验收与架构、代码审查](docs/specs/001-acceptance-review.md)
+- [项目助手实施 SPEC](docs/specs/002-home-intelligent-search.md)
+- [助手运行时架构决策](docs/adr/0002-opencode-harness.md)
 - [前端接口需求](Dream-Back-To-Song_backend/项目文档/前端接口文档_1.md)
 - [后端接口实现](Dream-Back-To-Song_backend/项目文档/后端接口文档_1.md)
 - [数据库设计](Dream-Back-To-Song_backend/项目文档/数据库设计文档_1.md)

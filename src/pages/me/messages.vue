@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import { getLocalMessages, saveLocalMessages, markLocalMessageRead } from '@/utils/localMessages.js'
 export default {
   data() {
     return {
@@ -57,6 +58,7 @@ export default {
         { key: 'order', label: '订单' },
       ],
       messages: [],
+      messagesLoaded: false,
     }
   },
   computed: {
@@ -64,7 +66,7 @@ export default {
       return this.messages.filter((m) => m.category === this.currentTab)
     },
   },
-  onLoad() {
+  onShow() {
     this.initMessages()
   },
   methods: {
@@ -73,52 +75,25 @@ export default {
     },
     initMessages() {
       try {
-        const stored = uni.getStorageSync('me_messages')
-        if (Array.isArray(stored)) {
-          this.messages = stored
-          return
-        }
-      } catch (e) {
-        // ignore
+        this.messages = getLocalMessages()
+        this.messagesLoaded = true
+      } catch {
+        this.messagesLoaded = false
+        uni.showToast({ title: '消息读取失败，请重新打开', icon: 'none' })
       }
-      this.messages = [
-        {
-          id: 'm1',
-          category: 'system',
-          title: '欢迎来到「梦回宋朝」',
-          preview: '为你准备了一份宋风指南，带你从衣食住行走进画卷。',
-          content:
-            '欢迎来到「梦回宋朝」。你可以从首页的「遇见宋朝」开始，按衣、食、住、行慢慢浏览，也可以在「发现」页关注你喜欢的作者，或者在「集市」中收集几件宋风好物。',
-          time: '昨天 21:40',
-          read: false,
-        },
-        {
-          id: 'm2',
-          category: 'social',
-          title: '山河入梦 赞了你的发布',
-          preview: '「用《山家清供》里的方子做了碗蟹酿橙……」',
-          content:
-            '山河入梦 赞了你的发布：「用《山家清供》里的方子做了碗蟹酿橙……」。对方觉得你的宋风生活很有味道。',
-          time: '今天 09:12',
-          read: false,
-        },
-        {
-          id: 'm3',
-          category: 'order',
-          title: '订单已发货',
-          preview: '你的「风荷雅盏 · 茶杯」已由汴京驿站发出。',
-          content:
-            '你的「风荷雅盏 · 茶杯」已由汴京驿站打包发出，预计三至五日抵达。收货后记得在「我的订单」中确认哦。',
-          time: '02-01 20:30',
-          read: true,
-        },
-      ]
     },
-    persist() {
+    persist(messages) {
+      if (!this.messagesLoaded) {
+        uni.showToast({ title: '请先重新打开页面读取消息', icon: 'none' })
+        return false
+      }
       try {
-        uni.setStorageSync('me_messages', this.messages)
-      } catch (e) {
-        // ignore
+        saveLocalMessages(messages)
+        this.messages = messages
+        return true
+      } catch {
+        uni.showToast({ title: '已读状态未保存，请重试', icon: 'none' })
+        return false
       }
     },
     switchTab(key) {
@@ -128,10 +103,7 @@ export default {
       return this.messages.filter((m) => m.category === category && !m.read).length
     },
     openMessage(msg) {
-      this.messages = this.messages.map((m) =>
-        m.id === msg.id ? { ...m, read: true } : m
-      )
-      this.persist()
+      if (!this.persist(markLocalMessageRead(this.messages, msg.id))) return
       uni.showModal({
         title: msg.title,
         content: msg.content,

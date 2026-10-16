@@ -3,6 +3,7 @@ package com.dbts.dreambacktosong_backend.config;
 import com.dbts.dreambacktosong_backend.security.AuthInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -19,13 +20,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private final AuthInterceptor authInterceptor;
+    private final Environment environment;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 鉴权拦截器配置：
         // - 默认拦截所有请求
         // - 放行不需要登录的接口（如发送验证码、登录、部分发现/商品/反馈等）
-        registry.addInterceptor(authInterceptor)
+        var registration = registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns(
                         // 认证模块
@@ -43,6 +45,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/actuator/health",
                         "/error"
                 );
+        if (environment.matchesProfiles("agent-local")) {
+            registration.excludePathPatterns("/agent/**");
+        }
     }
 
     @Override

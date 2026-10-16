@@ -6,9 +6,11 @@
       <view class="search-bar" :class="{ 'animate-in': pageReady }">
         <text class="search-icon">🔍</text>
         <input
+          v-model="searchText"
           class="search-input"
           type="text"
           confirm-type="search"
+          @confirm="openAssistant"
           placeholder="输入关键词"
           placeholder-class="search-placeholder"
         />
@@ -127,10 +129,12 @@
 </template>
 
 <script>
+import { agentId } from '@/utils/agentApi.js'
 export default {
   data() {
     return {
       activeTab: 'home',
+      searchText: '',
       pressedIndex: -1,
       pageReady: false,
       cards: [
@@ -179,6 +183,10 @@ export default {
     }, 50)
   },
   methods: {
+    openAssistant() {
+      const query = this.searchText.trim()
+      uni.navigateTo({ url: `/pages/assistant/assistant?source=home${query ? `&q=${encodeURIComponent(query)}&requestId=${agentId()}` : ''}` })
+    },
     handleTouchStart(index) {
       this.pressedIndex = index
     },
@@ -313,6 +321,7 @@ export default {
 
 .search-input {
   flex: 1;
+  min-width: 0;
   font-size: 30rpx;
   color: #333;
 }

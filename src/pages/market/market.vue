@@ -194,7 +194,7 @@
 
 <script>
 import { getCart, setCart, getCartList, addToCart as cartAdd, minusFromCart as cartMinus } from '@/utils/marketCart'
-import { newProducts as newProductsData, allProducts, getProductMap } from '@/utils/marketProducts'
+import { newProducts as newProductsData, hotProducts as hotProductsData, allProducts, getProductMap } from '@/utils/marketProducts'
 
 export default {
   data() {
@@ -209,20 +209,7 @@ export default {
         'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/ji_shi/market_3.png',
         'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/ji_shi/market_4.png',
       ],
-      hotProducts: [
-        {
-          id: 1,
-          name: '千里江山图系列餐盘-青山远黛',
-          img: 'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/ji_shi/left_picture.png',
-          price: '48',
-        },
-        {
-          id: 2,
-          name: '青绿流苏团扇',
-          img: 'https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/ji_shi/right_bg.png',
-          price: '68',
-        },
-      ],
+      hotProducts: hotProductsData,
       newProducts: newProductsData,
       tabs: [
         { key: 'home', label: '首页', path: '/pages/main_index/main_index' },
@@ -265,6 +252,9 @@ export default {
       })
       return Math.round(discount * 100) / 100
     },
+  },
+  onLoad(options) {
+    if (options.cart === '1') this.cartPanelOpen = true
   },
   onShow() {
     // 每次回到页面都从存储拉一次，保证详情页/列表页改购物车后这里能即时对齐。

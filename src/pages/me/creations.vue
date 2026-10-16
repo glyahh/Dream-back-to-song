@@ -93,21 +93,23 @@
 </template>
 
 <script>
+import { creationTypes, getLocalCreations, saveLocalCreations, createLocalCreation } from '@/utils/localCreations.js'
 export default {
   data() {
     return {
       creations: [],
+      creationsLoaded: false,
       showEditor: false,
       form: {
         title: '',
         type: '',
         content: '',
       },
-      typeOptions: ['服饰设计', '饮食随笔', '建筑手稿', '出行见闻', '其他'],
+      typeOptions: creationTypes,
       typeIndex: 0,
     }
   },
-  onLoad() {
+  onShow() {
     this.initCreations()
   },
   methods: {
@@ -116,33 +118,25 @@ export default {
     },
     initCreations() {
       try {
-        const stored = uni.getStorageSync('me_creations')
-        if (Array.isArray(stored)) {
-          this.creations = stored
-          return
-        }
-      } catch (e) {
-        // ignore
+        this.creations = getLocalCreations()
+        this.creationsLoaded = true
+      } catch {
+        this.creationsLoaded = false
+        uni.showToast({ title: '创作读取失败，请重新打开', icon: 'none' })
       }
-      // 初始一条示例
-      this.creations = [
-        {
-          id: 'c1',
-          title: '浅绛团花褙子草图',
-          type: '服饰设计',
-          excerpt: '试着把宋画里的团花纹样移到褙子下摆，底色用淡绛，花纹改成更细密的线条……',
-          content: '',
-          time: '2026-02-01 晚上',
-          words: 68,
-          mood: '心静如水',
-        },
-      ]
     },
-    persist() {
+    persist(creations) {
+      if (!this.creationsLoaded) {
+        uni.showToast({ title: '请先重新打开页面读取创作', icon: 'none' })
+        return false
+      }
       try {
-        uni.setStorageSync('me_creations', this.creations)
-      } catch (e) {
-        // ignore
+        saveLocalCreations(creations)
+        this.creations = creations
+        return true
+      } catch {
+        uni.showToast({ title: '创作未保存，请重试', icon: 'none' })
+        return false
       }
     },
     openEditor() {
@@ -174,33 +168,12 @@ export default {
         uni.showToast({ title: '请写一点内容', icon: 'none' })
         return
       }
-      const words = this.form.content.length
-      const now = new Date()
-      const time = `${now.getFullYear()}-${(now.getMonth() + 1)
-        .toString()
-        .padStart(2, '0')}-${now
-        .getDate()
-        .toString()
-        .padStart(2, '0')} ${now.getHours().toString().padStart(2, '0')}:${now
-        .getMinutes()
-        .toString()
-        .padStart(2, '0')}`
-      this.creations.unshift({
-        id: `c_${Date.now()}`,
-        title: this.form.title.trim(),
-        type: this.form.type,
-        excerpt:
-          this.form.content.length > 50
-            ? `${this.form.content.slice(0, 50)}…`
-            : this.form.content,
-        content: this.form.content,
-        time,
-        words,
-        mood: '宋风正浓',
-      })
-      this.persist()
-      this.showEditor = false
-      uni.showToast({ title: '已保存', icon: 'success' })
+      try {
+        if (this.persist([createLocalCreation(this.form), ...this.creations])) {
+          this.showEditor = false
+          uni.showToast({ title: '已保存', icon: 'success' })
+        }
+      } catch (error) { uni.showToast({ title: error.message, icon: 'none' }) }
     },
     preview(item) {
       uni.showModal({

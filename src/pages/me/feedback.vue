@@ -80,17 +80,19 @@
 </template>
 
 <script>
+import { feedbackTags, getLocalFeedback, saveLocalFeedback, createLocalFeedback } from '@/utils/localFeedback.js'
 export default {
   data() {
     return {
       rate: 5,
-      tags: ['界面设计', '交互体验', '内容建议', '功能需求', '性能问题'],
+      tags: feedbackTags,
       form: {
         tags: [],
         content: '',
         contact: '',
       },
       history: [],
+      historyLoaded: false,
     }
   },
   computed: {
@@ -105,7 +107,7 @@ export default {
       return map[this.rate] || ''
     },
   },
-  onLoad() {
+  onShow() {
     this.initHistory()
   },
   methods: {
@@ -114,19 +116,25 @@ export default {
     },
     initHistory() {
       try {
-        const stored = uni.getStorageSync('me_feedback_history')
-        if (Array.isArray(stored)) {
-          this.history = stored
-        }
-      } catch (e) {
-        // ignore
+        this.history = getLocalFeedback()
+        this.historyLoaded = true
+      } catch {
+        this.historyLoaded = false
+        uni.showToast({ title: '反馈读取失败，请重新打开', icon: 'none' })
       }
     },
-    saveHistory() {
+    saveHistory(history) {
+      if (!this.historyLoaded) {
+        uni.showToast({ title: '请先重新打开页面读取反馈', icon: 'none' })
+        return false
+      }
       try {
-        uni.setStorageSync('me_feedback_history', this.history.slice(0, 5))
-      } catch (e) {
-        // ignore
+        saveLocalFeedback(history)
+        this.history = history.slice(0, 5)
+        return true
+      } catch {
+        uni.showToast({ title: '反馈未保存，请重试', icon: 'none' })
+        return false
       }
     },
     setRate(n) {
@@ -143,29 +151,14 @@ export default {
         uni.showToast({ title: '请写一点具体内容', icon: 'none' })
         return
       }
-      const now = new Date()
-      const time = `${now.getFullYear()}-${(now.getMonth() + 1)
-        .toString()
-        .padStart(2, '0')}-${now
-        .getDate()
-        .toString()
-        .padStart(2, '0')} ${now.getHours().toString().padStart(2, '0')}:${now
-        .getMinutes()
-        .toString()
-        .padStart(2, '0')}`
-      const record = {
-        id: `f_${Date.now()}`,
-        time,
-        rate: this.rate,
-        tags: this.form.tags,
-        content: this.form.content.trim(),
-        contact: this.form.contact.trim(),
-      }
-      this.history.unshift(record)
-      this.saveHistory()
-      this.form = { tags: [], content: '', contact: '' }
-      this.rate = 5
-      uni.showToast({ title: '感谢你的反馈', icon: 'success' })
+      try {
+        const record = createLocalFeedback({ ...this.form, rate: this.rate })
+        if (this.saveHistory([record, ...this.history])) {
+          this.form = { tags: [], content: '', contact: '' }
+          this.rate = 5
+          uni.showToast({ title: '感谢你的反馈', icon: 'success' })
+        }
+      } catch (error) { uni.showToast({ title: error.message, icon: 'none' }) }
     },
   },
 }

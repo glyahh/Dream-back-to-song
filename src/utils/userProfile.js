@@ -7,12 +7,18 @@ const DEFAULT_PROFILE = {
   phone: '',
 }
 
+export const profileAvatars = Array.from({ length: 10 }, (_, index) =>
+  `https://dream-back-to-song.oss-cn-hangzhou.aliyuncs.com/static/touxiang/touxiang${index + 1}.png`)
+
+export function readUserProfile() {
+  const stored = uni.getStorageSync(PROFILE_STORAGE_KEY)
+  if (stored && (typeof stored !== 'object' || Array.isArray(stored))) throw new Error('个人资料格式异常')
+  return { ...DEFAULT_PROFILE, ...(stored || {}) }
+}
+
 export function getUserProfile() {
   try {
-    const stored = uni.getStorageSync(PROFILE_STORAGE_KEY)
-    if (stored && typeof stored === 'object') {
-      return { ...DEFAULT_PROFILE, ...stored }
-    }
+    return readUserProfile()
   } catch (e) {
     // ignore storage error, fallback to default
   }

@@ -58,14 +58,16 @@
 </template>
 
 <script>
+import { getLocalPosts, saveLocalPosts, createLocalPost, setLocalPostLike, removeLocalPost } from '@/utils/localPosts.js'
 export default {
   data() {
     return {
       draft: '',
       posts: [],
+      postsLoaded: false,
     }
   },
-  onLoad() {
+  onShow() {
     this.initPosts()
   },
   methods: {
@@ -74,21 +76,25 @@ export default {
     },
     initPosts() {
       try {
-        const stored = uni.getStorageSync('me_posts')
-        if (Array.isArray(stored)) {
-          this.posts = stored
-          return
-        }
-      } catch (e) {
-        // ignore
+        this.posts = getLocalPosts()
+        this.postsLoaded = true
+      } catch {
+        this.postsLoaded = false
+        uni.showToast({ title: '记录读取失败，请重新打开', icon: 'none' })
       }
-      this.posts = []
     },
-    persist() {
+    persist(posts) {
+      if (!this.postsLoaded) {
+        uni.showToast({ title: '请先重新打开页面读取记录', icon: 'none' })
+        return false
+      }
       try {
-        uni.setStorageSync('me_posts', this.posts)
-      } catch (e) {
-        // ignore
+        saveLocalPosts(posts)
+        this.posts = posts
+        return true
+      } catch {
+        uni.showToast({ title: '记录未保存，请重试', icon: 'none' })
+        return false
       }
     },
     publish() {
@@ -96,37 +102,15 @@ export default {
         uni.showToast({ title: '写点内容再发布吧', icon: 'none' })
         return
       }
-      const now = new Date()
-      const time = `${now.getMonth() + 1}月${now
-        .getDate()
-        .toString()
-        .padStart(2, '0')}日 ${now.getHours().toString().padStart(2, '0')}:${now
-        .getMinutes()
-        .toString()
-        .padStart(2, '0')}`
-      this.posts.unshift({
-        id: `p_${Date.now()}`,
-        content: this.draft,
-        time,
-        likes: 0,
-        liked: false,
-        topic: '#生活在宋朝',
-      })
-      this.draft = ''
-      this.persist()
-      uni.showToast({ title: '已发布', icon: 'success' })
+      try {
+        if (this.persist([createLocalPost(this.draft), ...this.posts])) {
+          this.draft = ''
+          uni.showToast({ title: '已发布', icon: 'success' })
+        }
+      } catch (error) { uni.showToast({ title: error.message, icon: 'none' }) }
     },
     toggleLike(item) {
-      this.posts = this.posts.map((p) =>
-        p.id === item.id
-          ? {
-              ...p,
-              liked: !p.liked,
-              likes: p.likes + (p.liked ? -1 : 1),
-            }
-          : p
-      )
-      this.persist()
+      this.persist(setLocalPostLike(this.posts, item.id, !item.liked))
     },
     removePost(item) {
       uni.showModal({
@@ -134,9 +118,9 @@ export default {
         content: '确定要删除这条内容吗？',
         success: (res) => {
           if (res.confirm) {
-            this.posts = this.posts.filter((p) => p.id !== item.id)
-            this.persist()
-            uni.showToast({ title: '已删除', icon: 'none' })
+            if (this.persist(removeLocalPost(this.posts, item.id))) {
+              uni.showToast({ title: '已删除', icon: 'none' })
+            }
           }
         },
       })

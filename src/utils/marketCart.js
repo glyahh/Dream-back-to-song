@@ -1,9 +1,13 @@
 const CART_KEY = 'market_cart'
 
+export function readCart() {
+  const str = uni.getStorageSync(CART_KEY)
+  return str ? JSON.parse(str) : {}
+}
+
 export function getCart() {
   try {
-    const str = uni.getStorageSync(CART_KEY)
-    return str ? JSON.parse(str) : {}
+    return readCart()
   } catch {
     return {}
   }

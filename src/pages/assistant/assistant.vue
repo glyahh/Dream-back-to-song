@@ -1,6 +1,6 @@
 <template>
   <view class="assistant-page">
-    <view class="assistant-nav">
+    <view class="assistant-nav" :style="{ paddingTop: `${statusBarHeight + 8}px` }">
       <button class="back-btn" aria-label="返回" @click="goBack">‹</button>
       <text class="assistant-title">宋朝助手</text>
       <view class="nav-spacer" />
@@ -8,7 +8,7 @@
     <scroll-view class="conversation" scroll-y :scroll-into-view="bottomId">
       <view v-if="!turns.length" class="welcome">想了解什么，或一起做道菜？</view>
       <view v-for="turn in turns" :key="turn.turnId" class="turn">
-        <view class="user-message"><text selectable>{{ turn.input.text }}</text></view>
+        <view class="user-message-row"><view class="user-message"><text selectable>{{ turn.input.text }}</text></view></view>
         <view class="assistant-message">
           <template v-for="(block, index) in turn.blocks" :key="index">
             <text v-if="block.type === 'text'" class="answer" selectable>{{ displayText(block.text) }}</text>
@@ -30,7 +30,7 @@
               </view>
             </view>
           </template>
-          <text v-if="turn.status === 'running'" class="turn-status">正在思考…</text>
+          <view v-if="turn.status === 'running' && !hasAnswerText(turn)" class="turn-status"><text>正在思考</text><text class="thinking-dots">···</text></view>
           <text v-if="turn.status === 'waiting_client'" class="turn-status">正在处理…</text>
           <text v-if="turn.status === 'failed'" class="turn-error" role="alert">{{ turn.error || '本轮未完成' }}</text>
           <text v-if="turn.status === 'cancelled'" class="turn-status">已停止</text>
@@ -41,6 +41,12 @@
     <view class="composer">
       <view v-if="error" class="connection-error" role="alert"><text>{{ error }}</text><button @click="refresh">重试连接</button></view>
       <view class="composer-row">
+        <view class="composer-leading">
+          <button class="plus-btn" aria-label="更多功能" @click.stop="menuOpen = !menuOpen">+</button>
+          <view v-if="menuOpen" class="composer-menu">
+            <button @click="clearContext">清空对话</button>
+          </view>
+        </view>
         <input v-model="text" class="message-input" placeholder="说说你的想法" confirm-type="send" :disabled="sending" @confirm="send" />
         <button v-if="activeTurn" class="send-btn" @click="stop">停止</button>
         <button v-else class="send-btn" :disabled="sending || !text.trim()" @click="send">发送</button>
@@ -57,6 +63,7 @@ import { createTextBatcher } from '@/utils/agentTextQueue.js'
 
 const HISTORY_KEY = 'agent_session_v1'
 const isActive = (turn) => ['running', 'waiting_client'].includes(turn.status)
+const isTerminal = (turn) => ['completed', 'failed', 'cancelled'].includes(turn?.status)
 const decodeRouteQuery = (value) => {
   if (typeof value !== 'string') return ''
   try { return decodeURIComponent(value.replace(/\+/g, ' ')) }
@@ -68,7 +75,7 @@ export default {
     return { sessionId: '', turns: [], text: '', error: '', sending: false, refreshing: false,
       visible: false, timer: null, bottomId: '', entry: { source: 'assistant' }, pending: null, initialQuery: false,
       entryRequestId: '', entryText: '', stream: null, streamTurnId: '', streamError: false,
-      streamCursors: {}, streamBatcher: null, streamQueueTurnId: '',
+      streamCursors: {}, streamBatcher: null, streamQueueTurnId: '', statusBarHeight: 0, menuOpen: false,
       saveTimer: null, scrollTimer: null }
   },
   computed: {
@@ -76,6 +83,7 @@ export default {
   },
   onLoad(options) {
     try {
+      if (typeof uni.getSystemInfoSync === 'function') this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight || 0
       const saved = uni.getStorageSync(HISTORY_KEY)
       if (saved) {
         this.sessionId = saved.sessionId
@@ -103,6 +111,9 @@ export default {
   onUnload() { this.pausePolling() },
   methods: {
     displayText(text) { return text.replace(/\*\*([^*]+)\*\*/g, '$1') },
+    hasAnswerText(turn) {
+      return Boolean(turn?.blocks?.some((block) => block.type === 'text' && block.text))
+    },
     saveNow() {
       uni.setStorageSync(HISTORY_KEY, { sessionId: this.sessionId, turns: this.turns, pending: this.pending,
         streamCursors: this.streamCursors })
@@ -122,6 +133,7 @@ export default {
     },
     pausePolling() {
       this.visible = false
+      this.menuOpen = false
       clearTimeout(this.timer)
       this.stopStream()
       this.save(true)
@@ -190,8 +202,20 @@ export default {
       } else if (payload.type === 'turn_waiting_client') {
         turn.status = 'waiting_client'
       } else if (payload.type === 'turn_completed' || payload.type === 'turn_failed' || payload.type === 'turn_cancelled') {
+        this.streamBatcher?.flush?.()
+        const index = this.turns.findIndex((item) => item.turnId === payload.turnId)
+        if (index >= 0 && payload.turn) {
+          this.turns.splice(index, 1, payload.turn)
+          this.save(true)
+        } else {
+          const status = payload.type === 'turn_completed' ? 'completed'
+            : payload.type === 'turn_cancelled' ? 'cancelled' : 'failed'
+          turn.status = status
+          if (payload.error) turn.error = payload.error
+          this.save(true)
+        }
         this.stopStream()
-        this.refresh()
+        if (!payload.turn) this.refresh()
       }
       this.scheduleScroll()
     },
@@ -201,6 +225,14 @@ export default {
         this.save(true)
       }
     },
+    mergeTurns(serverTurns) {
+      const visibleTurns = new Map(this.turns.map((turn) => [turn.turnId, turn]))
+      return serverTurns.map((serverTurn) => {
+        const visibleTurn = visibleTurns.get(serverTurn.turnId)
+        if (visibleTurn && isTerminal(visibleTurn) && !isTerminal(serverTurn)) return visibleTurn
+        return serverTurn
+      })
+    },
     async refresh() {
       if (this.refreshing) return
       this.refreshing = true
@@ -208,7 +240,7 @@ export default {
       try {
         await this.ensureSession()
         const session = await agentRequest('GET', `/sessions/${this.sessionId}`)
-        this.turns = session.turns
+        this.turns = this.mergeTurns(session.turns)
         if (this.initialQuery && this.turns.some((turn) => turn.input.requestId === this.entryRequestId)) {
           this.initialQuery = false
           if (this.text === this.entryText) this.text = ''
@@ -266,6 +298,22 @@ export default {
         await this.refresh()
       } catch (error) { this.error = error.message }
     },
+    async clearContext() {
+      this.menuOpen = false
+      try {
+        const turn = this.activeTurn
+        if (turn) await agentRequest('POST', `/sessions/${this.sessionId}/turns/${turn.turnId}/cancel`, {})
+        this.stopStream()
+        this.sessionId = (await agentRequest('POST', '/sessions', {})).sessionId
+        this.turns = []
+        this.pending = null
+        this.text = ''
+        this.streamCursors = {}
+        this.error = ''
+        this.save(true)
+        this.scheduleScroll()
+      } catch (error) { this.error = error.message }
+    },
     async openCard(item) {
       // Opening a user-selected card is a direct navigation, independent of model actions.
       try { await openAgentContent(item.id) }
@@ -283,7 +331,7 @@ export default {
 
 <style scoped>
 .assistant-page { height: 100vh; display: flex; flex-direction: column; background: #f6f3eb; color: #343e35; }
-.assistant-nav { display: flex; align-items: center; padding: calc(20rpx + env(safe-area-inset-top)) 24rpx 18rpx; border-bottom: 1px solid #dfdfd2; }
+.assistant-nav { position: relative; display: flex; align-items: center; min-height: 88rpx; padding: 8px 24rpx 18rpx; box-sizing: border-box; border-bottom: 1px solid #dfdfd2; }
 .assistant-title { flex: 1; text-align: center; font-size: 34rpx; }
 .back-btn, .nav-spacer { width: 70rpx; }
 .back-btn { padding: 0; background: transparent; font-size: 50rpx; line-height: 1.2; }
@@ -291,19 +339,28 @@ button::after { border: none; }
 .conversation { flex: 1; height: 0; }
 .welcome { padding: 100rpx 36rpx; text-align: center; color: #71796b; }
 .turn { max-width: 760px; padding: 26rpx; margin: 0 auto; }
-.user-message { margin-left: 12%; padding: 22rpx 26rpx; border-radius: 24rpx 24rpx 4rpx 24rpx; background: #dfe6d5; }
-.assistant-message { margin-top: 26rpx; line-height: 1.8; }
-.answer { display: block; white-space: pre-wrap; font-size: 30rpx; }
-.content-cards { display: flex; flex-direction: column; gap: 16rpx; margin-top: 20rpx; }
-.content-card { display: flex; align-items: center; gap: 20rpx; padding: 18rpx; text-align: left; background: #fffdf7; border-radius: 16rpx; line-height: 1.5; }
+.user-message-row { display: flex; justify-content: flex-end; min-width: 0; }
+.user-message { display: inline-block; max-width: 88%; min-width: 0; margin-left: 0; padding: 22rpx 26rpx; box-sizing: border-box; border-radius: 24rpx 24rpx 4rpx 24rpx; background: #dfe6d5; overflow-wrap: anywhere; word-break: break-all; white-space: pre-wrap; }
+.user-message text { display: block; max-width: 100%; overflow-wrap: anywhere; word-break: break-all; }
+.assistant-message { width: 100%; min-width: 0; margin-top: 26rpx; line-height: 1.8; }
+.answer { display: block; max-width: 100%; white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; font-size: 30rpx; }
+.content-cards { display: flex; flex-direction: column; align-items: stretch; width: 100%; gap: 16rpx; margin-top: 20rpx; }
+.content-card { display: flex; align-items: center; width: 100%; min-width: 0; box-sizing: border-box; gap: 20rpx; padding: 18rpx; text-align: left; background: #fffdf7; border-radius: 16rpx; line-height: 1.5; }
+.content-card > view { flex: 1; min-width: 0; }
 .content-card image { width: 120rpx; height: 120rpx; flex-shrink: 0; border-radius: 10rpx; }
 .card-title, .card-summary { display: block; }
 .card-title { font-size: 30rpx; }
 .card-summary { margin-top: 8rpx; font-size: 24rpx; color: #72776c; }
 .turn-status, .action-result { display: block; color: #707b67; font-size: 25rpx; }
+.thinking-dots { display: inline-block; min-width: 42rpx; animation: thinking 1.2s steps(4, end) infinite; }
+@keyframes thinking { 0% { opacity: 0.25; } 50% { opacity: 1; } 100% { opacity: 0.25; } }
 .turn-error, .connection-error { color: #9b4637; font-size: 26rpx; }
 .composer { padding: 20rpx 24rpx calc(20rpx + env(safe-area-inset-bottom)); background: #fffdf7; }
 .composer-row { display: flex; gap: 16rpx; align-items: center; }
+.composer-leading { position: relative; flex-shrink: 0; }
+.plus-btn { width: 58rpx; height: 58rpx; padding: 0; color: #4f654d; background: #eeeee4; border-radius: 50%; font-size: 42rpx; line-height: 54rpx; }
+.composer-menu { position: absolute; z-index: 20; bottom: 72rpx; left: 0; width: 190rpx; padding: 8rpx; background: #fffdf7; border: 1rpx solid #dfdfd2; border-radius: 14rpx; box-shadow: 0 8rpx 24rpx rgba(52, 62, 53, 0.16); }
+.composer-menu button { width: 100%; padding: 14rpx 8rpx; color: #343e35; background: transparent; font-size: 26rpx; }
 .message-input { flex: 1; min-width: 0; padding: 18rpx; background: #eeeee4; border-radius: 14rpx; font-size: 28rpx; }
 .send-btn { padding: 0 26rpx; font-size: 28rpx; color: white; background: #4f654d; border-radius: 14rpx; }
 .connection-error { display: flex; gap: 16rpx; align-items: center; margin-bottom: 12rpx; }

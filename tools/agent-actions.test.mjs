@@ -443,7 +443,7 @@ test('首页查询参数只解码一次，中文和特殊字符不会以百分�
   const module = { exports: {} }
   const script = read('src/pages/assistant/assistant.vue').match(/<script>([\s\S]*?)<\/script>/)[1]
     .replace(/^import[^\n]*\n/gm, '').replace('export default', 'module.exports =')
-  runInNewContext(script, { module, uni: { getStorageSync: () => null, setStorageSync() {} } })
+  runInNewContext(script, { module, uni: { getStorageSync: () => null, setStorageSync() {} }, setTimeout, clearTimeout })
   const options = module.exports
   const mount = (q) => {
     const page = { ...options.data() }
@@ -454,4 +454,60 @@ test('首页查询参数只解码一次，中文和特殊字符不会以百分�
   assert.equal(mount('%E6%B8%85%E6%98%8E%E4%B8%8A%E6%B2%B3%E5%9B%BE').text, '清明上河图')
   assert.equal(mount('%E4%BD%A0+%E5%A5%BD%EF%BC%81').text, '你 好！')
   assert.equal(mount('%E4%BD%A0%ZZ').text, '%E4%BD%A0%ZZ')
+})
+
+test('流式终态不会被旧的 running 刷新结果覆盖', () => {
+  const module = { exports: {} }
+  const script = read('src/pages/assistant/assistant.vue').match(/<script>([\s\S]*?)<\/script>/)[1]
+    .replace(/^import[^\n]*\n/gm, '').replace('export default', 'module.exports =')
+  runInNewContext(script, { module, uni: { getStorageSync: () => null, setStorageSync() {} } })
+  const options = module.exports
+  const page = { ...options.data(), turns: [{ turnId: 'turn-1', status: 'completed', input: { text: '问题' }, blocks: [{ type: 'text', text: '完成' }] }] }
+  const merged = options.methods.mergeTurns.call(page, [{ turnId: 'turn-1', status: 'running', input: { text: '问题' }, blocks: [] }])
+  assert.equal(merged[0].status, 'completed')
+  assert.equal(merged[0].blocks[0].text, '完成')
+})
+
+test('收到终态事件后 activeTurn 立即结束', () => {
+  const module = { exports: {} }
+  const script = read('src/pages/assistant/assistant.vue').match(/<script>([\s\S]*?)<\/script>/)[1]
+    .replace(/^import[^\n]*\n/gm, '').replace('export default', 'module.exports =')
+  runInNewContext(script, { module, uni: { getStorageSync: () => null, setStorageSync() {} }, setTimeout, clearTimeout })
+  const options = module.exports
+  const page = { ...options.data(), $nextTick() {}, turns: [{ turnId: 'turn-1', status: 'running', input: { text: '问题' }, blocks: [] }] }
+  for (const [name, method] of Object.entries(options.methods)) page[name] = method.bind(page)
+  Object.defineProperty(page, 'activeTurn', { get: () => options.computed.activeTurn.call(page) })
+  page.streamTurnId = 'turn-1'
+  page.streamQueueTurnId = 'turn-1'
+  page.streamBatcher = { flush() {}, close() {} }
+  page.stream = { close() {} }
+  page.applyStreamEvent({ payload: { turnId: 'turn-1', seq: 1, type: 'turn_completed', turn: {
+    turnId: 'turn-1', status: 'completed', input: { text: '问题' }, blocks: [{ type: 'text', text: '完成' }], actions: [], error: null,
+  } } })
+  assert.equal(page.activeTurn, undefined)
+})
+
+test('正在思考只在没有用户可见正文时显示', () => {
+  const module = { exports: {} }
+  const script = read('src/pages/assistant/assistant.vue').match(/<script>([\s\S]*?)<\/script>/)[1]
+    .replace(/^import[^\n]*\n/gm, '').replace('export default', 'module.exports =')
+  runInNewContext(script, { module, uni: { getStorageSync: () => null, setStorageSync() {} } })
+  const options = module.exports
+  const hasAnswerText = options.methods.hasAnswerText
+  assert.equal(hasAnswerText({ status: 'running', blocks: [] }), false)
+  assert.equal(hasAnswerText({ status: 'running', blocks: [{ type: 'cards', items: [] }] }), false)
+  assert.equal(hasAnswerText({ status: 'running', blocks: [{ type: 'text', text: '正在输出' }] }), true)
+})
+
+test('文本队列刷新后会隐藏思考状态但保留 running 状态', () => {
+  const module = { exports: {} }
+  const script = read('src/pages/assistant/assistant.vue').match(/<script>([\s\S]*?)<\/script>/)[1]
+    .replace(/^import[^\n]*\n/gm, '').replace('export default', 'module.exports =')
+  runInNewContext(script, { module, uni: { getStorageSync: () => null, setStorageSync() {} }, setTimeout, clearTimeout })
+  const options = module.exports
+  const page = { ...options.data(), $nextTick() {}, turns: [{ turnId: 'turn-1', status: 'running', blocks: [] }], streamQueueTurnId: 'turn-1' }
+  for (const [name, method] of Object.entries(options.methods)) page[name] = method.bind(page)
+  page.appendStreamText('首字')
+  assert.equal(page.turns[0].status, 'running')
+  assert.equal(page.hasAnswerText(page.turns[0]), true)
 })

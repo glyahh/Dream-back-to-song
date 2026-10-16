@@ -11,7 +11,7 @@ from urllib.parse import parse_qs, urlsplit
 
 from business import Business
 from catalog import Catalog
-from runtime import Runtime
+from runtime import Runtime, STREAM_CHUNK_SIZE, STREAM_INTERVAL, normalize_model_text
 from store import Store, TERMINAL
 from web_research import WebResearch
 
@@ -36,6 +36,21 @@ class Gateway:
 
     def process_turn(self, session_id, turn_id):
         runtime_id = None
+        streamed_text = []
+
+        def emit_text(delta):
+            if not delta:
+                return
+            delta = normalize_model_text(delta)
+            streamed_text.append(delta)
+            self.emit(session_id, turn_id, 'text_delta', {'delta': delta})
+
+        def emit_text_chunks(text):
+            for start in range(0, len(text), STREAM_CHUNK_SIZE):
+                if start:
+                    time.sleep(STREAM_INTERVAL)
+                emit_text(text[start:start + STREAM_CHUNK_SIZE])
+
         try:
             self.emit(session_id, turn_id, 'turn_started')
             turn = self.store.turn(session_id, turn_id)
@@ -63,7 +78,7 @@ class Gateway:
                 permission_epoch = self.runtime.permission_epoch
                 if getattr(self.runtime, 'streaming', False):
                     future = pending.submit(self.runtime.message, runtime_id, turn_id, payload,
-                                            lambda delta: self.emit(session_id, turn_id, 'text_delta', {'delta': delta}))
+                                            emit_text)
                 else:
                     future = pending.submit(self.runtime.message, runtime_id, turn_id, payload)
                 last_status = 'running'
@@ -99,11 +114,17 @@ class Gateway:
                 if isinstance(code, int) and code >= 500:
                     raise RuntimeError('模型服务暂时异常，请稍后重试')
                 raise RuntimeError(data.get('message') or '模型服务异常')
-            text = '\n'.join(part['text'] for part in response.get('parts', []) if part.get('type') == 'text')
+            text = normalize_model_text('\n'.join(part['text'] for part in response.get('parts', []) if part.get('type') == 'text'))
             if not text.strip():
                 raise ValueError('模型未返回有效回答，请重试')
-            if not any(event['type'] == 'text_delta' for event in self.store.events(session_id, turn_id, 0)):
-                self.emit(session_id, turn_id, 'text_delta', {'delta': text})
+            streamed = ''.join(streamed_text)
+            if text.startswith(streamed):
+                emit_text_chunks(text[len(streamed):])
+            elif streamed:
+                # Do not duplicate a mismatched partial answer. The terminal turn remains authoritative.
+                print(f'Agent stream prefix mismatch: turn={turn_id}', flush=True)
+            else:
+                emit_text_chunks(text)
             current = self.store.turn(session_id, turn_id)
             blocks = [{'type': 'text', 'text': text}, *current['blocks']]
             sources = self.store.sources(turn_id)

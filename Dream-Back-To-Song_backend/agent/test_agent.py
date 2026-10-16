@@ -9,6 +9,7 @@ from urllib.error import HTTPError
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import subprocess
 import sys
+import time
 from threading import Thread
 
 from catalog import Catalog
@@ -17,10 +18,14 @@ from business import Business
 from server import Gateway
 from web_research import PageText, WebResearch, public_target
 from business import tools_for
-from runtime import Runtime, find_opencode_executable
+from runtime import Runtime, find_opencode_executable, normalize_model_text
 
 
 class AgentContractsTest(unittest.TestCase):
+    def test_model_name_is_normalized_for_user_visible_text(self):
+        self.assertEqual(normalize_model_text('deepseek-v4.1-flash-free'), 'deepseek V4.1 flash')
+        self.assertEqual(normalize_model_text('由 deepseek V4.1 flash free 模型驱动'), '由 deepseek V4.1 flash 模型驱动')
+
     def test_runtime_finds_windows_command_shim_when_exe_is_not_on_path(self):
         with patch.dict('os.environ', {'OPENCODE_BIN': ''}, clear=False), patch('runtime.shutil.which', side_effect=lambda command: {
             'opencode.exe': None,
@@ -207,6 +212,44 @@ class AgentContractsTest(unittest.TestCase):
         with patch('runtime.urlopen', return_value=stream):
             runtime.stream_text('runtime', __import__('threading').Event(), values.append)
         self.assertEqual(values, ['助手回答'])
+
+    def test_runtime_drains_late_events_after_post_response(self):
+        runtime = Runtime('http://127.0.0.1:8091')
+        runtime.work = Path(self.temp.name)
+        runtime.base = 'http://127.0.0.1:12345'
+        values = []
+
+        def late_stream(runtime_id, stop, on_text, done):
+            time.sleep(0.03)
+            on_text('前')
+            done.set()
+
+        response = {'info': {}, 'parts': [{'type': 'text', 'text': '前后'}]}
+        with patch('runtime.request', return_value=response), patch.object(runtime, 'stream_text', side_effect=late_stream):
+            runtime.message('runtime', 'turn', {'text': '问题'}, values.append)
+        self.assertEqual(values, ['前'])
+
+    def test_gateway_fills_only_missing_final_text_suffix(self):
+        turn_id = self.turn('stream-suffix', '回答一个问题')
+
+        class FakeRuntime:
+            streaming = True
+            permission_epoch = 0
+
+            def ready(inner): return True
+            def new_session(inner): return 'runtime'
+            def message(inner, runtime_id, current_turn, payload, on_text):
+                on_text('前')
+                return {'info': {}, 'parts': [{'type': 'text', 'text': '前后'}]}
+
+        gateway = Gateway(self.store, Catalog(), FakeRuntime())
+        try:
+            gateway.run_turn(self.session, turn_id)
+            events = self.store.events(self.session, turn_id, 0)
+            self.assertEqual([event['delta'] for event in events if event['type'] == 'text_delta'], ['前', '后'])
+            self.assertEqual(self.store.turn(self.session, turn_id)['blocks'][0]['text'], '前后')
+        finally:
+            gateway.workers.shutdown()
 
     def test_client_cannot_supply_runtime_turn_identifier(self):
         with self.assertRaises(ValueError):

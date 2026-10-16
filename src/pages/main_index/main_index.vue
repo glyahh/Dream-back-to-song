@@ -11,7 +11,7 @@
           type="text"
           confirm-type="search"
           @confirm="openAssistant"
-          placeholder="输入关键词"
+          placeholder="搜索内容，或问问宋朝助手"
           placeholder-class="search-placeholder"
         />
       </view>
